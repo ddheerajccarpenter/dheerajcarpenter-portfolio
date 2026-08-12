@@ -70,6 +70,16 @@ export async function PublicShell({ children }: { children: React.ReactNode }) {
                 {contactEmail}
               </a>
             )}
+            <a
+              href="https://github.com/ddheerajccarpenter"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 hover:text-foreground transition-colors"
+              aria-label="GitHub profile"
+            >
+              <i className="fi fi-brands-github text-base leading-none" aria-hidden="true" />
+              <span className="underline underline-offset-4">GitHub</span>
+            </a>
           </div>
         </Container>
       </footer>
