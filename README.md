@@ -97,6 +97,3 @@ proxy.ts        Middleware — session refresh + /admin/* route guard
 
 This is my personal site. Feel free to look at the code for reference, but please don't deploy it as your own.
 
----
-
-**GitHub:** [github.com/ddheerajccarpenter/dheerajcarpenter-portfolio](https://github.com/ddheerajccarpenter/dheerajcarpenter-portfolio)
