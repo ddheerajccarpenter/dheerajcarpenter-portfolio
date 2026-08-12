@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Outer decorative border -->
+  <path d="M 100 20 Q 150 20 170 40 Q 180 50 180 100 Q 180 150 170 160 Q 150 180 100 180 Q 50 180 30 160 Q 20 150 20 100 Q 20 50 30 40 Q 50 20 100 20" 
+    fill="none" 
+    stroke="currentColor" 
+    stroke-width="6" 
+    stroke-linecap="round" 
+    stroke-linejoin="round"/>
+  
+  <!-- Curved checkmark/tick symbol -->
+  <path d="M 70 95 Q 90 115 120 70" 
+    fill="none" 
+    stroke="currentColor" 
+    stroke-width="20" 
+    stroke-linecap="round" 
+    stroke-linejoin="round"/>
+</svg>

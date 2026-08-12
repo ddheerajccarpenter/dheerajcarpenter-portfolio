@@ -1,0 +1,1068 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens — strict black & white, timeless.
+ */
+:root {
+  --background: #ffffff;
+  --foreground: #1d1d1f;
+  --muted-foreground: #6e6e73;
+  --border: rgba(0, 0, 0, 0.12);
+  --border-strong: rgba(0, 0, 0, 0.24);
+  --surface: #f5f5f7;
+  --focus-ring: #0066cc;
+  --selection-bg: #0066cc;
+  --selection-fg: #ffffff;
+}
+
+.dark {
+  --background: #000000;
+  --foreground: #f5f5f7;
+  --muted-foreground: #a1a1a6;
+  --border: rgba(255, 255, 255, 0.14);
+  --border-strong: rgba(255, 255, 255, 0.28);
+  --surface: #161617;
+  --focus-ring: #2997ff;
+  --selection-bg: #2997ff;
+  --selection-fg: #ffffff;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-surface: var(--surface);
+  --color-focus: var(--focus-ring);
+
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "SF Pro", var(--font-inter), system-ui, sans-serif;
+  --font-mono: "SF Mono", var(--font-geist-mono), Menlo, Monaco, Consolas, monospace;
+
+  /* Apple SF Pro typographic hierarchy & tracking — scaled +2 to +4px */
+  --text-display: 3.875rem;
+  --text-display--line-height: 1.08;
+  --text-display--letter-spacing: -0.038em;
+  --text-h1: 2.75rem;
+  --text-h1--line-height: 1.12;
+  --text-h1--letter-spacing: -0.03em;
+  --text-h2: 2.125rem;
+  --text-h2--line-height: 1.18;
+  --text-h2--letter-spacing: -0.024em;
+  --text-h3: 1.5rem;
+  --text-h3--line-height: 1.25;
+  --text-h3--letter-spacing: -0.018em;
+  --text-body-lg: 1.25rem;
+  --text-body-lg--line-height: 1.58;
+  --text-body-lg--letter-spacing: -0.014em;
+  --text-body: 1.125rem;
+  --text-body--line-height: 1.55;
+  --text-body--letter-spacing: -0.011em;
+  --text-small: 1rem;
+  --text-small--line-height: 1.48;
+  --text-small--letter-spacing: -0.008em;
+  --text-caption: 0.875rem;
+  --text-caption--line-height: 1.4;
+  --text-caption--letter-spacing: 0.02em;
+}
+
+@layer base {
+  * { border-color: var(--border); }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "SF Pro", var(--font-inter), system-ui, sans-serif;
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    letter-spacing: -0.011em;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Content protection — disable text selection */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background: var(--selection-bg);
+    color: var(--selection-fg);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+    color: var(--foreground);
+  }
+
+  p, li {
+    color: var(--muted-foreground);
+    letter-spacing: -0.005em;
+  }
+
+  .prose-readable {
+    max-width: 68ch;
+    line-height: 1.7;
+  }
+
+  a {
+    color: inherit;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+
+  /* Global micro-animations for nav links and interactive controls */
+  nav a,
+  header a,
+  footer a {
+    transition:
+      opacity 150ms cubic-bezier(0.16, 1, 0.3, 1),
+      color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  nav a:hover,
+  header a:hover,
+  footer a:hover {
+    opacity: 0.75;
+  }
+
+  button:not(.animate-mode-bounce),
+  .btn,
+  a[role="button"],
+  [role="button"] {
+    transition:
+      transform 180ms cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 180ms cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 150ms ease,
+      background-color 150ms ease,
+      opacity 150ms ease;
+    will-change: transform, box-shadow;
+  }
+
+  button:not(.animate-mode-bounce):hover,
+  .btn:hover,
+  a[role="button"]:hover,
+  [role="button"]:hover {
+    transform: translateY(-1px) scale(1.02);
+    box-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.08), 0 0 8px 1px rgba(0, 0, 0, 0.04);
+    border-color: var(--border-strong);
+  }
+
+  .dark button:not(.animate-mode-bounce):hover,
+  .dark .btn:hover,
+  .dark a[role="button"]:hover,
+  .dark [role="button"]:hover {
+    box-shadow: 0 4px 16px -2px rgba(255, 255, 255, 0.12), 0 0 10px 1px rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+
+  button:not(.animate-mode-bounce):active,
+  .btn:active,
+  a[role="button"]:active,
+  [role="button"]:active {
+    transform: translateY(0px) scale(0.97);
+    transition-duration: 80ms;
+  }
+}
+
+/* Custom smooth scrollbars for navigation sidebar & mobile menus */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 9999px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-foreground);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ════════════════════════════════════════════════════════════
+   Flaticon Universal Animated Icons System
+   - Entrance animation on every page load
+   - Continuous looped ambient animation (never stops)
+   - Interactive hover, tap, and exit transitions
+   ════════════════════════════════════════════════════════════ */
+.fi, [class^="fi-"] {
+  display: inline-block;
+  vertical-align: middle;
+  animation: 
+    icon-page-load 400ms cubic-bezier(0.34, 1.56, 0.64, 1) both,
+    icon-loop-pulse 3s ease-in-out 500ms infinite;
+  transition:
+    transform 280ms cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 200ms ease,
+    color 200ms ease;
+  will-change: transform, opacity;
+}
+
+/* Page load pop-in entrance animation for all icons */
+@keyframes icon-page-load {
+  0% {
+    opacity: 0;
+    transform: scale(0.6) rotate(-12deg) translateY(4px);
+  }
+  70% {
+    transform: scale(1.1) rotate(2deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg) translateY(0px);
+  }
+}
+
+/* Continuous looped pulse — gentle breathing + micro-rotation that never stops */
+@keyframes icon-loop-pulse {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg) scale(1);
+  }
+  25% {
+    transform: translateY(-1.5px) rotate(2deg) scale(1.04);
+  }
+  50% {
+    transform: translateY(-2.5px) rotate(0deg) scale(1.06);
+  }
+  75% {
+    transform: translateY(-1px) rotate(-2deg) scale(1.03);
+  }
+}
+
+/* Hover dynamic scaling & spin */
+a:hover .fi,
+button:hover .fi,
+.btn:hover .fi,
+nav a:hover .fi,
+[role="button"]:hover .fi,
+.card-hover:hover .fi {
+  transform: scale(1.25) translateY(-2px) rotate(-4deg);
+}
+
+/* Active touch & click compression */
+a:active .fi,
+button:active .fi,
+.btn:active .fi,
+nav a:active .fi,
+[role="button"]:active .fi {
+  transform: scale(0.88) rotate(8deg);
+  transition-duration: 80ms;
+}
+
+/* Continuous floating animation utility — stronger version for standalone icons */
+@keyframes icon-float-subtle {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  25% { transform: translateY(-2px) rotate(3deg); }
+  50% { transform: translateY(-3px) rotate(0deg); }
+  75% { transform: translateY(-1px) rotate(-2deg); }
+}
+
+.animate-icon-float {
+  animation: icon-float-subtle 2.5s ease-in-out infinite !important;
+}
+
+
+/* ════════════════════════════════════════════════════════════
+   NEW — Cinematic animation style (default, no data-anim)
+   ════════════════════════════════════════════════════════════ */
+
+@utility text-background { color: var(--background) !important; }
+@utility text-foreground  { color: var(--foreground) !important; }
+
+/* 1. Underline stretch */
+@utility animate-underline-stretch {
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 1px;
+    bottom: -2px;
+    left: 0;
+    background-color: currentColor;
+    transform-origin: bottom right;
+    /* ✦ 240ms expo-out — crisp ink spread */
+    transition: transform 240ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  &:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+  }
+}
+
+/* 2. Card hover float */
+@utility animate-card-float {
+  /* ✦ 220ms expo-out — confident, immediate lift */
+  transition:
+    transform      220ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color   180ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow     220ms cubic-bezier(0.16, 1, 0.3, 1);
+  &:hover {
+    transform: translateY(-3px);
+    border-color: var(--border-strong);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+  .dark &:hover {
+    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.06), 0 2px 8px rgba(255, 255, 255, 0.03);
+  }
+}
+
+/* 3. Button press & micro popup */
+@utility animate-btn-scale {
+  transition:
+    transform 180ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 180ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 150ms ease,
+    opacity 150ms ease;
+  will-change: transform, box-shadow;
+  &:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 6px 20px -2px rgba(0, 0, 0, 0.1), 0 0 10px 1px rgba(0, 0, 0, 0.05);
+    border-color: var(--border-strong);
+  }
+  .dark &:hover {
+    box-shadow: 0 6px 20px -2px rgba(255, 255, 255, 0.14), 0 0 12px 1px rgba(255, 255, 255, 0.09);
+    border-color: rgba(255, 255, 255, 0.35);
+  }
+  &:active {
+    transform: translateY(0px) scale(0.97);
+    transition-duration: 80ms;
+  }
+}
+
+/* 4. Theme toggle hover rotate & spring bounce (mode button only) */
+@utility animate-mode-bounce {
+  transition: transform 450ms cubic-bezier(0.34, 1.75, 0.64, 1), background-color 200ms ease;
+  will-change: transform;
+  &:hover {
+    transform: scale(1.15) rotate(12deg);
+  }
+  &:active {
+    transform: scale(0.85) rotate(-15deg);
+    transition: transform 150ms cubic-bezier(0.34, 1.75, 0.64, 1);
+  }
+}
+
+@utility animate-rotate-hover {
+  /* ✦ 300ms — unhurried, precise */
+  transition: transform 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  &:hover  { transform: rotate(14deg); }
+  &:active { transform: rotate(22deg) scale(0.90); }
+}
+
+/* 5. Grayscale image reveal */
+@utility animate-grayscale-hover {
+  /* ✦ 400ms — slow enough to feel intentional */
+  transition:
+    filter    400ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    transform 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  filter: grayscale(100%);
+  &:hover {
+    filter: grayscale(0%);
+    transform: scale(1.02);
+  }
+}
+
+/* 6. Timeline dot */
+@utility animate-dot-pulse {
+  transition:
+    transform    250ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    border-color 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  &:hover {
+    transform: scale(1.2);
+    border-color: var(--foreground) !important;
+  }
+}
+
+/* 7. Arrow slide on links */
+@utility animate-arrow-slide {
+  svg {
+    /* ✦ 180ms expo-out — snappy and satisfying */
+    transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  &:hover svg { transform: translateX(5px); }
+}
+
+/* 8. Social link slide */
+@utility animate-social-hover {
+  transition:
+    transform 260ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    color     260ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  &:hover { transform: translateX(5px); }
+}
+
+/* 9. Input focus ring */
+@utility animate-input-focus {
+  transition:
+    border-color 240ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    box-shadow   240ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  &:focus {
+    border-color: var(--foreground);
+    box-shadow: 0 0 0 2px rgba(var(--foreground), 0.08);
+  }
+}
+
+/* 10. Badge hover */
+@utility animate-badge-hover {
+  transition:
+    transform    220ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    border-color 220ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  &:hover {
+    transform: scale(1.05);
+    border-color: var(--foreground);
+  }
+}
+
+/* 11. Alert scale-in */
+@utility animate-alert-scale {
+  /* ✦ 360ms expo-out — confident entrance */
+  animation: alertScaleIn 360ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes alertScaleIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* 12. Slow spin */
+@utility animate-spin-slow {
+  animation: spin 3s linear infinite;
+}
+
+/* 13. Page reveal on route mount */
+@utility animate-page-reveal {
+  /* Instant 120ms sharp page arrival — zero lag */
+  animation: pageReveal 120ms cubic-bezier(0, 0, 0.2, 1) forwards;
+}
+@keyframes pageReveal {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* 14. Skeleton shimmer */
+@utility animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--surface) 25%,
+    var(--border) 50%,
+    var(--surface) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.8s infinite ease-in-out;
+}
+@keyframes shimmer {
+  from { background-position: -200% 0; }
+  to   { background-position: 200% 0; }
+}
+
+/* 15. Dialog entrance */
+@utility animate-dialog-enter {
+  animation: dialogEnter 180ms cubic-bezier(0, 0, 0.2, 1) forwards;
+}
+@keyframes dialogEnter {
+  from { opacity: 0; transform: scale(0.98); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* 16. Stagger list reveal — zero lag */
+@utility animate-stagger-item {
+  opacity: 0;
+  animation: staggerItemIn 120ms cubic-bezier(0, 0, 0.2, 1) forwards;
+  animation-delay: 0s !important;
+}
+@keyframes staggerItemIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* 17. Checkmark pop */
+@utility animate-check-pop {
+  animation: checkPop 450ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes checkPop {
+  0%   { opacity: 0; transform: scale(0); }
+  65%  { opacity: 1; transform: scale(1.07); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* 18. Instant content reveal — no skeleton delay */
+@utility animate-skeleton-crossfade {
+  opacity: 1;
+}
+
+/* 19. Timeline border grow — animates the vertical border-left on experience timelines */
+@utility animate-timeline-grow {
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--border);
+    transform: scaleY(0);
+    transform-origin: top;
+    animation: timelineGrow 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+  }
+}
+@keyframes timelineGrow {
+  from { transform: scaleY(0); }
+  to   { transform: scaleY(1); }
+}
+
+/* 20. Badge subtle glow on hover — for skill tags and tech badges */
+@utility animate-badge-glow {
+  transition:
+    transform    220ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow   220ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 220ms cubic-bezier(0.16, 1, 0.3, 1);
+  &:hover {
+    transform: translateY(-2px) scale(1.04);
+    border-color: var(--border-strong);
+    box-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.08), 0 0 6px 1px rgba(0, 0, 0, 0.03);
+  }
+  .dark &:hover {
+    box-shadow: 0 4px 14px -2px rgba(255, 255, 255, 0.1), 0 0 8px 1px rgba(255, 255, 255, 0.06);
+  }
+}
+
+/* 21. Section heading reveal — subtle text slide for headings entering viewport */
+@utility animate-heading-reveal {
+  animation: headingReveal 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes headingReveal {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 22. Smooth scale-in for cards and content blocks on load */
+@utility animate-scale-in {
+  animation: smoothScaleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes smoothScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@utility animate-pulse-ring {
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: inherit;
+    border: 2px solid var(--foreground);
+    opacity: 0;
+    animation: pulseRing 2.5s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+}
+@keyframes pulseRing {
+  0%   { opacity: 0; transform: scale(0.95); }
+  15%  { opacity: 0.15; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.05); }
+}
+
+/* 24. Apple-style bold font & ultra-subtle micro-movement for Dheeraj Carpenter name */
+@utility font-hero-name {
+  font-family: var(--font-hero-name), var(--font-inter), sans-serif;
+  letter-spacing: -0.035em;
+  animation: heroNameMicroPulse 7s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  will-change: transform, letter-spacing;
+}
+
+@keyframes heroNameMicroPulse {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+    letter-spacing: -0.035em;
+  }
+  50% {
+    transform: translateY(-1.5px) scale(1.006);
+    letter-spacing: -0.02em;
+  }
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .animate-page-reveal,
+  .animate-alert-scale,
+  .animate-dialog-enter,
+  .animate-stagger-item,
+  .animate-check-pop,
+  .animate-skeleton-crossfade,
+  .animate-shimmer,
+  .animate-timeline-grow,
+  .animate-heading-reveal,
+  .animate-scale-in,
+  .animate-pulse-ring {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .animate-timeline-grow::before {
+    transform: scaleY(1) !important;
+    animation: none !important;
+  }
+  .animate-badge-glow:hover {
+    transform: none !important;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════
+   VISITOR ANIMATION STYLES (Admin Managed)
+   - data-anim="new" (Cinematic — Default)
+   - data-anim="minimal" (Subtle Minimalist)
+   - data-anim="fluid" (Organic Fluid)
+   - data-anim="magnetic" (Tactile Magnetic)
+   - data-anim="classic" (Classic Snappy)
+   ════════════════════════════════════════════════════════════ */
+
+/* 1. Subtle Minimalist — quiet micro-fades, whisper 1px lifts */
+[data-anim="minimal"] .animate-underline-stretch::after {
+  transition: transform 300ms ease;
+}
+[data-anim="minimal"] .animate-card-float {
+  transition: transform 300ms ease, border-color 200ms ease, box-shadow 300ms ease;
+}
+[data-anim="minimal"] .animate-card-float:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+[data-anim="minimal"] .animate-btn-scale {
+  transition: transform 200ms ease, opacity 200ms ease;
+}
+[data-anim="minimal"] .animate-btn-scale:hover  { transform: translateY(-1px); }
+[data-anim="minimal"] .animate-btn-scale:active { transform: translateY(0px); }
+
+/* 2. Organic Fluid — silky wave flows, soft floating spring curves */
+[data-anim="fluid"] .animate-underline-stretch::after {
+  transition: transform 350ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+[data-anim="fluid"] .animate-card-float {
+  transition: transform 350ms cubic-bezier(0.34, 1.56, 0.64, 1), border-color 250ms ease, box-shadow 350ms ease;
+}
+[data-anim="fluid"] .animate-card-float:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+[data-anim="fluid"] .animate-btn-scale {
+  transition: transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+[data-anim="fluid"] .animate-btn-scale:hover  { transform: translateY(-3px) scale(1.03); }
+[data-anim="fluid"] .animate-btn-scale:active { transform: translateY(0px) scale(0.97); }
+
+/* 3. Tactile Magnetic — elastic pull, dynamic magnetic feedback */
+[data-anim="magnetic"] .animate-underline-stretch::after {
+  transition: transform 200ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+[data-anim="magnetic"] .animate-card-float {
+  transition: transform 220ms cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 220ms ease;
+}
+[data-anim="magnetic"] .animate-card-float:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
+}
+[data-anim="magnetic"] .animate-btn-scale {
+  transition: transform 180ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+[data-anim="magnetic"] .animate-btn-scale:hover  { transform: translateY(-3px) scale(1.04); }
+[data-anim="magnetic"] .animate-btn-scale:active { transform: translateY(1px) scale(0.95); }
+
+/* 4. Classic Snappy — traditional responsive transitions */
+[data-anim="classic"] .animate-underline-stretch::after {
+  transition: transform 300ms cubic-bezier(0.2, 0, 0, 1);
+}
+[data-anim="classic"] .animate-card-float {
+  transition:
+    transform    250ms cubic-bezier(0.2, 0, 0, 1),
+    border-color 250ms cubic-bezier(0.2, 0, 0, 1),
+    box-shadow   250ms cubic-bezier(0.2, 0, 0, 1);
+}
+[data-anim="classic"] .animate-card-float:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+[data-anim="classic"] .animate-btn-scale {
+  transition:
+    transform 150ms cubic-bezier(0.2, 0, 0, 1),
+    opacity   150ms cubic-bezier(0.2, 0, 0, 1);
+}
+[data-anim="classic"] .animate-btn-scale:hover  { transform: scale(1.02); }
+[data-anim="classic"] .animate-btn-scale:active { transform: scale(0.98); }
+
+[data-anim="classic"] .animate-rotate-hover {
+  transition: transform 300ms cubic-bezier(0.2, 0, 0, 1);
+}
+[data-anim="classic"] .animate-rotate-hover:hover  { transform: rotate(8deg); }
+[data-anim="classic"] .animate-rotate-hover:active { transform: rotate(20deg); }
+
+[data-anim="classic"] .animate-arrow-slide svg {
+  transition: transform 250ms cubic-bezier(0.2, 0, 0, 1);
+}
+[data-anim="classic"] .animate-arrow-slide:hover svg { transform: translateX(4px); }
+
+/* ── Button variants with ultra-smooth micro-animation popup & subtle glow ── */
+@utility btn-primary {
+  background-color: var(--foreground) !important;
+  color: var(--background) !important;
+  transition:
+    transform 250ms cubic-bezier(0.25, 1, 0.5, 1),
+    box-shadow 250ms ease,
+    background-color 200ms ease !important;
+  will-change: transform, box-shadow;
+  &:hover {
+    background-color: color-mix(in srgb, var(--foreground) 90%, transparent) !important;
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.14), 0 0 10px 1px rgba(0, 0, 0, 0.08);
+  }
+  .dark &:hover {
+    box-shadow: 0 4px 18px -2px rgba(255, 255, 255, 0.2), 0 0 12px 1px rgba(255, 255, 255, 0.15);
+  }
+  &:active {
+    transform: translateY(0px) scale(0.98);
+    transition-duration: 100ms !important;
+  }
+}
+@utility btn-secondary {
+  border: 1px solid var(--border) !important;
+  color: var(--foreground) !important;
+  transition:
+    transform 250ms cubic-bezier(0.25, 1, 0.5, 1),
+    box-shadow 250ms ease,
+    border-color 250ms ease,
+    background-color 200ms ease !important;
+  will-change: transform, box-shadow;
+  &:hover {
+    background-color: var(--surface) !important;
+    transform: translateY(-2px) scale(1.02);
+    border-color: var(--border-strong) !important;
+    box-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.08), 0 0 8px 1px rgba(0, 0, 0, 0.05);
+  }
+  .dark &:hover {
+    border-color: rgba(255, 255, 255, 0.35) !important;
+    box-shadow: 0 4px 16px -2px rgba(255, 255, 255, 0.15), 0 0 10px 1px rgba(255, 255, 255, 0.1);
+  }
+  &:active {
+    transform: translateY(0px) scale(0.98);
+    transition-duration: 100ms !important;
+  }
+}
+@utility btn-ghost {
+  color: var(--foreground) !important;
+  transition:
+    transform 250ms cubic-bezier(0.25, 1, 0.5, 1),
+    box-shadow 250ms ease,
+    background-color 200ms ease !important;
+  will-change: transform, box-shadow;
+  &:hover {
+    background-color: var(--surface) !important;
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.06);
+  }
+  .dark &:hover {
+    box-shadow: 0 4px 14px -2px rgba(255, 255, 255, 0.1);
+  }
+  &:active {
+    transform: translateY(0px) scale(0.98);
+    transition-duration: 100ms !important;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════
+   View Transitions — Telegram-style theme toggle
+
+   The circular reveal originates from the toggle button's centre.
+   The button (view-transition-name: theme-btn) is extracted from
+   the root clip group and animated independently with icon sync.
+   ════════════════════════════════════════════════════════════ */
+
+::view-transition-group(root) {
+  animation-duration: 0s; /* suppress default crossfade */
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  mix-blend-mode: normal;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* ✦ 120fps GPU-accelerated liquid circle flow with steady cubic-bezier(0.33, 1, 0.68, 1) curve */
+::view-transition-new(root) {
+  z-index: 9999;
+  will-change: clip-path, transform;
+  animation: var(--reveal-duration, 550ms) cubic-bezier(0.33, 1, 0.68, 1) both circular-reveal;
+}
+
+/* Old theme remains solid underneath during expansion (no translucency artifacts) */
+::view-transition-old(root) {
+  z-index: 1;
+  opacity: 1;
+  animation: none;
+}
+
+@keyframes circular-reveal {
+  from {
+    clip-path: circle(0px at var(--reveal-x, 50%) var(--reveal-y, 50%));
+  }
+  to {
+    clip-path: circle(var(--reveal-radius, 2000px) at var(--reveal-x, 50%) var(--reveal-y, 50%));
+  }
+}
+
+/* ── Button independent view-transition group ──
+   Sits above the root clip-path (z-index 99999).
+   Icon rotates out as old state, rotates in as new state —
+   in sync with the expanding background circle.          */
+::view-transition-group(theme-btn) {
+  z-index: 99999;
+  animation-duration: 0s; /* no positional morph */
+}
+
+::view-transition-old(theme-btn) {
+  will-change: transform, opacity;
+  /* ✦ Exit over 300ms ease-in-out — icon spins away clockwise */
+  animation: 300ms cubic-bezier(0.4, 0, 0.2, 1) both btn-icon-exit;
+}
+
+::view-transition-new(theme-btn) {
+  will-change: transform, opacity;
+  /* ✦ Enter over 400ms ease-in-out, delayed 250ms — icon arrives fluidly as circle fills */
+  animation: 400ms cubic-bezier(0.4, 0, 0.2, 1) 250ms both btn-icon-enter;
+}
+
+@keyframes btn-icon-exit {
+  from { opacity: 1; transform: scale(1)   rotate(0deg); }
+  to   { opacity: 0; transform: scale(0.6) rotate(90deg); }
+}
+
+@keyframes btn-icon-enter {
+  from { opacity: 0; transform: scale(0.6) rotate(-90deg); }
+  to   { opacity: 1; transform: scale(1)   rotate(0deg); }
+}
+
+/* Reduced motion: disable view transitions */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-new(root),
+  ::view-transition-old(root),
+  ::view-transition-old(theme-btn),
+  ::view-transition-new(theme-btn) {
+    animation: none !important;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════
+   ADMIN-ONLY UI/UX DESIGN THEMES
+   
+   1. Minimalist Blueprint (default B&W Studio)
+   2. Cyber Emerald & Obsidian (data-ui-design="obsidian")
+   3. Nordic Atelier & Warm Amber (data-ui-design="nordic")
+   4. Tokyo Neon Sunset (data-ui-design="tokyo")
+   5. Industrial Monolith Slate (data-ui-design="monolith")
+   6. Champagne & Velvet Gold (data-ui-design="aurora")
+   ════════════════════════════════════════════════════════════ */
+
+/* Theme 2: Cyber Emerald & Obsidian */
+[data-ui-design="obsidian"],
+[data-ui-design="obsidian"] * {
+  --background: #f8fafc !important;
+  --foreground: #0f172a !important;
+  --muted-foreground: #475569 !important;
+  --border: rgba(16, 185, 129, 0.2) !important;
+  --border-strong: rgba(16, 185, 129, 0.45) !important;
+  --surface: #f1f5f9 !important;
+  --focus-ring: #10b981 !important;
+}
+
+.dark [data-ui-design="obsidian"],
+.dark [data-ui-design="obsidian"] *,
+.dark[data-ui-design="obsidian"],
+[data-ui-design="obsidian"].dark,
+[data-ui-design="obsidian"] .dark {
+  --background: #08090d !important;
+  --foreground: #f1f5f9 !important;
+  --muted-foreground: #94a3b8 !important;
+  --border: rgba(16, 185, 129, 0.25) !important;
+  --border-strong: rgba(16, 185, 129, 0.55) !important;
+  --surface: #0f111a !important;
+  --focus-ring: #10b981 !important;
+}
+
+[data-ui-design="obsidian"] button:not(.animate-mode-bounce):hover,
+[data-ui-design="obsidian"] .btn:hover,
+[data-ui-design="obsidian"] nav a:hover {
+  border-color: #10b981 !important;
+  box-shadow: 0 4px 20px -2px rgba(16, 185, 129, 0.25), 0 0 10px 1px rgba(16, 185, 129, 0.15) !important;
+}
+
+/* Theme 3: Nordic Atelier & Warm Amber */
+[data-ui-design="nordic"],
+[data-ui-design="nordic"] * {
+  --background: #faf7f2 !important;
+  --foreground: #1c1917 !important;
+  --muted-foreground: #78716c !important;
+  --border: rgba(217, 119, 6, 0.22) !important;
+  --border-strong: rgba(217, 119, 6, 0.45) !important;
+  --surface: #f3efe6 !important;
+  --focus-ring: #d97706 !important;
+}
+
+.dark [data-ui-design="nordic"],
+.dark [data-ui-design="nordic"] *,
+.dark[data-ui-design="nordic"],
+[data-ui-design="nordic"].dark,
+[data-ui-design="nordic"] .dark {
+  --background: #141210 !important;
+  --foreground: #f5f5f4 !important;
+  --muted-foreground: #a8a29e !important;
+  --border: rgba(217, 119, 6, 0.25) !important;
+  --border-strong: rgba(217, 119, 6, 0.55) !important;
+  --surface: #1c1917 !important;
+  --focus-ring: #f59e0b !important;
+}
+
+[data-ui-design="nordic"] button:not(.animate-mode-bounce):hover,
+[data-ui-design="nordic"] .btn:hover,
+[data-ui-design="nordic"] nav a:hover {
+  border-color: #d97706 !important;
+  box-shadow: 0 4px 20px -2px rgba(217, 119, 6, 0.25), 0 0 10px 1px rgba(217, 119, 6, 0.15) !important;
+}
+
+/* Theme 4: Tokyo Neon Sunset */
+[data-ui-design="tokyo"],
+[data-ui-design="tokyo"] * {
+  --background: #fdf4ff !important;
+  --foreground: #4a044e !important;
+  --muted-foreground: #86198f !important;
+  --border: rgba(236, 72, 153, 0.25) !important;
+  --border-strong: rgba(236, 72, 153, 0.5) !important;
+  --surface: #fae8ff !important;
+  --focus-ring: #ec4899 !important;
+}
+
+.dark [data-ui-design="tokyo"],
+.dark [data-ui-design="tokyo"] *,
+.dark[data-ui-design="tokyo"],
+[data-ui-design="tokyo"].dark,
+[data-ui-design="tokyo"] .dark {
+  --background: #0b0718 !important;
+  --foreground: #fdf4ff !important;
+  --muted-foreground: #c084fc !important;
+  --border: rgba(236, 72, 153, 0.28) !important;
+  --border-strong: rgba(236, 72, 153, 0.6) !important;
+  --surface: #150d2a !important;
+  --focus-ring: #ec4899 !important;
+}
+
+[data-ui-design="tokyo"] button:not(.animate-mode-bounce):hover,
+[data-ui-design="tokyo"] .btn:hover,
+[data-ui-design="tokyo"] nav a:hover {
+  border-color: #ec4899 !important;
+  box-shadow: 0 4px 20px -2px rgba(236, 72, 153, 0.3), 0 0 12px 2px rgba(6, 182, 212, 0.2) !important;
+}
+
+/* Theme 5: Industrial Monolith Slate */
+[data-ui-design="monolith"],
+[data-ui-design="monolith"] * {
+  --background: #f8fafc !important;
+  --foreground: #0f172a !important;
+  --muted-foreground: #475569 !important;
+  --border: rgba(99, 102, 241, 0.22) !important;
+  --border-strong: rgba(99, 102, 241, 0.45) !important;
+  --surface: #f1f5f9 !important;
+  --focus-ring: #6366f1 !important;
+}
+
+.dark [data-ui-design="monolith"],
+.dark [data-ui-design="monolith"] *,
+.dark[data-ui-design="monolith"],
+[data-ui-design="monolith"].dark,
+[data-ui-design="monolith"] .dark {
+  --background: #090d16 !important;
+  --foreground: #f8fafc !important;
+  --muted-foreground: #818cf8 !important;
+  --border: rgba(99, 102, 241, 0.28) !important;
+  --border-strong: rgba(99, 102, 241, 0.6) !important;
+  --surface: #111827 !important;
+  --focus-ring: #6366f1 !important;
+}
+
+[data-ui-design="monolith"] button:not(.animate-mode-bounce):hover,
+[data-ui-design="monolith"] .btn:hover,
+[data-ui-design="monolith"] nav a:hover {
+  border-color: #6366f1 !important;
+  box-shadow: 0 4px 20px -2px rgba(99, 102, 241, 0.3), 0 0 10px 1px rgba(99, 102, 241, 0.2) !important;
+}
+
+/* Theme 6: Champagne & Velvet Gold */
+[data-ui-design="aurora"],
+[data-ui-design="aurora"] * {
+  --background: #fffdfa !important;
+  --foreground: #1c1917 !important;
+  --muted-foreground: #78716c !important;
+  --border: rgba(234, 179, 8, 0.28) !important;
+  --border-strong: rgba(234, 179, 8, 0.55) !important;
+  --surface: #fefce8 !important;
+  --focus-ring: #eab308 !important;
+}
+
+.dark [data-ui-design="aurora"],
+.dark [data-ui-design="aurora"] *,
+.dark[data-ui-design="aurora"],
+[data-ui-design="aurora"].dark,
+[data-ui-design="aurora"] .dark {
+  --background: #12100e !important;
+  --foreground: #fef08a !important;
+  --muted-foreground: #ca8a04 !important;
+  --border: rgba(234, 179, 8, 0.3) !important;
+  --border-strong: rgba(234, 179, 8, 0.65) !important;
+  --surface: #1c1815 !important;
+  --focus-ring: #eab308 !important;
+}
+
+[data-ui-design="aurora"] button:not(.animate-mode-bounce):hover,
+[data-ui-design="aurora"] .btn:hover,
+[data-ui-design="aurora"] nav a:hover {
+  border-color: #eab308 !important;
+  box-shadow: 0 4px 22px -2px rgba(234, 179, 8, 0.35), 0 0 12px 1px rgba(217, 119, 6, 0.2) !important;
+}
