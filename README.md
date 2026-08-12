@@ -1,93 +1,98 @@
-# Dheeraj Carpenter — Portfolio + Admin Platform
+# dheerajcarpenter.vercel.app
 
-A content-first, black-and-white personal portfolio with a Supabase-backed
-admin dashboard. Built for long-term maintainability: content changes never
-require editing source code.
-
-## Tech stack
-
-| Layer | Choice |
-| --- | --- |
-| Framework | Next.js 16 (App Router, RSC) + TypeScript (strict) |
-| Styling | Tailwind CSS v4 (CSS-first `@theme`) |
-| Motion | Framer Motion (`motion/react`) — state/navigation only |
-| Backend | Supabase (Postgres + Auth + Storage), `@supabase/ssr` |
-| Theming | `next-themes` (`class` strategy, no flash) |
-| Deploy | Vercel (`vercel --prod`) |
-
-## Project structure
-
-```
-app/            # Routes — public site + /admin dashboard
-components/     # Reusable UI (ui/, layout/, public/, admin/, providers/)
-features/       # Business logic grouped by domain
-hooks/          # Custom React hooks
-lib/            # Utilities, Supabase clients, auth, data-access
-services/       # Server communication layer
-types/          # Central TypeScript domain definitions
-public/         # Static assets
-styles/         # Supplementary global styles
-supabase/       # SQL schema, storage, seed (Phase 2)
-proxy.ts        # Request proxy — session refresh + admin route guard
-```
-
-See the Phase 1 architecture doc for the full directory responsibilities.
-
-## Design system
-
-Strict black & white — no hues, no gradients, no decorative effects.
-
-- **Light:** white background, black text. **Dark:** black background, white text.
-- Borders/dividers use black/white with alpha only.
-- Typography, whitespace, and content hierarchy do all the work.
-- Motion is reserved for navigation and state changes; no parallax, infinite
-  loops, or magnetic cursors. `prefers-reduced-motion` is respected.
-
-## Security architecture
-
-- **Credentials never in client code.** The service-role key
-  (`SUPABASE_SERVICE_ROLE_KEY`) has no `NEXT_PUBLIC_` prefix and is never
-  shipped to the browser.
-- **Cookie-based auth.** Sessions live in HTTP cookies via `@supabase/ssr`,
-  never `localStorage`.
-- **Defense in depth for `/admin/*`:**
-  1. `proxy.ts` redirects unauthenticated visitors to `/admin/login`.
-  2. `requireAdmin()` (Server Components) verifies the session and the
-     `profiles.role = 'admin'` row.
-  3. Row Level Security on every content table enforces admin-only writes at
-     the database — the last word regardless of client.
-- Sensitive mutations run server-side only.
-
-## Environment variables
-
-Copy `.env.example` to `.env.local` (and to your Vercel project settings):
-
-```env
-NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_ANON_KEY=
-SUPABASE_SERVICE_ROLE_KEY=        # server-only, never expose
-NEXT_PUBLIC_SITE_URL=
-```
-
-## Development
-
-```bash
-npm install
-npm run dev      # http://localhost:3000
-npm run build    # production build verification
-npm run lint
-```
-
-## Deployment
-
-```bash
-vercel --prod
-```
-
-Set the four environment variables in the Vercel project settings before the
-first deploy.
+Personal portfolio and blog — live at **[dheerajcarpenter.vercel.app](https://dheerajcarpenter.vercel.app)**
 
 ---
 
-**Phase status:** Phase 1 (foundation) complete. Phase 2 will define the full
-database architecture, content schema, RLS policies, and storage structure.
+## What this is
+
+A personal website I built to showcase my work, writing, and experience. The whole thing is driven by a private admin dashboard — I can update every piece of content (projects, blog posts, skills, services, testimonials, experience) without ever touching the code.
+
+**Public pages:** Home · About · Projects · Blog · Experience · Skills · Services · Certifications · Testimonials · Contact
+
+**Admin dashboard** (private, `/admin`): Full CMS for every section above — plus media uploads, SEO metadata per page, contact message inbox, audit logs, announcements, and site settings.
+
+---
+
+## Stack
+
+| | |
+|---|---|
+| Framework | Next.js 15 (App Router + React Server Components) |
+| Language | TypeScript (strict) |
+| Styling | Tailwind CSS v4 |
+| Animation | Framer Motion / `motion` |
+| Database | Supabase (Postgres) |
+| Auth | Supabase Auth — cookie-based sessions via `@supabase/ssr` |
+| Storage | Supabase Storage (images, resume) |
+| Deployment | Vercel |
+
+---
+
+## Running locally
+
+```bash
+git clone https://github.com/ddheerajccarpenter/dheerajcarpenter-portfolio.git
+cd dheerajcarpenter-portfolio
+npm install
+```
+
+Create a `.env.local` file with your own Supabase project credentials:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+```
+
+Then:
+
+```bash
+npm run dev
+```
+
+Opens at `http://localhost:3000`.
+
+> The database schema is in `supabase/schema.sql`. Run that against your Supabase project first, then optionally seed with `supabase/seed.sql`.
+
+---
+
+## Project layout
+
+```
+app/
+  (public)/     Public-facing pages
+  admin/        Admin dashboard (protected)
+components/
+  ui/           Base UI components (Button, Card, Badge, Input …)
+  layout/       Nav, shell, containers, theme toggle
+  admin/        All admin panel components
+  public/       Public-specific components (e.g. contact form)
+lib/
+  data/         All Supabase data-fetching (public + admin)
+  supabase/     Client, server, admin, and middleware helpers
+  auth.ts       requireAdmin() — used in every admin Server Component
+  constants.ts  Nav items, cache tags, bucket names — one source of truth
+supabase/
+  schema.sql    Full database schema
+  seed.sql      Sample seed data
+  storage.sql   Storage bucket and policy setup
+types/          TypeScript types for all DB tables
+proxy.ts        Middleware — session refresh + /admin/* route guard
+```
+
+---
+
+## Security notes
+
+- The `SUPABASE_SERVICE_ROLE_KEY` is server-only. No `NEXT_PUBLIC_` prefix, never goes to the browser.
+- All admin pages call `requireAdmin()` which checks both the session and `profiles.role = 'admin'` in the database.
+- The middleware (`proxy.ts`) redirects unauthenticated requests to `/admin/login` before the page even renders.
+- Supabase RLS policies enforce read/write access at the database level regardless of what the client sends.
+
+---
+
+## License
+
+This is my personal site. Feel free to look at the code for reference, but please don't deploy it as your own.
