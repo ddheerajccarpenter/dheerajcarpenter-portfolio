@@ -1,99 +1,121 @@
-# dheerajcarpenter.vercel.app
+# Dheeraj Carpenter — Personal Portfolio & Blog
 
-Personal portfolio and blog — live at **[dheerajcarpenter.vercel.app](https://dheerajcarpenter.vercel.app)**
+**Live Website:** [dheerajcarpenter.vercel.app](https://dheerajcarpenter.vercel.app)
 
----
+## Overview
 
-## What this is
+Dheeraj Carpenter is a personal portfolio and blog platform designed to showcase professional work, creative projects, technical skills, experience, services, certifications, testimonials, and written content in one centralized website.
 
-A personal website I built to showcase my work, writing, and experience. The whole thing is driven by a private admin dashboard — I can update every piece of content (projects, blog posts, skills, services, testimonials, experience) without ever touching the code.
+The platform combines a public-facing portfolio with a private content management system, allowing the entire website to be managed dynamically without modifying the application's source code.
 
-**Public pages:** Home · About · Projects · Blog · Experience · Skills · Services · Certifications · Testimonials · Contact
+## Website Sections
 
-**Admin dashboard** (private, `/admin`): Full CMS for every section above — plus media uploads, SEO metadata per page, contact message inbox, audit logs, announcements, and site settings.
+The public website includes:
 
----
+* **Home** — Introduction, featured content, highlights, and key information.
+* **About** — Personal background, interests, and professional profile.
+* **Projects** — Showcase of completed and ongoing projects.
+* **Blog** — Articles, technical writing, and personal posts.
+* **Experience** — Professional, academic, and project experience.
+* **Skills** — Technical and professional skill set.
+* **Services** — Services and capabilities offered.
+* **Certifications** — Professional certifications and achievements.
+* **Testimonials** — Feedback and recommendations.
+* **Contact** — Contact and inquiry interface.
 
-## Stack
+## Admin Dashboard
 
-| | |
-|---|---|
-| Framework | Next.js 15 (App Router + React Server Components) |
-| Language | TypeScript (strict) |
-| Styling | Tailwind CSS v4 |
-| Animation | Framer Motion / `motion` |
-| Database | Supabase (Postgres) |
-| Auth | Supabase Auth — cookie-based sessions via `@supabase/ssr` |
-| Storage | Supabase Storage (images, resume) |
-| Deployment | Vercel |
+The private administration system provides centralized management for the website's content and configuration.
 
----
+It includes management for:
 
-## Running locally
+* Projects
+* Blog posts
+* Skills
+* Services
+* Testimonials
+* Experience
+* Certifications
+* Media
+* SEO metadata
+* Contact messages
+* Announcements
+* Site settings
+* Audit logs
 
-```bash
-git clone https://github.com/ddheerajccarpenter/dheerajcarpenter-portfolio.git
-cd dheerajcarpenter-portfolio
-npm install
-```
+The dashboard is designed as the central content management layer of the platform, keeping the public website fully dynamic and maintainable.
 
-Create a `.env.local` file with your own Supabase project credentials:
+## Technology Stack
 
-```env
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
-SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
-NEXT_PUBLIC_SITE_URL=http://localhost:3000
-```
+| Technology                 | Purpose                                   |
+| -------------------------- | ----------------------------------------- |
+| **Next.js 15**             | Application framework and routing         |
+| **React**                  | User interface and component architecture |
+| **TypeScript**             | Type-safe application development         |
+| **Tailwind CSS v4**        | Styling and responsive design             |
+| **Motion / Framer Motion** | UI animations and transitions             |
+| **Supabase**               | Database, authentication, and storage     |
+| **PostgreSQL**             | Relational data management                |
+| **Supabase Auth**          | Authentication and session management     |
+| **Supabase Storage**       | Media and document storage                |
+| **Vercel**                 | Production deployment and hosting         |
 
-Then:
+## Architecture
 
-```bash
-npm run dev
-```
+The project follows a structured Next.js App Router architecture with separate public and administrative areas.
 
-Opens at `http://localhost:3000`.
-
-> The database schema is in `supabase/schema.sql`. Run that against your Supabase project first, then optionally seed with `supabase/seed.sql`.
-
----
-
-## Project layout
-
-```
+```text
 app/
-  (public)/     Public-facing pages
-  admin/        Admin dashboard (protected)
+├── (public)/          Public website
+└── admin/             Protected administration system
+
 components/
-  ui/           Base UI components (Button, Card, Badge, Input …)
-  layout/       Nav, shell, containers, theme toggle
-  admin/        All admin panel components
-  public/       Public-specific components (e.g. contact form)
+├── ui/                Reusable interface components
+├── layout/            Shared layout components
+├── admin/             Administration components
+└── public/            Public-facing components
+
 lib/
-  data/         All Supabase data-fetching (public + admin)
-  supabase/     Client, server, admin, and middleware helpers
-  auth.ts       requireAdmin() — used in every admin Server Component
-  constants.ts  Nav items, cache tags, bucket names — one source of truth
+├── data/              Application data layer
+├── supabase/          Supabase integration
+├── auth.ts            Authentication and authorization
+└── constants.ts       Shared application configuration
+
 supabase/
-  schema.sql    Full database schema
-  seed.sql      Sample seed data
-  storage.sql   Storage bucket and policy setup
-types/          TypeScript types for all DB tables
-proxy.ts        Middleware — session refresh + /admin/* route guard
+├── schema.sql         Database structure
+├── seed.sql           Initial data
+└── storage.sql        Storage configuration
+
+types/                 Database and application types
+proxy.ts               Authentication and route protection
 ```
 
----
+## Content Management
 
-## Security notes
+The website is built around a database-driven content architecture. Portfolio sections are not hard-coded into individual pages; instead, content is organized into structured data and presented through reusable components.
 
-- The `SUPABASE_SERVICE_ROLE_KEY` is server-only. No `NEXT_PUBLIC_` prefix, never goes to the browser.
-- All admin pages call `requireAdmin()` which checks both the session and `profiles.role = 'admin'` in the database.
-- The middleware (`proxy.ts`) redirects unauthenticated requests to `/admin/login` before the page even renders.
-- Supabase RLS policies enforce read/write access at the database level regardless of what the client sends.
+This makes the platform suitable for continuously evolving content while maintaining a consistent design and application structure.
 
----
+## Security
+
+The administrative system uses multiple layers of protection:
+
+* Supabase authentication for account management and sessions.
+* Role-based authorization for administrative access.
+* Protected administrative routes.
+* Server-side handling of privileged database operations.
+* Row Level Security policies at the database level.
+* Server-only handling of sensitive Supabase credentials.
+* Audit logging for administrative activity.
+
+The architecture separates public content access from privileged administrative operations to reduce unnecessary exposure of sensitive functionality.
+
+## Project Purpose
+
+Dheeraj Carpenter is more than a static portfolio. It is a full-stack personal publishing and content management platform built to serve as a central digital presence for projects, technical work, professional experience, creative work, and long-form writing.
+
+The project demonstrates the integration of modern web development, database-driven content management, authentication, secure administration, responsive UI design, animation, and production deployment within a single personal platform.
 
 ## License
 
-This is my personal site. Feel free to look at the code for reference, but please don't deploy it as your own.
-
+This project is a personal portfolio and is intended for reference and demonstration purposes. The design, content, branding, and implementation should not be presented or deployed as another person's portfolio.
