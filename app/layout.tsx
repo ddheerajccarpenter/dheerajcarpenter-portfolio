@@ -52,12 +52,49 @@ export default async function RootLayout({
       className={`${inter.variable} ${geistSans.variable} ${geistMono.variable} ${plusJakartaSans.variable} h-full antialiased`}
     >
       <head>
+        {/* DNS prefetch so the CDN connection is warmed before scripts fire */}
         <link rel="preconnect" href="https://cdn-uicons.flaticon.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://cdn-uicons.flaticon.com" />
-        <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-rounded/css/uicons-bold-rounded.css" />
-        <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-straight/css/uicons-bold-straight.css" />
-        <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css" />
-        <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-rounded/css/uicons-solid-rounded.css" />
+
+        {/*
+          Load Flaticon CSS asynchronously — switches media to "all" once loaded.
+          This removes 4 render-blocking external stylesheets from critical path.
+        */}
+        <link
+          rel="preload"
+          as="style"
+          href="https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-rounded/css/uicons-bold-rounded.css"
+          // @ts-expect-error onload is a valid HTML attribute here
+          onLoad="this.onload=null;this.rel='stylesheet'"
+        />
+        <link
+          rel="preload"
+          as="style"
+          href="https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-straight/css/uicons-bold-straight.css"
+          // @ts-expect-error onload is a valid HTML attribute here
+          onLoad="this.onload=null;this.rel='stylesheet'"
+        />
+        <link
+          rel="preload"
+          as="style"
+          href="https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css"
+          // @ts-expect-error onload is a valid HTML attribute here
+          onLoad="this.onload=null;this.rel='stylesheet'"
+        />
+        <link
+          rel="preload"
+          as="style"
+          href="https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-rounded/css/uicons-solid-rounded.css"
+          // @ts-expect-error onload is a valid HTML attribute here
+          onLoad="this.onload=null;this.rel='stylesheet'"
+        />
+        {/* Noscript fallback for environments with JS disabled */}
+        <noscript>
+          <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-rounded/css/uicons-bold-rounded.css" />
+          <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-straight/css/uicons-bold-straight.css" />
+          <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css" />
+          <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-rounded/css/uicons-solid-rounded.css" />
+        </noscript>
       </head>
       <body className="min-h-full bg-background text-foreground flex flex-col">
         <ThemeProvider defaultTheme={defaultTheme}>

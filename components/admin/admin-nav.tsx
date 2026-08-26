@@ -68,7 +68,9 @@ export function AdminSidebar() {
   };
 
   // Map string array to actual ADMIN_NAV objects preserving order
-  const navMap = new Map(ADMIN_NAV.map((item) => [item.href, item]));
+  const navMap = new Map<string, (typeof ADMIN_NAV)[number]>(
+    ADMIN_NAV.map((item) => [item.href, item])
+  );
 
   return (
     <aside className="hidden md:flex flex-col w-64 border-r border-border bg-background h-screen sticky top-0 py-6 px-4 justify-between shrink-0">

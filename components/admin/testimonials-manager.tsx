@@ -144,12 +144,6 @@ export function TestimonialsManager({ initialTestimonials }: TestimonialsManager
         </Button>
       </div>
 
-      {statusMsg && (
-        <div className="p-4 border border-border rounded-sm bg-surface text-small font-medium text-foreground">
-          {statusMsg}
-        </div>
-      )}
-
       {/* Edit / Create Form Modal Card */}
       {editingItem && (
         <Card className="p-6 md:p-8 space-y-6 border-2 border-foreground/20">

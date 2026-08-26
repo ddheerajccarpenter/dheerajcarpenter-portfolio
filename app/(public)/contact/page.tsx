@@ -4,8 +4,10 @@ import { ContactForm } from "@/components/public/contact-form";
 import { Button } from "@/components/ui";
 import { SkeletonWrapper } from "@/components/ui/skeleton-wrapper";
 import { AnimateIn } from "@/components/ui/animate-in";
+import { Mail, FileText, ArrowUpRight } from "lucide-react";
 
-export const revalidate = 0; // Dynamic rendering for instant CMS updates
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
 
 const PLATFORM_FLATICONS = {
   github: "fi fi-br-code-branch",
@@ -29,68 +31,38 @@ export default async function ContactPage() {
 
   return (
     <SkeletonWrapper pageType="contact">
-      <div className="py-12 md:py-16">
-        <Container className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+      <div className="py-16 md:py-24">
+        <Container className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 items-start">
           {/* Left Side: Header, Info & Channels */}
           <div className="space-y-8">
             <div className="space-y-3">
-              <AnimateIn from="up" distance={20} duration={0.6} viewport={false}>
-                <h1 className="text-h1 font-bold tracking-tight sm:text-[3rem]">
+              <AnimateIn from="up" distance={16} duration={0.4} viewport={false}>
+                <div className="inline-flex items-center gap-2 text-caption font-bold uppercase tracking-[0.14em] text-muted mb-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-foreground inline-block opacity-60" />
+                  Get In Touch
+                </div>
+                <h1 className="text-h1 font-bold tracking-tight sm:text-[3rem] text-editorial-gradient">
                   Contact
                 </h1>
               </AnimateIn>
-              <AnimateIn from="up" distance={14} delay={0.12} viewport={false}>
-                <p className="prose-readable text-body text-muted">
-                  Get in touch for contract work, full-time positions, or just to say hello.
+              <AnimateIn from="up" distance={12} delay={0.1} viewport={false}>
+                <p className="prose-readable text-body-lg text-muted">
+                  Available for engineering contracts, technical advisory, design consulting, or collaborative projects.
                 </p>
               </AnimateIn>
             </div>
 
             <div className="space-y-6 pt-2">
-              <div className="space-y-2">
-                <h2 className="text-h3 font-bold tracking-tight">
-                  Connect Channels
-                </h2>
-                <p className="text-body text-muted prose-readable">
-                  Feel free to reach out via the contact form, drop an email directly, or connect through any of my professional networks listed below.
-                </p>
-              </div>
-
-              {/* Social Channels */}
-              {socialLinks.length > 0 && (
-                <div className="space-y-3 pt-2">
-                  <h3 className="text-caption font-bold uppercase tracking-wider text-foreground">
-                    Social Profiles
-                  </h3>
-                  <div className="flex flex-col space-y-2.5">
-                    {socialLinks.map((link) => {
-                      const iconClass = PLATFORM_FLATICONS[link.platform as keyof typeof PLATFORM_FLATICONS] || "fi fi-br-globe";
-                      return (
-                        <a
-                          key={link.id}
-                          href={link.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center text-body text-muted hover:text-foreground animate-social-hover"
-                        >
-                          <i className={`${iconClass} mr-3 text-base leading-none text-foreground shrink-0`} aria-hidden="true" />
-                          <span className="underline underline-offset-4 font-medium">{link.label}</span>
-                        </a>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-
               {/* Direct Email & Resume */}
-              <div className="space-y-6 pt-6 border-t border-border">
+              <div className="space-y-6 pt-4 border-t border-border/80">
                 {contactEmail && (
                   <div className="space-y-1.5">
-                    <span className="text-caption font-semibold uppercase tracking-wider text-muted block">
+                    <span className="text-caption font-semibold uppercase tracking-wider text-muted flex items-center gap-2">
+                      <Mail className="h-3.5 w-3.5 text-foreground opacity-80" />
                       Direct Email
                     </span>
                     <p className="text-body font-semibold">
-                      <a href={`mailto:${contactEmail}`} className="underline underline-offset-4 hover:opacity-85 transition-opacity">
+                      <a href={`mailto:${contactEmail}`} className="underline underline-offset-4 hover:opacity-80 transition-opacity">
                         {contactEmail}
                       </a>
                     </p>
@@ -99,27 +71,61 @@ export default async function ContactPage() {
 
                 {resumeUrl && (
                   <div className="space-y-3">
-                    <span className="text-caption font-semibold uppercase tracking-wider text-muted block">
+                    <span className="text-caption font-semibold uppercase tracking-wider text-muted flex items-center gap-2">
+                      <FileText className="h-3.5 w-3.5 text-foreground opacity-80" />
                       Curriculum Vitae
                     </span>
-                    <Button asChild variant="secondary" size="md" className="animate-btn-scale">
+                    <Button asChild variant="secondary" size="md">
                       <a href={resumeUrl} download={resumeFilename} target="_blank" rel="noopener noreferrer">
-                        <i className="fi fi-br-document mr-2 text-base leading-none" aria-hidden="true" />
-                        Download Resume
+                        Download Resume (PDF)
+                        <ArrowUpRight className="h-4 w-4 ml-1.5 opacity-80" />
                       </a>
                     </Button>
                   </div>
                 )}
               </div>
+
+              {/* Social Channels */}
+              {socialLinks.length > 0 && (
+                <div className="space-y-3 pt-6 border-t border-border/80">
+                  <h3 className="text-caption font-bold uppercase tracking-wider text-muted flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-foreground inline-block opacity-60" />
+                    Network & Profiles
+                  </h3>
+                  <div className="flex flex-col space-y-2.5 pt-1">
+                    {socialLinks.map((link) => {
+                      const iconClass = PLATFORM_FLATICONS[link.platform as keyof typeof PLATFORM_FLATICONS] || "fi fi-br-globe";
+                      return (
+                        <a
+                          key={link.id}
+                          href={link.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center text-small text-muted hover:text-foreground transition-all duration-180 gap-3 group"
+                        >
+                          <i className={`${iconClass} text-sm leading-none text-muted group-hover:text-foreground shrink-0`} aria-hidden="true" />
+                          <span className="font-medium group-hover:underline underline-offset-4">{link.label}</span>
+                          <ArrowUpRight className="h-3.5 w-3.5 opacity-0 group-hover:opacity-100 transition-opacity text-foreground ml-auto" />
+                        </a>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
-          {/* Right Side: Contact Form (Aligned at top) */}
-          <AnimateIn from="up" distance={24} delay={0.15}>
-            <div className="border border-border p-6 md:p-8 rounded-sm bg-background">
-              <h2 className="text-h3 font-bold tracking-tight mb-6">
-                Send a Message
-              </h2>
+          {/* Right Side: Contact Form Framed in Tactile Card */}
+          <AnimateIn from="up" distance={16} delay={0.15}>
+            <div className="tactile-panel p-6 md:p-8 rounded-2xl border border-border space-y-6">
+              <div>
+                <h2 className="text-h3 font-bold tracking-tight">
+                  Send a Message
+                </h2>
+                <p className="text-small text-muted mt-1">
+                  Fill out the form below and I will respond within 24–48 hours.
+                </p>
+              </div>
               <ContactForm />
             </div>
           </AnimateIn>

@@ -223,19 +223,6 @@ export function ProjectsManager({ initialProjects }: { initialProjects: Project[
             )}
           </div>
 
-          {success && (
-            <div className="border border-border p-3 rounded-sm bg-surface flex items-center space-x-2 text-caption">
-              <CheckCircle2 className="h-4 w-4 shrink-0" />
-              <span>{success}</span>
-            </div>
-          )}
-
-          {errorMsg && (
-            <div className="border border-border p-3 rounded-sm bg-surface text-caption text-foreground">
-              {errorMsg}
-            </div>
-          )}
-
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-1.5">
               <Label htmlFor="title">Project Title</Label>

@@ -144,20 +144,6 @@ export function SeoEditor({ initialRecords }: { initialRecords: SeoRecord[] }) {
       </Card>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        {success && (
-          <div className="border border-border p-4 rounded-sm bg-surface flex items-center space-x-3 text-small text-foreground">
-            <CheckCircle2 className="h-5 w-5 shrink-0" />
-            <span>SEO metadata for &quot;{selectedKey}&quot; saved successfully!</span>
-          </div>
-        )}
-
-        {errorMsg && (
-          <div className="border border-border p-4 rounded-sm bg-surface flex items-start space-x-3 text-small text-foreground">
-            <AlertCircle className="h-5 w-5 shrink-0" />
-            <span>{errorMsg}</span>
-          </div>
-        )}
-
         <Card className="space-y-6">
           <div className="flex justify-between items-center border-b border-border pb-2">
             <h2 className="text-h3 font-bold tracking-tight capitalize">

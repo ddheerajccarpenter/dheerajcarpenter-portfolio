@@ -1,29 +1,51 @@
 @import "tailwindcss";
 
+/* ── Global scrollbar hide ── */
+* {
+  scrollbar-width: none;          /* Firefox */
+  -ms-overflow-style: none;       /* IE / Edge */
+}
+*::-webkit-scrollbar {
+  display: none;                  /* Chrome / Safari / WebKit */
+}
+
 /*
- * Design tokens — strict black & white, timeless.
+ * Design tokens — Timeless Minimalist Studio Aesthetic
+ * Foundation: Pure Monochrome (Black, Charcoal, Slate-Zinc, Pure/Off-White, Titanium)
  */
 :root {
   --background: #ffffff;
-  --foreground: #1d1d1f;
-  --muted-foreground: #6e6e73;
-  --border: rgba(0, 0, 0, 0.12);
-  --border-strong: rgba(0, 0, 0, 0.24);
-  --surface: #f5f5f7;
-  --focus-ring: #0066cc;
-  --selection-bg: #0066cc;
+  --foreground: #09090b;
+  --muted-foreground: #52525b;
+  --border: rgba(0, 0, 0, 0.08);
+  --border-strong: rgba(0, 0, 0, 0.18);
+  --surface: #f4f4f5;
+  --surface-raised: #ffffff;
+  --surface-overlay: #e4e4e7;
+  --surface-glass: rgba(255, 255, 255, 0.85);
+  --accent: #18181b;
+  --accent-muted: rgba(0, 0, 0, 0.05);
+  --accent-border: rgba(0, 0, 0, 0.16);
+  --focus-ring: #09090b;
+  --selection-bg: #18181b;
   --selection-fg: #ffffff;
 }
 
 .dark {
-  --background: #000000;
-  --foreground: #f5f5f7;
-  --muted-foreground: #a1a1a6;
-  --border: rgba(255, 255, 255, 0.14);
-  --border-strong: rgba(255, 255, 255, 0.28);
-  --surface: #161617;
-  --focus-ring: #2997ff;
-  --selection-bg: #2997ff;
+  --background: #09090b;
+  --foreground: #f4f4f5;
+  --muted-foreground: #a1a1aa;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.18);
+  --surface: #121215;
+  --surface-raised: #18181c;
+  --surface-overlay: #222228;
+  --surface-glass: rgba(18, 18, 21, 0.8);
+  --accent: #f4f4f5;
+  --accent-muted: rgba(255, 255, 255, 0.07);
+  --accent-border: rgba(255, 255, 255, 0.18);
+  --focus-ring: rgba(255, 255, 255, 0.6);
+  --selection-bg: #27272a;
   --selection-fg: #ffffff;
 }
 
@@ -34,40 +56,47 @@
   --color-border: var(--border);
   --color-border-strong: var(--border-strong);
   --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-overlay: var(--surface-overlay);
+  --color-accent: var(--accent);
+  --color-accent-muted: var(--accent-muted);
+  --color-accent-border: var(--accent-border);
   --color-focus: var(--focus-ring);
 
-  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "SF Pro", var(--font-inter), system-ui, sans-serif;
-  --font-mono: "SF Mono", var(--font-geist-mono), Menlo, Monaco, Consolas, monospace;
+  --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-  /* Apple SF Pro typographic hierarchy & tracking — scaled +2 to +4px */
-  --text-display: 3.875rem;
-  --text-display--line-height: 1.08;
-  --text-display--letter-spacing: -0.038em;
-  --text-h1: 2.75rem;
+  /* Typographic hierarchy — editorial & balanced */
+  --text-display: 3.75rem;
+  --text-display--line-height: 1.05;
+  --text-display--letter-spacing: -0.04em;
+  --text-h1: 2.5rem;
   --text-h1--line-height: 1.12;
-  --text-h1--letter-spacing: -0.03em;
-  --text-h2: 2.125rem;
-  --text-h2--line-height: 1.18;
-  --text-h2--letter-spacing: -0.024em;
-  --text-h3: 1.5rem;
-  --text-h3--line-height: 1.25;
+  --text-h1--letter-spacing: -0.032em;
+  --text-h2: 1.875rem;
+  --text-h2--line-height: 1.22;
+  --text-h2--letter-spacing: -0.025em;
+  --text-h3: 1.25rem;
+  --text-h3--line-height: 1.32;
   --text-h3--letter-spacing: -0.018em;
-  --text-body-lg: 1.25rem;
-  --text-body-lg--line-height: 1.58;
-  --text-body-lg--letter-spacing: -0.014em;
-  --text-body: 1.125rem;
+  --text-body-lg: 1.125rem;
+  --text-body-lg--line-height: 1.6;
+  --text-body-lg--letter-spacing: -0.01em;
+  --text-body: 1rem;
   --text-body--line-height: 1.55;
-  --text-body--letter-spacing: -0.011em;
-  --text-small: 1rem;
+  --text-body--letter-spacing: -0.008em;
+  --text-small: 0.875rem;
   --text-small--line-height: 1.48;
-  --text-small--letter-spacing: -0.008em;
-  --text-caption: 0.875rem;
+  --text-small--letter-spacing: -0.004em;
+  --text-caption: 0.75rem;
   --text-caption--line-height: 1.4;
-  --text-caption--letter-spacing: 0.02em;
+  --text-caption--letter-spacing: 0.04em;
 }
 
 @layer base {
-  * { border-color: var(--border); }
+  * {
+    border-color: var(--border);
+  }
 
   html {
     -webkit-text-size-adjust: 100%;
@@ -75,20 +104,21 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
+    html {
+      scroll-behavior: auto;
+    }
   }
 
   body {
     background: var(--background);
     color: var(--foreground);
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "SF Pro", var(--font-inter), system-ui, sans-serif;
+    font-family: var(--font-sans);
     font-size: var(--text-body);
     line-height: var(--text-body--line-height);
-    letter-spacing: -0.011em;
+    letter-spacing: -0.008em;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    /* Content protection — disable text selection */
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -98,7 +128,7 @@
   :focus-visible {
     outline: 2px solid var(--focus-ring);
     outline-offset: 2px;
-    border-radius: 2px;
+    border-radius: 4px;
   }
 
   ::selection {
@@ -108,7 +138,7 @@
 
   h1, h2, h3, h4, h5, h6 {
     font-weight: 700;
-    letter-spacing: -0.025em;
+    letter-spacing: -0.028em;
     text-wrap: balance;
     color: var(--foreground);
   }
@@ -119,8 +149,8 @@
   }
 
   .prose-readable {
-    max-width: 68ch;
-    line-height: 1.7;
+    max-width: 65ch;
+    line-height: 1.68;
   }
 
   a {
@@ -129,19 +159,14 @@
     text-underline-offset: 3px;
   }
 
-  /* Global micro-animations for nav links and interactive controls */
+  /* Global micro-transitions for nav links and interactive controls */
   nav a,
   header a,
   footer a {
     transition:
-      opacity 150ms cubic-bezier(0.16, 1, 0.3, 1),
-      color 150ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  nav a:hover,
-  header a:hover,
-  footer a:hover {
-    opacity: 0.75;
+      opacity 180ms cubic-bezier(0.16, 1, 0.3, 1),
+      color 180ms cubic-bezier(0.16, 1, 0.3, 1),
+      background-color 180ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   button:not(.animate-mode-bounce),
@@ -149,41 +174,16 @@
   a[role="button"],
   [role="button"] {
     transition:
-      transform 180ms cubic-bezier(0.16, 1, 0.3, 1),
-      box-shadow 180ms cubic-bezier(0.16, 1, 0.3, 1),
-      border-color 150ms ease,
-      background-color 150ms ease,
-      opacity 150ms ease;
+      transform 200ms cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 180ms ease,
+      background-color 180ms ease,
+      opacity 180ms ease;
     will-change: transform, box-shadow;
-  }
-
-  button:not(.animate-mode-bounce):hover,
-  .btn:hover,
-  a[role="button"]:hover,
-  [role="button"]:hover {
-    transform: translateY(-1px) scale(1.02);
-    box-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.08), 0 0 8px 1px rgba(0, 0, 0, 0.04);
-    border-color: var(--border-strong);
-  }
-
-  .dark button:not(.animate-mode-bounce):hover,
-  .dark .btn:hover,
-  .dark a[role="button"]:hover,
-  .dark [role="button"]:hover {
-    box-shadow: 0 4px 16px -2px rgba(255, 255, 255, 0.12), 0 0 10px 1px rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.3);
-  }
-
-  button:not(.animate-mode-bounce):active,
-  .btn:active,
-  a[role="button"]:active,
-  [role="button"]:active {
-    transform: translateY(0px) scale(0.97);
-    transition-duration: 80ms;
   }
 }
 
-/* Custom smooth scrollbars for navigation sidebar & mobile menus */
+/* Custom smooth scrollbars */
 .custom-scrollbar::-webkit-scrollbar {
   width: 5px;
   height: 5px;
@@ -192,7 +192,7 @@
   background: transparent;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: var(--border);
+  background: var(--border-strong);
   border-radius: 9999px;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
@@ -208,96 +208,302 @@
 }
 
 /* ════════════════════════════════════════════════════════════
-   Flaticon Universal Animated Icons System
-   - Entrance animation on every page load
-   - Continuous looped ambient animation (never stops)
-   - Interactive hover, tap, and exit transitions
+   Clean Icon Treatment (Handcrafted, Optical Alignment, No Jitter)
    ════════════════════════════════════════════════════════════ */
 .fi, [class^="fi-"] {
   display: inline-block;
   vertical-align: middle;
-  animation: 
-    icon-page-load 400ms cubic-bezier(0.34, 1.56, 0.64, 1) both,
-    icon-loop-pulse 3s ease-in-out 500ms infinite;
   transition:
-    transform 280ms cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 200ms ease,
-    color 200ms ease;
-  will-change: transform, opacity;
+    transform 220ms cubic-bezier(0.16, 1, 0.3, 1),
+    color 180ms ease,
+    opacity 180ms ease;
 }
-
-/* Page load pop-in entrance animation for all icons */
-@keyframes icon-page-load {
-  0% {
-    opacity: 0;
-    transform: scale(0.6) rotate(-12deg) translateY(4px);
-  }
-  70% {
-    transform: scale(1.1) rotate(2deg);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1) rotate(0deg) translateY(0px);
-  }
-}
-
-/* Continuous looped pulse — gentle breathing + micro-rotation that never stops */
-@keyframes icon-loop-pulse {
-  0%, 100% {
-    transform: translateY(0px) rotate(0deg) scale(1);
-  }
-  25% {
-    transform: translateY(-1.5px) rotate(2deg) scale(1.04);
-  }
-  50% {
-    transform: translateY(-2.5px) rotate(0deg) scale(1.06);
-  }
-  75% {
-    transform: translateY(-1px) rotate(-2deg) scale(1.03);
-  }
-}
-
-/* Hover dynamic scaling & spin */
-a:hover .fi,
-button:hover .fi,
-.btn:hover .fi,
-nav a:hover .fi,
-[role="button"]:hover .fi,
-.card-hover:hover .fi {
-  transform: scale(1.25) translateY(-2px) rotate(-4deg);
-}
-
-/* Active touch & click compression */
-a:active .fi,
-button:active .fi,
-.btn:active .fi,
-nav a:active .fi,
-[role="button"]:active .fi {
-  transform: scale(0.88) rotate(8deg);
-  transition-duration: 80ms;
-}
-
-/* Continuous floating animation utility — stronger version for standalone icons */
-@keyframes icon-float-subtle {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  25% { transform: translateY(-2px) rotate(3deg); }
-  50% { transform: translateY(-3px) rotate(0deg); }
-  75% { transform: translateY(-1px) rotate(-2deg); }
-}
-
-.animate-icon-float {
-  animation: icon-float-subtle 2.5s ease-in-out infinite !important;
-}
-
 
 /* ════════════════════════════════════════════════════════════
-   NEW — Cinematic animation style (default, no data-anim)
+   Tactile & Layered Interface Utilities
    ════════════════════════════════════════════════════════════ */
 
-@utility text-background { color: var(--background) !important; }
-@utility text-foreground  { color: var(--foreground) !important; }
+/* Editorial Text Gradient — clean monochrome from pure white to zinc */
+@utility text-editorial-gradient {
+  background: linear-gradient(180deg, #ffffff 0%, #e4e4e7 65%, #a1a1aa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  .light &, :root:not(.dark) & {
+    background: linear-gradient(180deg, #09090b 0%, #27272a 70%, #52525b 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
 
-/* 1. Underline stretch */
+/* Tactile Surface Panel */
+@utility tactile-panel {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: 
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.05),
+    0 1px 3px 0 rgba(0, 0, 0, 0.04);
+  .dark & {
+    background-color: var(--surface);
+    border-color: var(--border);
+    box-shadow: 
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.06),
+      0 4px 20px -2px rgba(0, 0, 0, 0.35);
+  }
+}
+
+/* Tactile Elevated Card with subtle hover lift and crisp border highlight */
+@utility tactile-card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: 
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.04),
+    0 2px 8px -2px rgba(0, 0, 0, 0.05);
+  transition:
+    transform 240ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 200ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 240ms cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 200ms ease;
+
+  .dark & {
+    background-color: var(--surface);
+    border-color: var(--border);
+    box-shadow: 
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.05),
+      0 4px 20px -2px rgba(0, 0, 0, 0.4);
+  }
+
+  &:hover {
+    transform: translateY(-2.5px);
+    border-color: var(--border-strong);
+    box-shadow: 
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.08),
+      0 8px 24px -4px rgba(0, 0, 0, 0.12);
+  }
+
+  .dark &:hover {
+    border-color: var(--border-strong);
+    box-shadow: 
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.08),
+      0 12px 32px -4px rgba(0, 0, 0, 0.6);
+  }
+}
+
+/* Frosted Layered Surface */
+@utility frosted-surface {
+  background: color-mix(in srgb, var(--surface) 80%, transparent);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid var(--border);
+  box-shadow: 
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.08),
+    0 4px 16px 0 rgba(0, 0, 0, 0.04);
+  .dark & {
+    background: color-mix(in srgb, var(--surface) 70%, transparent);
+    border-color: var(--border);
+    box-shadow: 
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.06),
+      0 8px 32px 0 rgba(0, 0, 0, 0.45);
+  }
+}
+
+/* Liquid Glass aliases */
+@utility liquid-glass {
+  background: color-mix(in srgb, var(--surface) 75%, transparent);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid var(--border);
+  box-shadow: 
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.08),
+    0 4px 20px 0 rgba(0, 0, 0, 0.04);
+  .dark & {
+    background: color-mix(in srgb, var(--surface) 65%, transparent);
+    border-color: var(--border);
+    box-shadow: 
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.06),
+      0 8px 32px 0 rgba(0, 0, 0, 0.45);
+  }
+}
+
+@utility liquid-glass-card {
+  background: color-mix(in srgb, var(--surface) 65%, transparent);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid var(--border);
+  box-shadow: 
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.08),
+    0 4px 20px -2px rgba(0, 0, 0, 0.04);
+  transition:
+    transform 240ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 240ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 200ms ease,
+    background-color 200ms ease;
+
+  .dark & {
+    background: color-mix(in srgb, var(--surface) 55%, transparent);
+    border-color: var(--border);
+    box-shadow: 
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.06),
+      0 4px 24px -2px rgba(0, 0, 0, 0.4);
+  }
+
+  &:hover {
+    transform: translateY(-2.5px);
+    border-color: var(--border-strong);
+    box-shadow: 
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.1),
+      0 10px 30px -4px rgba(0, 0, 0, 0.12);
+  }
+
+  .dark &:hover {
+    border-color: var(--border-strong);
+    box-shadow: 
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.08),
+      0 14px 40px -4px rgba(0, 0, 0, 0.6);
+  }
+}
+
+/* Button Variants */
+@utility btn-primary {
+  background-color: var(--foreground) !important;
+  color: var(--background) !important;
+  font-weight: 600;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.2),
+    0 1px 3px 0 rgba(0, 0, 0, 0.15),
+    0 4px 12px -2px rgba(0, 0, 0, 0.1);
+  transition:
+    transform 220ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 220ms cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 180ms ease,
+    border-color 180ms ease !important;
+  will-change: transform, box-shadow;
+
+  .dark & {
+    box-shadow: 
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.25),
+      0 2px 8px 0 rgba(0, 0, 0, 0.35);
+  }
+
+  &:hover {
+    transform: translateY(-1.5px);
+    background-color: color-mix(in srgb, var(--foreground) 90%, transparent) !important;
+    box-shadow: 
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.3),
+      0 6px 20px -2px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Primary compress: sinks inward and flattens, distinct from secondary */
+  &:active {
+    transform: translateY(1px) scale(0.978) scaleY(0.988);
+    box-shadow: 
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.08),
+      0 1px 3px -1px rgba(0, 0, 0, 0.2) !important;
+    transition-duration: 60ms !important;
+  }
+}
+
+@utility btn-secondary {
+  position: relative;
+  background-color: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--foreground) !important;
+  font-weight: 500;
+  box-shadow: 
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.05),
+    0 1px 2px 0 rgba(0, 0, 0, 0.04);
+  transition:
+    transform 220ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 220ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 180ms ease,
+    background-color 180ms ease !important;
+  will-change: transform, box-shadow;
+
+  .dark & {
+    background-color: var(--surface-raised) !important;
+    border-color: var(--border) !important;
+    box-shadow: 
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.06),
+      0 2px 6px -1px rgba(0, 0, 0, 0.3);
+  }
+
+  &:hover {
+    transform: translateY(-1.5px);
+    background-color: var(--surface-overlay) !important;
+    border-color: var(--border-strong) !important;
+    box-shadow: 
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.08),
+      0 4px 14px -2px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Secondary compress: settles down rather than inward — distinct from primary */
+  &:active {
+    transform: translateY(0.5px) scale(0.984);
+    border-color: var(--border-strong) !important;
+    box-shadow: 
+      inset 0 2px 4px 0 rgba(0, 0, 0, 0.06),
+      0 0px 1px 0 rgba(0, 0, 0, 0.04) !important;
+    transition-duration: 60ms !important;
+  }
+}
+
+@utility btn-ghost {
+  color: var(--foreground) !important;
+  background-color: transparent !important;
+  border: 1px solid transparent !important;
+  font-weight: 500;
+  transition:
+    transform 200ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease !important;
+  will-change: transform;
+
+  &:hover {
+    background-color: var(--surface) !important;
+    border-color: var(--border) !important;
+    transform: translateY(-1px);
+  }
+
+  /* Ghost press: minimal compression, stays nearly flat */
+  &:active {
+    transform: translateY(0px) scale(0.992);
+    opacity: 0.75;
+    transition-duration: 55ms !important;
+  }
+}
+
+/* Subtle Accent Pill Badge */
+@utility badge-accent {
+  background-color: var(--surface-overlay);
+  border: 1px solid var(--border-strong);
+  color: var(--foreground);
+}
+
+/* Card Accent Bar (Tactile subtle indicator) */
+@utility card-accent-bar {
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 24%;
+    bottom: 24%;
+    width: 2px;
+    border-radius: 0 2px 2px 0;
+    background: var(--foreground);
+    opacity: 0;
+    transition: opacity 220ms cubic-bezier(0.16, 1, 0.3, 1), top 220ms ease, bottom 220ms ease;
+  }
+  &:hover::before {
+    opacity: 0.6;
+    top: 14%;
+    bottom: 14%;
+  }
+}
+
+/* Underline Stretch Effect on Link Hover */
 @utility animate-underline-stretch {
   position: relative;
   &::after {
@@ -310,8 +516,7 @@ nav a:active .fi,
     left: 0;
     background-color: currentColor;
     transform-origin: bottom right;
-    /* ✦ 240ms expo-out — crisp ink spread */
-    transition: transform 240ms cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
   }
   &:hover::after {
     transform: scaleX(1);
@@ -319,505 +524,270 @@ nav a:active .fi,
   }
 }
 
-/* 2. Card hover float */
-@utility animate-card-float {
-  /* ✦ 220ms expo-out — confident, immediate lift */
-  transition:
-    transform      220ms cubic-bezier(0.16, 1, 0.3, 1),
-    border-color   180ms cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow     220ms cubic-bezier(0.16, 1, 0.3, 1);
-  &:hover {
-    transform: translateY(-3px);
-    border-color: var(--border-strong);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
-  }
-  .dark &:hover {
-    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.06), 0 2px 8px rgba(255, 255, 255, 0.03);
-  }
-}
-
-/* 3. Button press & micro popup */
-@utility animate-btn-scale {
-  transition:
-    transform 180ms cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 180ms cubic-bezier(0.16, 1, 0.3, 1),
-    border-color 150ms ease,
-    opacity 150ms ease;
-  will-change: transform, box-shadow;
-  &:hover {
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 6px 20px -2px rgba(0, 0, 0, 0.1), 0 0 10px 1px rgba(0, 0, 0, 0.05);
-    border-color: var(--border-strong);
-  }
-  .dark &:hover {
-    box-shadow: 0 6px 20px -2px rgba(255, 255, 255, 0.14), 0 0 12px 1px rgba(255, 255, 255, 0.09);
-    border-color: rgba(255, 255, 255, 0.35);
-  }
-  &:active {
-    transform: translateY(0px) scale(0.97);
-    transition-duration: 80ms;
-  }
-}
-
-/* 4. Theme toggle hover rotate & spring bounce (mode button only) */
-@utility animate-mode-bounce {
-  transition: transform 450ms cubic-bezier(0.34, 1.75, 0.64, 1), background-color 200ms ease;
-  will-change: transform;
-  &:hover {
-    transform: scale(1.15) rotate(12deg);
-  }
-  &:active {
-    transform: scale(0.85) rotate(-15deg);
-    transition: transform 150ms cubic-bezier(0.34, 1.75, 0.64, 1);
-  }
-}
-
-@utility animate-rotate-hover {
-  /* ✦ 300ms — unhurried, precise */
-  transition: transform 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  &:hover  { transform: rotate(14deg); }
-  &:active { transform: rotate(22deg) scale(0.90); }
-}
-
-/* 5. Grayscale image reveal */
-@utility animate-grayscale-hover {
-  /* ✦ 400ms — slow enough to feel intentional */
-  transition:
-    filter    400ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
-    transform 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  filter: grayscale(100%);
-  &:hover {
-    filter: grayscale(0%);
-    transform: scale(1.02);
-  }
-}
-
-/* 6. Timeline dot */
-@utility animate-dot-pulse {
-  transition:
-    transform    250ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
-    border-color 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  &:hover {
-    transform: scale(1.2);
-    border-color: var(--foreground) !important;
-  }
-}
-
-/* 7. Arrow slide on links */
+/* Arrow Slide — arrow extends toward its destination */
 @utility animate-arrow-slide {
-  svg {
-    /* ✦ 180ms expo-out — snappy and satisfying */
-    transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  svg.arrow-icon, i.arrow-icon {
+    transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
   }
-  &:hover svg { transform: translateX(5px); }
+  /* Fallback: last svg/i child treated as arrow */
+  svg:last-of-type, i:last-of-type {
+    transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  &:hover svg.arrow-icon, &:hover i.arrow-icon {
+    transform: translateX(5px);
+  }
+  &:hover svg:last-of-type, &:hover i:last-of-type {
+    transform: translateX(5px);
+  }
 }
 
-/* 8. Social link slide */
+/* External link icon — diagonal shift out toward destination */
+@utility animate-external-link {
+  svg.external-icon, .external-icon {
+    transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1), opacity 180ms ease;
+  }
+  &:hover svg.external-icon, &:hover .external-icon {
+    transform: translate(2.5px, -2.5px);
+    opacity: 1;
+  }
+}
+
+/* Chevron icon — rotates around optical center */
+@utility animate-chevron {
+  svg, i {
+    transition: transform 240ms cubic-bezier(0.16, 1, 0.3, 1);
+    transform-origin: center center;
+  }
+  &[data-open="true"] svg, &[data-open="true"] i {
+    transform: rotate(180deg);
+  }
+}
+
+/* Social link hover */
 @utility animate-social-hover {
   transition:
-    transform 260ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
-    color     260ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  &:hover { transform: translateX(5px); }
-}
-
-/* 9. Input focus ring */
-@utility animate-input-focus {
-  transition:
-    border-color 240ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
-    box-shadow   240ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  &:focus {
-    border-color: var(--foreground);
-    box-shadow: 0 0 0 2px rgba(var(--foreground), 0.08);
-  }
-}
-
-/* 10. Badge hover */
-@utility animate-badge-hover {
-  transition:
-    transform    220ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
-    border-color 220ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transform 220ms cubic-bezier(0.16, 1, 0.3, 1),
+    color 180ms ease;
   &:hover {
-    transform: scale(1.05);
-    border-color: var(--foreground);
+    transform: translateX(3px);
+    color: var(--foreground);
   }
 }
 
-/* 11. Alert scale-in */
-@utility animate-alert-scale {
-  /* ✦ 360ms expo-out — confident entrance */
-  animation: alertScaleIn 360ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-@keyframes alertScaleIn {
-  from { opacity: 0; transform: scale(0.96); }
-  to   { opacity: 1; transform: scale(1); }
-}
-
-/* 12. Slow spin */
-@utility animate-spin-slow {
-  animation: spin 3s linear infinite;
-}
-
-/* 13. Page reveal on route mount */
-@utility animate-page-reveal {
-  /* Instant 120ms sharp page arrival — zero lag */
-  animation: pageReveal 120ms cubic-bezier(0, 0, 0.2, 1) forwards;
-}
-@keyframes pageReveal {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-
-/* 14. Skeleton shimmer */
-@utility animate-shimmer {
-  background: linear-gradient(
-    90deg,
-    var(--surface) 25%,
-    var(--border) 50%,
-    var(--surface) 75%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 1.8s infinite ease-in-out;
-}
-@keyframes shimmer {
-  from { background-position: -200% 0; }
-  to   { background-position: 200% 0; }
-}
-
-/* 15. Dialog entrance */
-@utility animate-dialog-enter {
-  animation: dialogEnter 180ms cubic-bezier(0, 0, 0.2, 1) forwards;
-}
-@keyframes dialogEnter {
-  from { opacity: 0; transform: scale(0.98); }
-  to   { opacity: 1; transform: scale(1); }
-}
-
-/* 16. Stagger list reveal — zero lag */
-@utility animate-stagger-item {
-  opacity: 0;
-  animation: staggerItemIn 120ms cubic-bezier(0, 0, 0.2, 1) forwards;
-  animation-delay: 0s !important;
-}
-@keyframes staggerItemIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-
-/* 17. Checkmark pop */
-@utility animate-check-pop {
-  animation: checkPop 450ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-@keyframes checkPop {
-  0%   { opacity: 0; transform: scale(0); }
-  65%  { opacity: 1; transform: scale(1.07); }
-  100% { opacity: 1; transform: scale(1); }
-}
-
-/* 18. Instant content reveal — no skeleton delay */
-@utility animate-skeleton-crossfade {
-  opacity: 1;
-}
-
-/* 19. Timeline border grow — animates the vertical border-left on experience timelines */
-@utility animate-timeline-grow {
-  position: relative;
-  &::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 1px;
-    background: var(--border);
-    transform: scaleY(0);
-    transform-origin: top;
-    animation: timelineGrow 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+/* Grayscale Image Reveal */
+@utility animate-grayscale-hover {
+  transition:
+    filter 320ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+  filter: grayscale(85%) contrast(105%);
+  &:hover {
+    filter: grayscale(0%) contrast(100%);
+    transform: scale(1.015);
   }
 }
-@keyframes timelineGrow {
-  from { transform: scaleY(0); }
-  to   { transform: scaleY(1); }
-}
 
-/* 20. Badge subtle glow on hover — for skill tags and tech badges */
+/* Subtle Badge Hover */
 @utility animate-badge-glow {
   transition:
-    transform    220ms cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow   220ms cubic-bezier(0.16, 1, 0.3, 1),
-    border-color 220ms cubic-bezier(0.16, 1, 0.3, 1);
+    transform 200ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 180ms ease,
+    background-color 180ms ease;
   &:hover {
-    transform: translateY(-2px) scale(1.04);
+    transform: translateY(-1px);
     border-color: var(--border-strong);
-    box-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.08), 0 0 6px 1px rgba(0, 0, 0, 0.03);
-  }
-  .dark &:hover {
-    box-shadow: 0 4px 14px -2px rgba(255, 255, 255, 0.1), 0 0 8px 1px rgba(255, 255, 255, 0.06);
+    background-color: var(--surface-overlay);
   }
 }
 
-/* 21. Section heading reveal — subtle text slide for headings entering viewport */
-@utility animate-heading-reveal {
-  animation: headingReveal 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-@keyframes headingReveal {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+/* Timeline dot pulse on hover */
+@utility animate-dot-pulse {
+  transition:
+    transform 200ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 200ms ease;
+  &:hover {
+    transform: scale(1.15);
+    border-color: var(--foreground);
   }
 }
 
-/* 22. Smooth scale-in for cards and content blocks on load */
-@utility animate-scale-in {
-  animation: smoothScaleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-@keyframes smoothScaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@utility animate-pulse-ring {
-  position: relative;
-  &::after {
-    content: '';
-    position: absolute;
-    inset: -3px;
-    border-radius: inherit;
-    border: 2px solid var(--foreground);
-    opacity: 0;
-    animation: pulseRing 2.5s cubic-bezier(0.16, 1, 0.3, 1) infinite;
-  }
-}
-@keyframes pulseRing {
-  0%   { opacity: 0; transform: scale(0.95); }
-  15%  { opacity: 0.15; transform: scale(1); }
-  100% { opacity: 0; transform: scale(1.05); }
-}
-
-/* 24. Apple-style bold font & ultra-subtle micro-movement for Dheeraj Carpenter name */
+/* Name font */
 @utility font-hero-name {
   font-family: var(--font-hero-name), var(--font-inter), sans-serif;
   letter-spacing: -0.035em;
-  animation: heroNameMicroPulse 7s cubic-bezier(0.45, 0, 0.55, 1) infinite;
-  will-change: transform, letter-spacing;
 }
 
-@keyframes heroNameMicroPulse {
-  0%, 100% {
-    transform: translateY(0px) scale(1);
-    letter-spacing: -0.035em;
+/* Card float utility */
+@utility animate-card-float {
+  transition:
+    transform 240ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 180ms ease,
+    box-shadow 240ms cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 180ms ease;
+  &:hover {
+    transform: translateY(-3px);
+    border-color: var(--border-strong);
+    box-shadow: 
+      0 8px 24px -4px rgba(0, 0, 0, 0.12);
   }
-  50% {
-    transform: translateY(-1.5px) scale(1.006);
-    letter-spacing: -0.02em;
+  .dark &:hover {
+    box-shadow: 
+      0 12px 32px -4px rgba(0, 0, 0, 0.55);
   }
 }
 
-/* ── Reduced motion ── */
-@media (prefers-reduced-motion: reduce) {
-  .animate-page-reveal,
-  .animate-alert-scale,
-  .animate-dialog-enter,
-  .animate-stagger-item,
-  .animate-check-pop,
-  .animate-skeleton-crossfade,
-  .animate-shimmer,
-  .animate-timeline-grow,
-  .animate-heading-reveal,
-  .animate-scale-in,
-  .animate-pulse-ring {
-    animation: none !important;
-    opacity: 1 !important;
-    transform: none !important;
+@utility animate-btn-scale {
+  transition:
+    transform 200ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 180ms ease,
+    opacity 160ms ease;
+  will-change: transform, box-shadow;
+  &:hover {
+    transform: translateY(-1px);
   }
-  .animate-timeline-grow::before {
-    transform: scaleY(1) !important;
-    animation: none !important;
-  }
-  .animate-badge-glow:hover {
-    transform: none !important;
+  &:active {
+    transform: translateY(0.5px) scale(0.984);
+    transition-duration: 60ms;
   }
 }
 
 /* ════════════════════════════════════════════════════════════
-   VISITOR ANIMATION STYLES (Admin Managed)
-   - data-anim="new" (Cinematic — Default)
-   - data-anim="minimal" (Subtle Minimalist)
-   - data-anim="fluid" (Organic Fluid)
-   - data-anim="magnetic" (Tactile Magnetic)
-   - data-anim="classic" (Classic Snappy)
+   Edge-Light Surface — pointer-aware subtle border highlight
+   (Applied selectively to 2–3 high-value surfaces only)
    ════════════════════════════════════════════════════════════ */
+@utility edge-light {
+  position: relative;
+  overflow: hidden;
 
-/* 1. Subtle Minimalist — quiet micro-fades, whisper 1px lifts */
-[data-anim="minimal"] .animate-underline-stretch::after {
-  transition: transform 300ms ease;
-}
-[data-anim="minimal"] .animate-card-float {
-  transition: transform 300ms ease, border-color 200ms ease, box-shadow 300ms ease;
-}
-[data-anim="minimal"] .animate-card-float:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-}
-[data-anim="minimal"] .animate-btn-scale {
-  transition: transform 200ms ease, opacity 200ms ease;
-}
-[data-anim="minimal"] .animate-btn-scale:hover  { transform: translateY(-1px); }
-[data-anim="minimal"] .animate-btn-scale:active { transform: translateY(0px); }
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: radial-gradient(
+      200px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+      rgba(255, 255, 255, 0.12) 0%,
+      transparent 65%
+    );
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 300ms cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+    z-index: 1;
+  }
 
-/* 2. Organic Fluid — silky wave flows, soft floating spring curves */
-[data-anim="fluid"] .animate-underline-stretch::after {
-  transition: transform 350ms cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-[data-anim="fluid"] .animate-card-float {
-  transition: transform 350ms cubic-bezier(0.34, 1.56, 0.64, 1), border-color 250ms ease, box-shadow 350ms ease;
-}
-[data-anim="fluid"] .animate-card-float:hover {
-  transform: translateY(-4px) scale(1.01);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-}
-[data-anim="fluid"] .animate-btn-scale {
-  transition: transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-[data-anim="fluid"] .animate-btn-scale:hover  { transform: translateY(-3px) scale(1.03); }
-[data-anim="fluid"] .animate-btn-scale:active { transform: translateY(0px) scale(0.97); }
+  &:hover::before {
+    opacity: 1;
+  }
 
-/* 3. Tactile Magnetic — elastic pull, dynamic magnetic feedback */
-[data-anim="magnetic"] .animate-underline-stretch::after {
-  transition: transform 200ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  .dark &::before {
+    background: radial-gradient(
+      200px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+      rgba(255, 255, 255, 0.09) 0%,
+      transparent 65%
+    );
+  }
 }
-[data-anim="magnetic"] .animate-card-float {
-  transition: transform 220ms cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 220ms ease;
-}
-[data-anim="magnetic"] .animate-card-float:hover {
-  transform: translateY(-5px) scale(1.02);
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
-}
-[data-anim="magnetic"] .animate-btn-scale {
-  transition: transform 180ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-[data-anim="magnetic"] .animate-btn-scale:hover  { transform: translateY(-3px) scale(1.04); }
-[data-anim="magnetic"] .animate-btn-scale:active { transform: translateY(1px) scale(0.95); }
 
-/* 4. Classic Snappy — traditional responsive transitions */
-[data-anim="classic"] .animate-underline-stretch::after {
-  transition: transform 300ms cubic-bezier(0.2, 0, 0, 1);
+/* Clip-path reveal — structural reveal from bottom edge upward */
+@utility animate-clip-reveal {
+  clip-path: inset(100% 0% 0% 0%);
+  animation: clipRevealUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
-[data-anim="classic"] .animate-card-float {
-  transition:
-    transform    250ms cubic-bezier(0.2, 0, 0, 1),
-    border-color 250ms cubic-bezier(0.2, 0, 0, 1),
-    box-shadow   250ms cubic-bezier(0.2, 0, 0, 1);
+@keyframes clipRevealUp {
+  from { clip-path: inset(100% 0% 0% 0%); }
+  to   { clip-path: inset(0% 0% 0% 0%); }
 }
-[data-anim="classic"] .animate-card-float:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-}
-[data-anim="classic"] .animate-btn-scale {
-  transition:
-    transform 150ms cubic-bezier(0.2, 0, 0, 1),
-    opacity   150ms cubic-bezier(0.2, 0, 0, 1);
-}
-[data-anim="classic"] .animate-btn-scale:hover  { transform: scale(1.02); }
-[data-anim="classic"] .animate-btn-scale:active { transform: scale(0.98); }
 
-[data-anim="classic"] .animate-rotate-hover {
-  transition: transform 300ms cubic-bezier(0.2, 0, 0, 1);
+/* Clip-path horizontal reveal — content opens from left */
+@utility animate-clip-reveal-h {
+  clip-path: inset(0% 100% 0% 0%);
+  animation: clipRevealH 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
-[data-anim="classic"] .animate-rotate-hover:hover  { transform: rotate(8deg); }
-[data-anim="classic"] .animate-rotate-hover:active { transform: rotate(20deg); }
+@keyframes clipRevealH {
+  from { clip-path: inset(0% 100% 0% 0%); }
+  to   { clip-path: inset(0% 0% 0% 0%); }
+}
 
-[data-anim="classic"] .animate-arrow-slide svg {
-  transition: transform 250ms cubic-bezier(0.2, 0, 0, 1);
-}
-[data-anim="classic"] .animate-arrow-slide:hover svg { transform: translateX(4px); }
+/* Elastic geometry — container temporarily expands then settles */
 
-/* ── Button variants with ultra-smooth micro-animation popup & subtle glow ── */
-@utility btn-primary {
-  background-color: var(--foreground) !important;
-  color: var(--background) !important;
-  transition:
-    transform 250ms cubic-bezier(0.25, 1, 0.5, 1),
-    box-shadow 250ms ease,
-    background-color 200ms ease !important;
-  will-change: transform, box-shadow;
-  &:hover {
-    background-color: color-mix(in srgb, var(--foreground) 90%, transparent) !important;
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.14), 0 0 10px 1px rgba(0, 0, 0, 0.08);
+/* Coordinated form focus system — all form elements use this */
+@utility form-field-wrap {
+  position: relative;
+
+  & .form-label {
+    transition:
+      transform 180ms cubic-bezier(0.16, 1, 0.3, 1),
+      color 160ms ease,
+      font-size 180ms cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .dark &:hover {
-    box-shadow: 0 4px 18px -2px rgba(255, 255, 255, 0.2), 0 0 12px 1px rgba(255, 255, 255, 0.15);
+  & .form-icon {
+    transition:
+      opacity 180ms ease,
+      transform 200ms cubic-bezier(0.16, 1, 0.3, 1),
+      color 160ms ease;
   }
-  &:active {
-    transform: translateY(0px) scale(0.98);
-    transition-duration: 100ms !important;
+  &:focus-within .form-label {
+    color: var(--foreground);
   }
-}
-@utility btn-secondary {
-  border: 1px solid var(--border) !important;
-  color: var(--foreground) !important;
-  transition:
-    transform 250ms cubic-bezier(0.25, 1, 0.5, 1),
-    box-shadow 250ms ease,
-    border-color 250ms ease,
-    background-color 200ms ease !important;
-  will-change: transform, box-shadow;
-  &:hover {
-    background-color: var(--surface) !important;
-    transform: translateY(-2px) scale(1.02);
-    border-color: var(--border-strong) !important;
-    box-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.08), 0 0 8px 1px rgba(0, 0, 0, 0.05);
-  }
-  .dark &:hover {
-    border-color: rgba(255, 255, 255, 0.35) !important;
-    box-shadow: 0 4px 16px -2px rgba(255, 255, 255, 0.15), 0 0 10px 1px rgba(255, 255, 255, 0.1);
-  }
-  &:active {
-    transform: translateY(0px) scale(0.98);
-    transition-duration: 100ms !important;
+  &:focus-within .form-icon {
+    opacity: 1;
+    color: var(--foreground);
+    transform: scale(1.05);
   }
 }
-@utility btn-ghost {
-  color: var(--foreground) !important;
-  transition:
-    transform 250ms cubic-bezier(0.25, 1, 0.5, 1),
-    box-shadow 250ms ease,
-    background-color 200ms ease !important;
-  will-change: transform, box-shadow;
-  &:hover {
-    background-color: var(--surface) !important;
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.06);
-  }
-  .dark &:hover {
-    box-shadow: 0 4px 14px -2px rgba(255, 255, 255, 0.1);
-  }
-  &:active {
-    transform: translateY(0px) scale(0.98);
-    transition-duration: 100ms !important;
-  }
+
+/* Horizontal scan shimmer — used on skeleton loading */
+@utility animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--surface-overlay) 0%,
+    color-mix(in srgb, var(--surface-raised) 90%, transparent) 50%,
+    var(--surface-overlay) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+}
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Stat counter digit — clips overflow during count-up */
+@utility stat-digit {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+/* Alert & Check animations */
+@utility animate-alert-scale {
+  animation: alertScaleIn 280ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes alertScaleIn {
+  from { opacity: 0; transform: scale(0.97); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@utility animate-check-pop {
+  animation: checkPop 380ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes checkPop {
+  0%   { opacity: 0; transform: scale(0); }
+  70%  { opacity: 1; transform: scale(1.08); }
+  100% { opacity: 1; transform: scale(1); }
 }
 
 /* ════════════════════════════════════════════════════════════
-   View Transitions — Telegram-style theme toggle
-
-   The circular reveal originates from the toggle button's centre.
-   The button (view-transition-name: theme-btn) is extracted from
-   the root clip group and animated independently with icon sync.
+   View Transitions — Theme Toggle Animation
    ════════════════════════════════════════════════════════════ */
-
 ::view-transition-group(root) {
-  animation-duration: 0s; /* suppress default crossfade */
+  animation-duration: 0s;
 }
 
 ::view-transition-old(root),
@@ -827,14 +797,12 @@ nav a:active .fi,
   backface-visibility: hidden;
 }
 
-/* ✦ 120fps GPU-accelerated liquid circle flow with steady cubic-bezier(0.33, 1, 0.68, 1) curve */
 ::view-transition-new(root) {
   z-index: 9999;
   will-change: clip-path, transform;
-  animation: var(--reveal-duration, 550ms) cubic-bezier(0.33, 1, 0.68, 1) both circular-reveal;
+  animation: var(--reveal-duration, 500ms) cubic-bezier(0.33, 1, 0.68, 1) both circular-reveal;
 }
 
-/* Old theme remains solid underneath during expansion (no translucency artifacts) */
 ::view-transition-old(root) {
   z-index: 1;
   opacity: 1;
@@ -850,38 +818,32 @@ nav a:active .fi,
   }
 }
 
-/* ── Button independent view-transition group ──
-   Sits above the root clip-path (z-index 99999).
-   Icon rotates out as old state, rotates in as new state —
-   in sync with the expanding background circle.          */
 ::view-transition-group(theme-btn) {
   z-index: 99999;
-  animation-duration: 0s; /* no positional morph */
+  animation-duration: 0s;
 }
 
 ::view-transition-old(theme-btn) {
   will-change: transform, opacity;
-  /* ✦ Exit over 300ms ease-in-out — icon spins away clockwise */
-  animation: 300ms cubic-bezier(0.4, 0, 0.2, 1) both btn-icon-exit;
+  animation: 260ms cubic-bezier(0.4, 0, 0.2, 1) both btn-icon-exit;
 }
 
 ::view-transition-new(theme-btn) {
   will-change: transform, opacity;
-  /* ✦ Enter over 400ms ease-in-out, delayed 250ms — icon arrives fluidly as circle fills */
-  animation: 400ms cubic-bezier(0.4, 0, 0.2, 1) 250ms both btn-icon-enter;
+  animation: 320ms cubic-bezier(0.4, 0, 0.2, 1) 200ms both btn-icon-enter;
 }
 
 @keyframes btn-icon-exit {
-  from { opacity: 1; transform: scale(1)   rotate(0deg); }
+  from { opacity: 1; transform: scale(1) rotate(0deg); }
   to   { opacity: 0; transform: scale(0.6) rotate(90deg); }
 }
 
 @keyframes btn-icon-enter {
   from { opacity: 0; transform: scale(0.6) rotate(-90deg); }
-  to   { opacity: 1; transform: scale(1)   rotate(0deg); }
+  to   { opacity: 1; transform: scale(1) rotate(0deg); }
 }
 
-/* Reduced motion: disable view transitions */
+/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-new(root),
   ::view-transition-old(root),
@@ -889,180 +851,27 @@ nav a:active .fi,
   ::view-transition-new(theme-btn) {
     animation: none !important;
   }
-}
 
-/* ════════════════════════════════════════════════════════════
-   ADMIN-ONLY UI/UX DESIGN THEMES
-   
-   1. Minimalist Blueprint (default B&W Studio)
-   2. Cyber Emerald & Obsidian (data-ui-design="obsidian")
-   3. Nordic Atelier & Warm Amber (data-ui-design="nordic")
-   4. Tokyo Neon Sunset (data-ui-design="tokyo")
-   5. Industrial Monolith Slate (data-ui-design="monolith")
-   6. Champagne & Velvet Gold (data-ui-design="aurora")
-   ════════════════════════════════════════════════════════════ */
+  .animate-alert-scale,
+  .animate-check-pop,
+  .animate-clip-reveal,
+  .animate-clip-reveal-h,
+  .animate-shimmer {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
 
-/* Theme 2: Cyber Emerald & Obsidian */
-[data-ui-design="obsidian"],
-[data-ui-design="obsidian"] * {
-  --background: #f8fafc !important;
-  --foreground: #0f172a !important;
-  --muted-foreground: #475569 !important;
-  --border: rgba(16, 185, 129, 0.2) !important;
-  --border-strong: rgba(16, 185, 129, 0.45) !important;
-  --surface: #f1f5f9 !important;
-  --focus-ring: #10b981 !important;
-}
+  /* Disable scroll-linked transforms */
+  [data-parallax] {
+    transform: none !important;
+  }
 
-.dark [data-ui-design="obsidian"],
-.dark [data-ui-design="obsidian"] *,
-.dark[data-ui-design="obsidian"],
-[data-ui-design="obsidian"].dark,
-[data-ui-design="obsidian"] .dark {
-  --background: #08090d !important;
-  --foreground: #f1f5f9 !important;
-  --muted-foreground: #94a3b8 !important;
-  --border: rgba(16, 185, 129, 0.25) !important;
-  --border-strong: rgba(16, 185, 129, 0.55) !important;
-  --surface: #0f111a !important;
-  --focus-ring: #10b981 !important;
-}
-
-[data-ui-design="obsidian"] button:not(.animate-mode-bounce):hover,
-[data-ui-design="obsidian"] .btn:hover,
-[data-ui-design="obsidian"] nav a:hover {
-  border-color: #10b981 !important;
-  box-shadow: 0 4px 20px -2px rgba(16, 185, 129, 0.25), 0 0 10px 1px rgba(16, 185, 129, 0.15) !important;
-}
-
-/* Theme 3: Nordic Atelier & Warm Amber */
-[data-ui-design="nordic"],
-[data-ui-design="nordic"] * {
-  --background: #faf7f2 !important;
-  --foreground: #1c1917 !important;
-  --muted-foreground: #78716c !important;
-  --border: rgba(217, 119, 6, 0.22) !important;
-  --border-strong: rgba(217, 119, 6, 0.45) !important;
-  --surface: #f3efe6 !important;
-  --focus-ring: #d97706 !important;
-}
-
-.dark [data-ui-design="nordic"],
-.dark [data-ui-design="nordic"] *,
-.dark[data-ui-design="nordic"],
-[data-ui-design="nordic"].dark,
-[data-ui-design="nordic"] .dark {
-  --background: #141210 !important;
-  --foreground: #f5f5f4 !important;
-  --muted-foreground: #a8a29e !important;
-  --border: rgba(217, 119, 6, 0.25) !important;
-  --border-strong: rgba(217, 119, 6, 0.55) !important;
-  --surface: #1c1917 !important;
-  --focus-ring: #f59e0b !important;
-}
-
-[data-ui-design="nordic"] button:not(.animate-mode-bounce):hover,
-[data-ui-design="nordic"] .btn:hover,
-[data-ui-design="nordic"] nav a:hover {
-  border-color: #d97706 !important;
-  box-shadow: 0 4px 20px -2px rgba(217, 119, 6, 0.25), 0 0 10px 1px rgba(217, 119, 6, 0.15) !important;
-}
-
-/* Theme 4: Tokyo Neon Sunset */
-[data-ui-design="tokyo"],
-[data-ui-design="tokyo"] * {
-  --background: #fdf4ff !important;
-  --foreground: #4a044e !important;
-  --muted-foreground: #86198f !important;
-  --border: rgba(236, 72, 153, 0.25) !important;
-  --border-strong: rgba(236, 72, 153, 0.5) !important;
-  --surface: #fae8ff !important;
-  --focus-ring: #ec4899 !important;
-}
-
-.dark [data-ui-design="tokyo"],
-.dark [data-ui-design="tokyo"] *,
-.dark[data-ui-design="tokyo"],
-[data-ui-design="tokyo"].dark,
-[data-ui-design="tokyo"] .dark {
-  --background: #0b0718 !important;
-  --foreground: #fdf4ff !important;
-  --muted-foreground: #c084fc !important;
-  --border: rgba(236, 72, 153, 0.28) !important;
-  --border-strong: rgba(236, 72, 153, 0.6) !important;
-  --surface: #150d2a !important;
-  --focus-ring: #ec4899 !important;
-}
-
-[data-ui-design="tokyo"] button:not(.animate-mode-bounce):hover,
-[data-ui-design="tokyo"] .btn:hover,
-[data-ui-design="tokyo"] nav a:hover {
-  border-color: #ec4899 !important;
-  box-shadow: 0 4px 20px -2px rgba(236, 72, 153, 0.3), 0 0 12px 2px rgba(6, 182, 212, 0.2) !important;
-}
-
-/* Theme 5: Industrial Monolith Slate */
-[data-ui-design="monolith"],
-[data-ui-design="monolith"] * {
-  --background: #f8fafc !important;
-  --foreground: #0f172a !important;
-  --muted-foreground: #475569 !important;
-  --border: rgba(99, 102, 241, 0.22) !important;
-  --border-strong: rgba(99, 102, 241, 0.45) !important;
-  --surface: #f1f5f9 !important;
-  --focus-ring: #6366f1 !important;
-}
-
-.dark [data-ui-design="monolith"],
-.dark [data-ui-design="monolith"] *,
-.dark[data-ui-design="monolith"],
-[data-ui-design="monolith"].dark,
-[data-ui-design="monolith"] .dark {
-  --background: #090d16 !important;
-  --foreground: #f8fafc !important;
-  --muted-foreground: #818cf8 !important;
-  --border: rgba(99, 102, 241, 0.28) !important;
-  --border-strong: rgba(99, 102, 241, 0.6) !important;
-  --surface: #111827 !important;
-  --focus-ring: #6366f1 !important;
-}
-
-[data-ui-design="monolith"] button:not(.animate-mode-bounce):hover,
-[data-ui-design="monolith"] .btn:hover,
-[data-ui-design="monolith"] nav a:hover {
-  border-color: #6366f1 !important;
-  box-shadow: 0 4px 20px -2px rgba(99, 102, 241, 0.3), 0 0 10px 1px rgba(99, 102, 241, 0.2) !important;
-}
-
-/* Theme 6: Champagne & Velvet Gold */
-[data-ui-design="aurora"],
-[data-ui-design="aurora"] * {
-  --background: #fffdfa !important;
-  --foreground: #1c1917 !important;
-  --muted-foreground: #78716c !important;
-  --border: rgba(234, 179, 8, 0.28) !important;
-  --border-strong: rgba(234, 179, 8, 0.55) !important;
-  --surface: #fefce8 !important;
-  --focus-ring: #eab308 !important;
-}
-
-.dark [data-ui-design="aurora"],
-.dark [data-ui-design="aurora"] *,
-.dark[data-ui-design="aurora"],
-[data-ui-design="aurora"].dark,
-[data-ui-design="aurora"] .dark {
-  --background: #12100e !important;
-  --foreground: #fef08a !important;
-  --muted-foreground: #ca8a04 !important;
-  --border: rgba(234, 179, 8, 0.3) !important;
-  --border-strong: rgba(234, 179, 8, 0.65) !important;
-  --surface: #1c1815 !important;
-  --focus-ring: #eab308 !important;
-}
-
-[data-ui-design="aurora"] button:not(.animate-mode-bounce):hover,
-[data-ui-design="aurora"] .btn:hover,
-[data-ui-design="aurora"] nav a:hover {
-  border-color: #eab308 !important;
-  box-shadow: 0 4px 22px -2px rgba(234, 179, 8, 0.35), 0 0 12px 1px rgba(217, 119, 6, 0.2) !important;
+  /* Reduce transition durations globally */
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
 }

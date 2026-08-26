@@ -5,13 +5,6 @@ import { createClient } from "@/lib/supabase/client";
 import { Button, Input, Label, Card } from "@/components/ui";
 import { Loader2, CheckCircle2, ShieldAlert } from "lucide-react";
 
-interface AccountManagerProps {
-  initialUser: {
-    email?: string;
-    name?: string;
-  };
-}
-
 import { useAdminToast } from "@/components/admin/admin-toast";
 
 interface AccountManagerProps {
@@ -129,19 +122,6 @@ export function AccountManager({ initialUser }: AccountManagerProps) {
           <h2 className="text-h3 font-bold tracking-tight">Security & Credentials</h2>
           <ShieldAlert className="h-4 w-4 text-muted" />
         </div>
-
-        {passSuccess && (
-          <div className="border border-border p-3 rounded-sm bg-surface flex items-center space-x-2 text-caption">
-            <CheckCircle2 className="h-4 w-4 shrink-0" />
-            <span>Password changed successfully!</span>
-          </div>
-        )}
-
-        {passError && (
-          <div className="border border-border p-3 rounded-sm bg-surface text-caption text-foreground">
-            {passError}
-          </div>
-        )}
 
         <form onSubmit={handleUpdatePassword} className="space-y-4">
           <div className="space-y-1.5">

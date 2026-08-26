@@ -17,3 +17,9 @@ export type { LabelProps } from "./label";
 export { Card } from "./card";
 
 export { Badge } from "./badge";
+
+export { AnimateIn } from "./animate-in";
+export { MagneticCta } from "./magnetic-cta";
+export { StatCounter } from "./stat-counter";
+export { EdgeLight } from "./edge-light";
+export { HeroParallax } from "./hero-parallax";

@@ -19,6 +19,9 @@ export async function updateHomeContent(data: Partial<HomeContent>) {
     .eq("id", 1);
   if (error) throw new Error(error.message);
   revalidateTag(CACHE_TAGS.HOME);
+  revalidatePath("/");
+  revalidatePath("/admin/content");
+  await logAuditAction("Updated Home Content", "content", "Updated hero / homepage copy");
 }
 
 export async function updateAboutContent(data: Partial<AboutContent>) {
@@ -29,6 +32,10 @@ export async function updateAboutContent(data: Partial<AboutContent>) {
     .eq("id", 1);
   if (error) throw new Error(error.message);
   revalidateTag(CACHE_TAGS.ABOUT);
+  revalidatePath("/about");
+  revalidatePath("/");
+  revalidatePath("/admin/about");
+  await logAuditAction("Updated About Content", "content", "Updated biography & overview");
 }
 
 export async function createSkill(data: { name: string; category: string; proficiency: number | null; order: number }) {
@@ -74,6 +81,11 @@ export async function createExperience(data: {
   const { data: row, error } = await supabase.from("experience").insert(data).select().single();
   if (error) throw new Error(error.message);
   revalidateTag(CACHE_TAGS.EXPERIENCE);
+  revalidatePath("/experience");
+  revalidatePath("/about");
+  revalidatePath("/");
+  revalidatePath("/admin/experience");
+  await logAuditAction("Created Experience", "content", `Added ${data.role} at ${data.organization}`);
   return row;
 }
 
@@ -82,6 +94,11 @@ export async function updateExperience(id: string, data: Record<string, unknown>
   const { error } = await supabase.from("experience").update(data).eq("id", id);
   if (error) throw new Error(error.message);
   revalidateTag(CACHE_TAGS.EXPERIENCE);
+  revalidatePath("/experience");
+  revalidatePath("/about");
+  revalidatePath("/");
+  revalidatePath("/admin/experience");
+  await logAuditAction("Updated Experience", "content", `Updated experience entry ID ${id}`);
 }
 
 export async function deleteExperience(id: string) {
@@ -89,6 +106,11 @@ export async function deleteExperience(id: string) {
   const { error } = await supabase.from("experience").delete().eq("id", id);
   if (error) throw new Error(error.message);
   revalidateTag(CACHE_TAGS.EXPERIENCE);
+  revalidatePath("/experience");
+  revalidatePath("/about");
+  revalidatePath("/");
+  revalidatePath("/admin/experience");
+  await logAuditAction("Deleted Experience", "content", `Deleted experience entry ID ${id}`);
 }
 
 export async function createProject(data: {
@@ -153,6 +175,9 @@ export async function createSocialLink(data: { platform: string; label: string; 
   const { data: row, error } = await supabase.from("social_links").insert(data).select().single();
   if (error) throw new Error(error.message);
   revalidateTag(CACHE_TAGS.SOCIAL);
+  revalidatePath("/contact");
+  revalidatePath("/admin/settings");
+  revalidatePath("/", "layout");
   return row;
 }
 
@@ -161,6 +186,9 @@ export async function updateSocialLink(id: string, data: Record<string, unknown>
   const { error } = await supabase.from("social_links").update(data).eq("id", id);
   if (error) throw new Error(error.message);
   revalidateTag(CACHE_TAGS.SOCIAL);
+  revalidatePath("/contact");
+  revalidatePath("/admin/settings");
+  revalidatePath("/", "layout");
 }
 
 export async function deleteSocialLink(id: string) {
@@ -168,6 +196,9 @@ export async function deleteSocialLink(id: string) {
   const { error } = await supabase.from("social_links").delete().eq("id", id);
   if (error) throw new Error(error.message);
   revalidateTag(CACHE_TAGS.SOCIAL);
+  revalidatePath("/contact");
+  revalidatePath("/admin/settings");
+  revalidatePath("/", "layout");
 }
 
 export async function markSubmissionRead(id: string) {
@@ -220,6 +251,8 @@ export async function upsertSeoMetadata(data: Partial<SeoMetadata> & { page_key:
     .upsert(data, { onConflict: "page_key" });
   if (error) throw new Error(error.message);
   revalidateTag(CACHE_TAGS.SEO);
+  revalidatePath("/admin/seo");
+  revalidatePath("/", "layout");
 }
 
 export async function updateResumeInSettings(url: string | null, filename: string | null) {
@@ -241,6 +274,9 @@ export async function createCertification(data: {
   const { data: row, error } = await supabase.from("certifications").insert(data).select().single();
   if (error) throw new Error(error.message);
   revalidateTag(CACHE_TAGS.CERTIFICATIONS);
+  revalidatePath("/certifications");
+  revalidatePath("/admin/certifications");
+  revalidatePath("/");
   return row;
 }
 
@@ -249,6 +285,9 @@ export async function updateCertification(id: string, data: Record<string, unkno
   const { error } = await supabase.from("certifications").update(data).eq("id", id);
   if (error) throw new Error(error.message);
   revalidateTag(CACHE_TAGS.CERTIFICATIONS);
+  revalidatePath("/certifications");
+  revalidatePath("/admin/certifications");
+  revalidatePath("/");
 }
 
 export async function deleteCertification(id: string) {
@@ -256,6 +295,9 @@ export async function deleteCertification(id: string) {
   const { error } = await supabase.from("certifications").delete().eq("id", id);
   if (error) throw new Error(error.message);
   revalidateTag(CACHE_TAGS.CERTIFICATIONS);
+  revalidatePath("/certifications");
+  revalidatePath("/admin/certifications");
+  revalidatePath("/");
 }
 
 export async function updateProfileRole(id: string, role: string) {
@@ -347,6 +389,9 @@ export async function createServiceOffering(data: {
   const { data: row, error } = await supabase.from("service_offerings").insert(data).select().single();
   if (error) throw new Error(error.message);
   revalidateTag(CACHE_TAGS.SERVICES);
+  revalidatePath("/services");
+  revalidatePath("/admin/services");
+  revalidatePath("/");
   await logAuditAction("Created Service Offering", "services", `Added service "${data.title}"`);
   return row;
 }
@@ -356,6 +401,9 @@ export async function updateServiceOffering(id: string, data: Record<string, unk
   const { error } = await supabase.from("service_offerings").update(data).eq("id", id);
   if (error) throw new Error(error.message);
   revalidateTag(CACHE_TAGS.SERVICES);
+  revalidatePath("/services");
+  revalidatePath("/admin/services");
+  revalidatePath("/");
   await logAuditAction("Updated Service Offering", "services", `Updated service ID ${id}`);
 }
 
@@ -364,6 +412,9 @@ export async function deleteServiceOffering(id: string) {
   const { error } = await supabase.from("service_offerings").delete().eq("id", id);
   if (error) throw new Error(error.message);
   revalidateTag(CACHE_TAGS.SERVICES);
+  revalidatePath("/services");
+  revalidatePath("/admin/services");
+  revalidatePath("/");
   await logAuditAction("Deleted Service Offering", "services", `Deleted service ID ${id}`);
 }
 
@@ -377,6 +428,9 @@ export async function createBlogPost(data: {
   if (error) throw new Error(error.message);
   revalidateTag(CACHE_TAGS.POSTS);
   revalidatePath("/blog");
+  revalidatePath(`/blog/${data.slug}`);
+  revalidatePath("/admin/posts");
+  revalidatePath("/");
   await logAuditAction("Created Blog Post", "posts", `Created post "${data.title}"`);
   return row;
 }
@@ -387,6 +441,8 @@ export async function updateBlogPost(id: string, data: Record<string, unknown>) 
   if (error) throw new Error(error.message);
   revalidateTag(CACHE_TAGS.POSTS);
   revalidatePath("/blog");
+  revalidatePath("/admin/posts");
+  revalidatePath("/");
   await logAuditAction("Updated Blog Post", "posts", `Updated blog post ID ${id}`);
 }
 
@@ -396,6 +452,8 @@ export async function deleteBlogPost(id: string) {
   if (error) throw new Error(error.message);
   revalidateTag(CACHE_TAGS.POSTS);
   revalidatePath("/blog");
+  revalidatePath("/admin/posts");
+  revalidatePath("/");
   await logAuditAction("Deleted Blog Post", "posts", `Deleted blog post ID ${id}`);
 }
 
@@ -580,4 +638,79 @@ export async function deletePublicNotification(id: string) {
   revalidatePath("/", "layout");
   revalidatePath("/admin/notifications");
   await logAuditAction("Deleted Notification", "content", `Deleted notification ID ${id}`);
+}
+
+export async function purgeAllCache() {
+  try {
+    // Purge every cache tag across the application
+    Object.values(CACHE_TAGS).forEach((tag) => {
+      try {
+        revalidateTag(tag);
+      } catch (err) {
+        console.warn(`Could not revalidate tag ${tag}:`, err);
+      }
+    });
+
+    // Revalidate all key paths
+    revalidatePath("/", "layout");
+    revalidatePath("/about");
+    revalidatePath("/projects");
+    revalidatePath("/blog");
+    revalidatePath("/experience");
+    revalidatePath("/services");
+    revalidatePath("/contact");
+    revalidatePath("/admin");
+
+    await logAuditAction("Purged System Cache", "settings", "Executed global edge & ISR cache purge");
+    return { success: true, timestamp: new Date().toISOString() };
+  } catch (err) {
+    console.error("Failed to purge cache:", err);
+    throw new Error("Failed to purge system cache");
+  }
+}
+
+export async function testDatabaseHealth() {
+  const startTime = performance.now();
+  try {
+    const supabase = await createClient();
+    const { count: projectCount, error: projErr } = await supabase
+      .from("projects")
+      .select("*", { count: "exact", head: true });
+
+    if (projErr) throw new Error(projErr.message);
+
+    const latency = Math.round(performance.now() - startTime);
+
+    return {
+      status: "healthy" as const,
+      latencyMs: latency,
+      timestamp: new Date().toISOString(),
+      projectCount: projectCount ?? 0,
+      supabaseConnected: true,
+    };
+  } catch (err) {
+    const latency = Math.round(performance.now() - startTime);
+    return {
+      status: "degraded" as const,
+      latencyMs: latency,
+      timestamp: new Date().toISOString(),
+      error: err instanceof Error ? err.message : "Unknown database error",
+      supabaseConnected: false,
+    };
+  }
+}
+
+export async function toggleNoteStatus(id: string, completed: boolean) {
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("admin_notes")
+    .update({ completed, updated_at: new Date().toISOString() })
+    .eq("id", id);
+
+  if (error) throw new Error(error.message);
+
+  revalidateTag(CACHE_TAGS.NOTES);
+  revalidatePath("/admin");
+  revalidatePath("/admin/notes");
+  revalidatePath("/notes");
 }

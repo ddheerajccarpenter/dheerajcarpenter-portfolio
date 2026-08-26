@@ -4,16 +4,18 @@ import { type TextareaHTMLAttributes, forwardRef } from "react";
 export type TextareaProps = TextareaHTMLAttributes<HTMLTextAreaElement>;
 
 /**
- * B&W textarea. Consistent styling with Input. No resize handle decoration.
+ * Tactile Textarea Component
+ * Uses layered surface tokens with subtle border transitions and monochrome focus highlights.
  */
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ className, ...props }, ref) => (
     <textarea
       ref={ref}
       className={cn(
-        "min-h-[100px] w-full rounded-sm border border-border bg-background px-3 py-2 text-body text-foreground placeholder:text-muted transition-colors",
-        "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus",
-        "disabled:cursor-not-allowed disabled:opacity-50",
+        "w-full rounded-xl border border-border bg-surface p-3.5 text-small text-foreground placeholder:text-muted/70 transition-all duration-200 resize-y min-h-[110px]",
+        "hover:border-border-strong",
+        "focus-visible:outline-none focus-visible:border-foreground focus-visible:ring-2 focus-visible:ring-foreground/15",
+        "disabled:cursor-not-allowed disabled:opacity-40",
         className,
       )}
       {...props}

@@ -267,6 +267,7 @@ export async function getAllTestimonials(): Promise<Testimonial[]> {
   const { data, error } = await supabase
     .from("testimonials")
     .select("*")
+    .eq("published", true)
     .order("order", { ascending: true });
   if (error) {
     console.error("Error fetching testimonials:", error);
@@ -280,10 +281,10 @@ export async function getFeaturedTestimonials(): Promise<Testimonial[]> {
   const { data, error } = await supabase
     .from("testimonials")
     .select("*")
-    .eq("featured", true)
+    .eq("published", true)
     .order("order", { ascending: true });
   if (error) {
-    console.error("Error fetching featured testimonials:", error);
+    console.error("Error fetching published testimonials:", error);
     return [];
   }
   return data ?? [];
@@ -349,7 +350,8 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
     .from("blog_posts")
     .select("*")
     .eq("slug", slug)
-    .single();
+    .eq("published", true)
+    .maybeSingle();
   if (error) {
     console.error("Error fetching blog post by slug:", error);
     return null;

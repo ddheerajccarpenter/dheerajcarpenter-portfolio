@@ -67,7 +67,6 @@ export function MediaUpload({
 
   const handleRemove = async () => {
     if (!value) return;
-    setErrorMsg(null);
 
     // Extraction of file name from public URL
     // Public URL format: .../storage/v1/object/public/bucket/filename
@@ -94,12 +93,6 @@ export function MediaUpload({
 
   return (
     <div className="space-y-4">
-      {errorMsg && (
-        <p className="text-caption text-foreground font-medium flex items-center">
-          {errorMsg}
-        </p>
-      )}
-
       {value ? (
         <div className="relative inline-block border border-border p-2 rounded-sm bg-surface">
           {isImage ? (

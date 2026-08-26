@@ -3,9 +3,8 @@
 import { useEffect, useRef } from "react";
 
 /**
- * Scroll progress bar — a thin 2px line at the very top of the viewport
+ * Scroll progress indicator — a thin 2px line at the very top of the viewport
  * that fills left-to-right as the user scrolls down the page.
- * Linear style, no label, completely invisible until you scroll.
  */
 export function ScrollProgress() {
   const barRef = useRef<HTMLDivElement>(null);
@@ -22,7 +21,7 @@ export function ScrollProgress() {
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll(); // initialise
+    onScroll();
 
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -47,7 +46,7 @@ export function ScrollProgress() {
           height: "100%",
           width: "0%",
           background: "var(--foreground)",
-          opacity: 0.55,
+          opacity: 0.7,
           transition: "width 0.08s linear",
           transformOrigin: "left",
         }}

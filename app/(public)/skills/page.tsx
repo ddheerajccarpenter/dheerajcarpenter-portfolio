@@ -4,7 +4,7 @@ import { Card, Badge } from "@/components/ui";
 import { SkeletonWrapper } from "@/components/ui/skeleton-wrapper";
 import { AnimateIn } from "@/components/ui/animate-in";
 
-export const revalidate = 0; // Dynamic rendering for instant CMS updates
+export const revalidate = 0;
 export const dynamic = "force-dynamic";
 
 export default async function PublicSkillsPage() {
@@ -20,14 +20,18 @@ export default async function PublicSkillsPage() {
 
   return (
     <SkeletonWrapper pageType="about">
-      <div className="py-12 md:py-16 space-y-12">
+      <div className="py-16 md:py-24 space-y-12">
         <Container className="space-y-4">
-          <AnimateIn from="up" distance={20} duration={0.6} viewport={false}>
-            <h1 className="text-h1 font-bold tracking-tight sm:text-[3rem]">
+          <AnimateIn from="up" distance={16} duration={0.4} viewport={false}>
+            <div className="inline-flex items-center gap-2 text-caption font-bold uppercase tracking-[0.14em] text-muted mb-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-foreground inline-block opacity-60" />
+              Technical Proficiencies
+            </div>
+            <h1 className="text-h1 font-bold tracking-tight sm:text-[3rem] text-editorial-gradient">
               Skills & Expertise
             </h1>
           </AnimateIn>
-          <AnimateIn from="up" distance={14} delay={0.12} viewport={false}>
+          <AnimateIn from="up" distance={12} delay={0.1} viewport={false}>
             <p className="prose-readable text-body-lg text-muted">
               Technical proficiencies, frameworks, tools, and domain specialisations mastered over years of hands-on software development.
             </p>
@@ -36,20 +40,22 @@ export default async function PublicSkillsPage() {
 
         <Container>
           {Object.keys(skillsByCategory).length === 0 ? (
-            <div className="p-12 text-center border border-dashed border-border rounded-sm text-muted">
-              <i className="fi fi-br-stats text-2xl mb-3 block text-foreground" aria-hidden="true" />
+            <div className="p-16 text-center border border-dashed border-border rounded-2xl text-muted bg-surface/30">
               <p className="text-body font-medium">No skills cataloged yet.</p>
               <p className="text-small text-muted mt-1">Check back soon for technical skills catalog updates.</p>
             </div>
           ) : (
             <div className="space-y-12">
               {Object.entries(skillsByCategory).map(([category, categorySkills], catIndex) => (
-                <AnimateIn key={category} from="up" distance={20} staggerIndex={catIndex}>
-                  <div className="space-y-6">
-                    <div className="flex items-center space-x-3 border-b border-border pb-2">
-                      <Badge className="uppercase tracking-wider text-xs px-2.5 py-0.5">
-                        {category}
-                      </Badge>
+                <AnimateIn key={category} from="up" distance={16} staggerIndex={catIndex}>
+                  <div className="space-y-5">
+                    <div className="flex items-center justify-between border-b border-border/80 pb-3">
+                      <div className="flex items-center gap-2.5">
+                        <span className="h-1.5 w-1.5 rounded-full bg-foreground inline-block opacity-60" />
+                        <h2 className="text-h3 font-bold uppercase tracking-wider text-foreground">
+                          {category}
+                        </h2>
+                      </div>
                       <span className="text-caption text-muted font-mono">
                         {categorySkills.length} {categorySkills.length === 1 ? "Skill" : "Skills"}
                       </span>
@@ -59,10 +65,10 @@ export default async function PublicSkillsPage() {
                       {categorySkills.map((skill) => (
                         <Card
                           key={skill.id}
-                          className="p-4 space-y-3 hover:border-border-strong transition-all flex flex-col justify-between"
+                          className="!p-5 space-y-3 tactile-card flex flex-col justify-between"
                         >
                           <div className="flex justify-between items-center">
-                            <span className="text-body font-bold text-foreground">{skill.name}</span>
+                            <span className="text-small font-bold text-foreground">{skill.name}</span>
                             {skill.proficiency !== null && (
                               <span className="text-caption font-mono font-semibold text-muted">
                                 {skill.proficiency}%
@@ -71,9 +77,9 @@ export default async function PublicSkillsPage() {
                           </div>
 
                           {skill.proficiency !== null && (
-                            <div className="w-full bg-surface border border-border h-2 rounded-full overflow-hidden">
+                            <div className="w-full bg-surface-overlay border border-border/60 h-1.5 rounded-full overflow-hidden">
                               <div
-                                className="bg-foreground h-full rounded-full transition-all duration-500 ease-out"
+                                className="bg-foreground h-full rounded-full transition-all duration-500 ease-out opacity-85"
                                 style={{ width: `${Math.min(100, Math.max(0, skill.proficiency))}%` }}
                               />
                             </div>
