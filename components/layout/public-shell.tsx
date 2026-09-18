@@ -7,6 +7,7 @@ import { HiddenAdminTrigger } from "./hidden-admin-trigger";
 import { ThemeInjector } from "./theme-injector";
 import { PublicNotificationBanner } from "./public-notification-banner";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
+import { Github } from "lucide-react";
 
 export async function PublicShell({ children }: { children: React.ReactNode }) {
   const [settings, activeNotif, socialLinks] = await Promise.all([
@@ -16,6 +17,7 @@ export async function PublicShell({ children }: { children: React.ReactNode }) {
   ]);
   const siteTitle = settings?.site_title || "Dheeraj Carpenter";
   const contactEmail = settings?.contact_email;
+  const githubLink = socialLinks.find((s) => s.platform === "github")?.url || "https://github.com/ddheerajccarpenter";
 
   const animStyle = settings?.animation_style ?? "new";
   const uiDesign = settings?.ui_design ?? "minimalist";
@@ -26,26 +28,40 @@ export async function PublicShell({ children }: { children: React.ReactNode }) {
       <PublicNotificationBanner notification={activeNotif} />
       <ScrollProgress />
       <div
-        className="flex min-h-screen flex-col bg-background text-foreground transition-colors duration-200"
+        className="flex min-h-screen flex-col bg-background text-foreground transition-colors duration-200 bg-ambient-grid relative"
         data-anim={animStyle}
         data-ui-design={uiDesign}
       >
         <HiddenAdminTrigger />
 
         {/* Top Header — Frosted translucent bar */}
-        <header className="sticky top-0 z-40 w-full border-b border-border/80 bg-background/80 backdrop-blur-xl">
+        <header className="sticky top-0 z-40 w-full border-b border-border/60 bg-background/70 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60 shadow-xs">
           <Container className="flex h-16 items-center justify-between">
             <Link
               href="/"
-              className="text-small font-bold font-hero-name tracking-tight hover:opacity-80 transition-opacity flex items-center gap-2"
+              className="text-small font-bold font-hero-name tracking-tight hover:opacity-80 transition-opacity flex items-center gap-2.5 group"
             >
-              <span className="h-1.5 w-1.5 rounded-full bg-foreground inline-block shrink-0 opacity-70" />
-              <span>{siteTitle}</span>
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+              </span>
+              <span className="font-semibold text-foreground tracking-tight group-hover:text-foreground/90">{siteTitle}</span>
             </Link>
 
-            <div className="flex items-center space-x-1 md:space-x-3">
+            <div className="flex items-center space-x-1.5 md:space-x-3">
               <DesktopNav />
               <div className="h-4 w-px bg-border hidden md:block" />
+              {githubLink && (
+                <a
+                  href={githubLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="GitHub Profile"
+                  className="h-8.5 w-8.5 rounded-xl border border-border bg-surface/80 hover:bg-surface-raised flex items-center justify-center text-muted hover:text-foreground transition-all duration-150"
+                >
+                  <Github className="h-4 w-4" />
+                </a>
+              )}
               <ThemeToggle />
               <MobileHeaderMenu />
             </div>

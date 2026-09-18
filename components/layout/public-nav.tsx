@@ -6,18 +6,33 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/lib/utils";
 import { NAV_ITEMS } from "@/lib/constants";
-import { Menu, X, ChevronRight, ChevronDown } from "lucide-react";
+import {
+  Home,
+  User,
+  Headphones,
+  FolderGit2,
+  Briefcase,
+  FileText,
+  Edit3,
+  Mail,
+  MoreHorizontal,
+  Menu,
+  X,
+  ChevronRight,
+  ChevronDown,
+  type LucideIcon,
+} from "lucide-react";
 
-/** Flaticon icon class for each route */
-const NAV_FLATICON_CLASSES: Record<string, string> = {
-  "/": "fi fi-br-home",
-  "/about": "fi fi-br-user",
-  "/services": "fi fi-br-headset",
-  "/projects": "fi fi-br-folder",
-  "/experience": "fi fi-br-briefcase",
-  "/notes": "fi fi-br-copy",
-  "/blog": "fi fi-br-edit",
-  "/contact": "fi fi-br-envelope",
+/** Crisp inline icons for each destination */
+const NAV_ICONS: Record<string, LucideIcon> = {
+  "/": Home,
+  "/about": User,
+  "/services": Headphones,
+  "/projects": FolderGit2,
+  "/experience": Briefcase,
+  "/notes": FileText,
+  "/blog": Edit3,
+  "/contact": Mail,
 };
 
 /** Primary links shown directly in the desktop nav bar */
@@ -27,11 +42,11 @@ const PRIMARY_NAV = NAV_ITEMS.filter((item) => PRIMARY_HREFS.has(item.href));
 const SECONDARY_NAV = NAV_ITEMS.filter((item) => !PRIMARY_HREFS.has(item.href));
 
 const MOBILE_BOTTOM_NAV = [
-  { href: "/", label: "Home", icon: "fi fi-br-home" },
-  { href: "/about", label: "About", icon: "fi fi-br-user" },
-  { href: "/projects", label: "Work", icon: "fi fi-br-folder" },
-  { href: "/blog", label: "Blog", icon: "fi fi-br-edit" },
-  { href: "/contact", label: "Contact", icon: "fi fi-br-envelope" },
+  { href: "/", label: "Home", icon: Home },
+  { href: "/about", label: "About", icon: User },
+  { href: "/projects", label: "Work", icon: FolderGit2 },
+  { href: "/blog", label: "Blog", icon: Edit3 },
+  { href: "/contact", label: "Contact", icon: Mail },
 ] as const;
 
 export function DesktopNav() {
@@ -64,7 +79,7 @@ export function DesktopNav() {
     <nav className="hidden md:flex items-center space-x-1" aria-label="Desktop navigation">
       {PRIMARY_NAV.map((item) => {
         const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
-        const iconClass = NAV_FLATICON_CLASSES[item.href] || "fi fi-br-link";
+        const Icon = NAV_ICONS[item.href] || FolderGit2;
         return (
           <Link
             key={item.href}
@@ -76,11 +91,9 @@ export function DesktopNav() {
                 : "text-muted hover:text-foreground hover:bg-surface/80"
             )}
           >
-            <motion.i
-              className={cn(iconClass, "text-xs leading-none", isActive ? "text-foreground" : "text-muted")}
+            <Icon
+              className={cn("h-3.5 w-3.5 shrink-0 transition-transform duration-200 group-hover:scale-110", isActive ? "text-foreground" : "text-muted")}
               aria-hidden="true"
-              animate={{ scale: isActive ? 1.12 : 1, opacity: isActive ? 1 : 0.7 }}
-              transition={{ type: "spring", stiffness: 320, damping: 22, mass: 0.5 }}
             />
             {item.label}
             {isActive && (
@@ -108,7 +121,7 @@ export function DesktopNav() {
             aria-expanded={moreOpen}
             aria-haspopup="true"
           >
-            <i className="fi fi-br-menu-dots text-xs leading-none" aria-hidden="true" />
+            <MoreHorizontal className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
             More
             <ChevronDown
               className={cn(
@@ -137,7 +150,7 @@ export function DesktopNav() {
                 {SECONDARY_NAV.map((item) => {
                   const isActive =
                     pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
-                  const iconClass = NAV_FLATICON_CLASSES[item.href] || "fi fi-br-link";
+                  const Icon = NAV_ICONS[item.href] || FolderGit2;
 
                   return (
                     <Link
@@ -151,8 +164,8 @@ export function DesktopNav() {
                           : "text-muted hover:text-foreground hover:bg-surface/60"
                       )}
                     >
-                      <i
-                        className={cn(iconClass, "text-xs leading-none", isActive ? "text-foreground" : "text-muted")}
+                      <Icon
+                        className={cn("h-4 w-4 shrink-0", isActive ? "text-foreground" : "text-muted")}
                         aria-hidden="true"
                       />
                       <span>{item.label}</span>
@@ -179,6 +192,7 @@ export function MobileNav() {
       <div className="grid grid-cols-5 w-full h-full max-w-lg mx-auto">
         {MOBILE_BOTTOM_NAV.map((item) => {
           const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
+          const Icon = item.icon;
 
           return (
             <Link
@@ -191,11 +205,9 @@ export function MobileNav() {
                   : "text-muted hover:text-foreground"
               )}
             >
-              <motion.i
-                className={cn(item.icon, "text-[1.1rem] mb-0.5 leading-none", isActive ? "text-foreground" : "text-muted")}
+              <Icon
+                className={cn("h-4 w-4 mb-0.5 shrink-0", isActive ? "text-foreground" : "text-muted")}
                 aria-hidden="true"
-                animate={{ scale: isActive ? 1.18 : 1 }}
-                transition={{ type: "spring", stiffness: 380, damping: 24, mass: 0.5 }}
               />
               <span className="text-[10px] tracking-tight font-medium">{item.label}</span>
               {isActive && (
@@ -275,7 +287,7 @@ export function MobileHeaderMenu() {
                 {NAV_ITEMS.map((item) => {
                   const isActive =
                     pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
-                  const iconClass = NAV_FLATICON_CLASSES[item.href] || "fi fi-br-link";
+                  const Icon = NAV_ICONS[item.href] || FolderGit2;
 
                   return (
                     <Link
@@ -290,7 +302,10 @@ export function MobileHeaderMenu() {
                       )}
                     >
                       <div className="flex items-center space-x-3">
-                        <i className={cn(iconClass, "text-sm leading-none", isActive ? "text-foreground" : "text-muted")} aria-hidden="true" />
+                        <Icon
+                          className={cn("h-4 w-4 shrink-0", isActive ? "text-foreground" : "text-muted")}
+                          aria-hidden="true"
+                        />
                         <span>{item.label}</span>
                       </div>
                       <ChevronRight className="h-4 w-4 text-muted opacity-50" />
