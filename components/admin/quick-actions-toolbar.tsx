@@ -111,7 +111,7 @@ export function QuickActionsToolbar() {
   };
 
   return (
-    <Card className="liquid-glass-card p-5 space-y-4">
+    <Card className="bg-surface border border-border shadow-2xs p-5 space-y-4">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-border">
         <div className="flex items-center space-x-2.5">
           <div className="p-2 rounded-lg bg-surface border border-border shadow-2xs">

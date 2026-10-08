@@ -46,7 +46,7 @@ export function ContentHealthWidget({
   if (unreadMessages === 0) score += 15;
 
   return (
-    <Card className="liquid-glass-card p-5 space-y-5">
+    <Card className="bg-surface border border-border shadow-2xs p-5 space-y-5">
       <div className="flex items-center justify-between pb-3 border-b border-border">
         <div className="flex items-center space-x-2.5">
           <div className="p-2 rounded-lg bg-surface border border-border shadow-2xs">
@@ -97,7 +97,7 @@ export function ContentHealthWidget({
       <div className="grid grid-cols-2 gap-3">
         {/* Projects Status */}
         <Link
-          href="/admin/projects"
+          href="/dc/projects"
           className="p-3 rounded-lg border border-border bg-surface/50 hover:bg-surface hover:border-border-strong transition-all flex flex-col justify-between space-y-2 group"
         >
           <div className="flex items-center justify-between">
@@ -117,7 +117,7 @@ export function ContentHealthWidget({
 
         {/* Blog Posts */}
         <Link
-          href="/admin/posts"
+          href="/dc/posts"
           className="p-3 rounded-lg border border-border bg-surface/50 hover:bg-surface hover:border-border-strong transition-all flex flex-col justify-between space-y-2 group"
         >
           <div className="flex items-center justify-between">
@@ -137,7 +137,7 @@ export function ContentHealthWidget({
 
         {/* Services */}
         <Link
-          href="/admin/services"
+          href="/dc/services"
           className="p-3 rounded-lg border border-border bg-surface/50 hover:bg-surface hover:border-border-strong transition-all flex flex-col justify-between space-y-2 group"
         >
           <div className="flex items-center justify-between">
@@ -157,7 +157,7 @@ export function ContentHealthWidget({
 
         {/* Testimonials */}
         <Link
-          href="/admin/testimonials"
+          href="/dc/testimonials"
           className="p-3 rounded-lg border border-border bg-surface/50 hover:bg-surface hover:border-border-strong transition-all flex flex-col justify-between space-y-2 group"
         >
           <div className="flex items-center justify-between">
@@ -186,7 +186,7 @@ export function ContentHealthWidget({
             </span>
           </div>
           <Link
-            href="/admin/messages"
+            href="/dc/messages"
             className="font-bold underline underline-offset-4 hover:opacity-80"
           >
             Reply

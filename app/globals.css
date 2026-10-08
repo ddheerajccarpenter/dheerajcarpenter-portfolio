@@ -1,5 +1,15 @@
 @import "tailwindcss";
 
+/* ── "Anak Manja" Custom Brand Font ── */
+@font-face {
+  font-family: 'Anak Manja';
+  src: url('/fonts/AnakManja.otf') format('opentype'),
+       url('/fonts/AnakManja.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ── Global scrollbar hide ── */
 * {
   scrollbar-width: none;          /* Firefox */
@@ -11,41 +21,42 @@
 
 /*
  * Design tokens — Timeless Minimalist Studio Aesthetic
- * Foundation: Pure Monochrome (Black, Charcoal, Slate-Zinc, Pure/Off-White, Titanium)
+ * Foundation: Pure Neutral Monochrome (Pitch Black, Carbon, Neutral Graphite, Pure/Off-White)
+ * Zero blue tint across all backgrounds, cards, surfaces, borders, and overlays.
  */
 :root {
   --background: #ffffff;
-  --foreground: #09090b;
-  --muted-foreground: #52525b;
+  --foreground: #0a0a0a;
+  --muted-foreground: #666666;
   --border: rgba(0, 0, 0, 0.08);
-  --border-strong: rgba(0, 0, 0, 0.18);
-  --surface: #f4f4f5;
+  --border-strong: rgba(0, 0, 0, 0.16);
+  --surface: #f7f7f7;
   --surface-raised: #ffffff;
-  --surface-overlay: #e4e4e7;
+  --surface-overlay: #ededed;
   --surface-glass: rgba(255, 255, 255, 0.85);
-  --accent: #18181b;
+  --accent: #0a0a0a;
   --accent-muted: rgba(0, 0, 0, 0.05);
-  --accent-border: rgba(0, 0, 0, 0.16);
-  --focus-ring: #09090b;
-  --selection-bg: #18181b;
+  --accent-border: rgba(0, 0, 0, 0.14);
+  --focus-ring: #0a0a0a;
+  --selection-bg: #171717;
   --selection-fg: #ffffff;
 }
 
 .dark {
-  --background: #09090b;
-  --foreground: #f4f4f5;
-  --muted-foreground: #a1a1aa;
-  --border: rgba(255, 255, 255, 0.08);
+  --background: #000000;
+  --foreground: #ededed;
+  --muted-foreground: #888888;
+  --border: rgba(255, 255, 255, 0.09);
   --border-strong: rgba(255, 255, 255, 0.18);
-  --surface: #121215;
-  --surface-raised: #18181c;
-  --surface-overlay: #222228;
-  --surface-glass: rgba(18, 18, 21, 0.8);
-  --accent: #f4f4f5;
+  --surface: #111111;
+  --surface-raised: #171717;
+  --surface-overlay: #212121;
+  --surface-glass: rgba(17, 17, 17, 0.85);
+  --accent: #ededed;
   --accent-muted: rgba(255, 255, 255, 0.07);
   --accent-border: rgba(255, 255, 255, 0.18);
   --focus-ring: rgba(255, 255, 255, 0.6);
-  --selection-bg: #27272a;
+  --selection-bg: #262626;
   --selection-fg: #ffffff;
 }
 
@@ -53,18 +64,25 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-muted: var(--muted-foreground);
+  --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
   --color-border-strong: var(--border-strong);
   --color-surface: var(--surface);
   --color-surface-raised: var(--surface-raised);
   --color-surface-overlay: var(--surface-overlay);
+  --color-surface-glass: var(--surface-glass);
   --color-accent: var(--accent);
   --color-accent-muted: var(--accent-muted);
   --color-accent-border: var(--accent-border);
   --color-focus: var(--focus-ring);
+  --color-selection-bg: var(--selection-bg);
+  --color-selection-fg: var(--selection-fg);
 
-  --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-sans: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-inter: var(--font-inter), sans-serif;
+  --font-hero: var(--font-hero-name, var(--font-geist-sans)), sans-serif;
+  --font-anak-manja: "Anak Manja", var(--font-sans);
 
   /* Typographic hierarchy — editorial & balanced */
   --text-display: 3.75rem;
@@ -93,6 +111,18 @@
   --text-caption--letter-spacing: 0.04em;
 }
 
+@utility font-anak-manja {
+  font-family: 'Anak Manja', var(--font-sans);
+}
+
+.font-anak-manja {
+  font-family: 'Anak Manja', var(--font-sans) !important;
+  color: var(--foreground);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 @layer base {
   * {
     border-color: var(--border);
@@ -101,6 +131,8 @@
   html {
     -webkit-text-size-adjust: 100%;
     scroll-behavior: smooth;
+    overflow-x: clip;
+    -webkit-tap-highlight-color: transparent;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -118,8 +150,60 @@
     letter-spacing: -0.008em;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    user-select: auto;
+    overflow-x: clip;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+  }
+
+  /* ── Subtle fabric/linen grain texture overlay (10% visible with 0.3s inertial scroll lag) ── */
+  /* Bleed inset (-120px) ensures seamless translation without edge clipping */
+  /* Fixed, pointer-events:none so it never touches UI/UX */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: -120px;
+    z-index: 9999;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  2 0 0 0 -0.8'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23grain)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 256px 256px;
+    opacity: 0.10;
+    contain: strict;
+    transform: translate3d(0, var(--texture-y, 0px), 0);
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+    backface-visibility: hidden;
+  }
+
+  html.dark body::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  2 0 0 0 -0.8'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23grain)'/%3E%3C/svg%3E");
+    opacity: 0.10;
+  }
+
+  /* Completely remove texture overlay from admin panel */
+  html:has([data-admin-root]) body::before,
+  body:has([data-admin-root])::before,
+  body[data-admin="true"]::before,
+  [data-admin-root]::before {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+  }
+
+  /* Allow form controls and editable areas to be selected and typed into */
+  input, textarea, select, [contenteditable="true"] {
+    user-select: text !important;
+    -webkit-user-select: text !important;
+    -moz-user-select: text !important;
+    -ms-user-select: text !important;
+  }
+
+  /* Disable image dragging across the site */
+  img {
+    -webkit-user-drag: none;
+    user-drag: none;
   }
 
   :focus-visible {
@@ -156,32 +240,35 @@
     text-underline-offset: 3px;
   }
 
-  /* Global micro-transitions for nav links and interactive controls */
-  nav a,
-  header a,
-  footer a {
-    transition:
-      opacity 180ms cubic-bezier(0.16, 1, 0.3, 1),
-      color 180ms cubic-bezier(0.16, 1, 0.3, 1),
-      background-color 180ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
+  /* Universal elastic spring animation for ALL buttons, ALL links, and interactive controls */
   button:not(.animate-mode-bounce),
   .btn,
-  a[role="button"],
+  a,
   [role="button"] {
+    /* GPU-only: transform + opacity — elastic overshoot on release */
     transition:
-      transform 200ms cubic-bezier(0.16, 1, 0.3, 1),
-      box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1),
-      border-color 180ms ease,
-      background-color 180ms ease,
-      opacity 180ms ease;
-    will-change: transform, box-shadow;
+      transform 380ms cubic-bezier(0.34, 1.56, 0.64, 1),
+      opacity 180ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Snap down quickly on press and hold, then bounce back elastically on release */
+  button:not(.animate-mode-bounce):active,
+  .btn:active,
+  a:active,
+  [role="button"]:active {
+    transform: scale(0.95);
+    transition:
+      transform 80ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 80ms cubic-bezier(0.22, 1, 0.36, 1) !important;
   }
 }
 
 /* Custom smooth scrollbars */
+.custom-scrollbar {
+  scrollbar-width: thin;
+}
 .custom-scrollbar::-webkit-scrollbar {
+  display: block;
   width: 5px;
   height: 5px;
 }
@@ -220,54 +307,68 @@
    Tactile & Layered Interface Utilities
    ════════════════════════════════════════════════════════════ */
 
-/* Editorial Text Gradient — clean monochrome from pure white to zinc */
+/* Editorial Text Gradient — clean neutral monochrome */
 @utility text-editorial-gradient {
-  background: linear-gradient(180deg, #ffffff 0%, #e4e4e7 65%, #a1a1aa 100%);
+  background: linear-gradient(180deg, #0a0a0a 0%, #262626 70%, #525252 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  .light &, :root:not(.dark) & {
-    background: linear-gradient(180deg, #09090b 0%, #27272a 70%, #52525b 100%);
+
+  .dark & {
+    background: linear-gradient(180deg, #ffffff 0%, #d4d4d4 65%, #888888 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 }
 
-/* Ambient Dot Grid & Canvas Layer (Letters & Amplemarket design system foundation) */
-@utility bg-ambient-grid {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
-  background-size: 28px 28px;
-  .light &, :root:not(.dark) & {
-    background-image: radial-gradient(rgba(0, 0, 0, 0.06) 1px, transparent 1px);
-  }
-}
-
-@utility hero-glow {
-  background: radial-gradient(ellipse 70% 55% at 50% -10%, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.02) 45%, transparent 75%);
-  .light &, :root:not(.dark) & {
-    background: radial-gradient(ellipse 70% 55% at 50% -10%, rgba(0, 0, 0, 0.04) 0%, transparent 70%);
-  }
-}
-
-/* Bento Card Style */
-@utility bento-card {
-  background: color-mix(in srgb, var(--surface) 85%, transparent);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+/* Geist / Apple hairline card: clean, crisp, no-fluff surface */
+@utility geist-card {
+  background-color: var(--surface);
   border: 1px solid var(--border);
-  box-shadow: 
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.06),
-    0 2px 8px -2px rgba(0, 0, 0, 0.2);
-  transition:
-    transform 220ms cubic-bezier(0.16, 1, 0.3, 1),
-    border-color 180ms ease,
-    box-shadow 220ms cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 12px;
+  transition: border-color 150ms ease, background-color 150ms ease;
 
   &:hover {
-    transform: translateY(-2px);
     border-color: var(--border-strong);
-    box-shadow: 
-      inset 0 1px 0 0 rgba(255, 255, 255, 0.1),
-      0 12px 30px -4px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* Vercel Mono Technical Eyebrow */
+@utility mono-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+/* Notion Document-Grade Callout Box */
+@utility notion-callout {
+  background-color: var(--surface-overlay);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  color: var(--foreground);
+}
+
+/* Notion Document Metadata Tag */
+@utility notion-tag {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--muted-foreground);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.125rem 0.5rem;
+  transition: border-color 150ms ease, color 150ms ease;
+
+  &:hover {
+    border-color: var(--border-strong);
+    color: var(--foreground);
   }
 }
 
@@ -291,36 +392,32 @@
 @utility tactile-card {
   background-color: var(--surface);
   border: 1px solid var(--border);
-  box-shadow: 
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.04),
-    0 2px 8px -2px rgba(0, 0, 0, 0.05);
-  transition:
-    transform 240ms cubic-bezier(0.16, 1, 0.3, 1),
-    border-color 200ms cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 240ms cubic-bezier(0.16, 1, 0.3, 1),
-    background-color 200ms ease;
 
-  .dark & {
-    background-color: var(--surface);
-    border-color: var(--border);
-    box-shadow: 
-      inset 0 1px 0 0 rgba(255, 255, 255, 0.05),
-      0 4px 20px -2px rgba(0, 0, 0, 0.4);
+  /* Pre-render shadow — reveal via opacity (GPU-safe) */
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow:
+      0 8px 24px -4px rgba(0, 0, 0, 0.13),
+      0 2px 8px -2px rgba(0, 0, 0, 0.07);
+    opacity: 0;
+    transition: opacity 240ms cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
   }
+  .dark &::after {
+    box-shadow:
+      0 12px 32px -4px rgba(0, 0, 0, 0.6),
+      0 4px 16px -2px rgba(0, 0, 0, 0.4);
+  }
+
+  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
 
   &:hover {
     transform: translateY(-2.5px);
-    border-color: var(--border-strong);
-    box-shadow: 
-      inset 0 1px 0 0 rgba(255, 255, 255, 0.08),
-      0 8px 24px -4px rgba(0, 0, 0, 0.12);
-  }
-
-  .dark &:hover {
-    border-color: var(--border-strong);
-    box-shadow: 
-      inset 0 1px 0 0 rgba(255, 255, 255, 0.08),
-      0 12px 32px -4px rgba(0, 0, 0, 0.6);
+    &::after { opacity: 1; }
   }
 }
 
@@ -405,38 +502,34 @@
   font-weight: 600;
   position: relative;
   overflow: hidden;
-  box-shadow: 
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.2),
-    0 1px 3px 0 rgba(0, 0, 0, 0.15),
-    0 4px 12px -2px rgba(0, 0, 0, 0.1);
-  transition:
-    transform 220ms cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 220ms cubic-bezier(0.16, 1, 0.3, 1),
-    background-color 180ms ease,
-    border-color 180ms ease !important;
-  will-change: transform, box-shadow;
 
-  .dark & {
-    box-shadow: 
-      inset 0 1px 0 0 rgba(255, 255, 255, 0.25),
-      0 2px 8px 0 rgba(0, 0, 0, 0.35);
+  /* Pre-render hover shadow as opacity layer — GPU composited */
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow:
+      0 6px 20px -2px rgba(0, 0, 0, 0.22),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.25);
+    opacity: 0;
+    transition: opacity 200ms cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
   }
+
+  /* Elastic spring-back on release, fast snap on press */
+  transition: transform 420ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              opacity 180ms cubic-bezier(0.22, 1, 0.36, 1);
 
   &:hover {
     transform: translateY(-1.5px);
-    background-color: color-mix(in srgb, var(--foreground) 90%, transparent) !important;
-    box-shadow: 
-      inset 0 1px 0 0 rgba(255, 255, 255, 0.3),
-      0 6px 20px -2px rgba(0, 0, 0, 0.2);
+    &::after { opacity: 1; }
   }
 
-  /* Primary compress: sinks inward and flattens, distinct from secondary */
   &:active {
-    transform: translateY(1px) scale(0.978) scaleY(0.988);
-    box-shadow: 
-      inset 0 1px 0 0 rgba(255, 255, 255, 0.08),
-      0 1px 3px -1px rgba(0, 0, 0, 0.2) !important;
-    transition-duration: 60ms !important;
+    transform: translateY(1.5px) scale(0.94);
+    &::after { opacity: 0; }
+    transition: transform 80ms cubic-bezier(0.22, 1, 0.36, 1) !important;
   }
 }
 
@@ -446,41 +539,39 @@
   border: 1px solid var(--border) !important;
   color: var(--foreground) !important;
   font-weight: 500;
-  box-shadow: 
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.05),
-    0 1px 2px 0 rgba(0, 0, 0, 0.04);
-  transition:
-    transform 220ms cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 220ms cubic-bezier(0.16, 1, 0.3, 1),
-    border-color 180ms ease,
-    background-color 180ms ease !important;
-  will-change: transform, box-shadow;
 
-  .dark & {
-    background-color: var(--surface-raised) !important;
-    border-color: var(--border) !important;
-    box-shadow: 
-      inset 0 1px 0 0 rgba(255, 255, 255, 0.06),
-      0 2px 6px -1px rgba(0, 0, 0, 0.3);
+  /* Pre-render hover shadow — reveal via opacity */
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow:
+      0 4px 14px -2px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.07);
+    opacity: 0;
+    transition: opacity 200ms cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
   }
+  .dark &::after {
+    box-shadow:
+      0 6px 20px -2px rgba(0, 0, 0, 0.4),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.06);
+  }
+
+  /* Elastic spring-back on release, fast snap on press */
+  transition: transform 420ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              opacity 180ms cubic-bezier(0.22, 1, 0.36, 1);
 
   &:hover {
     transform: translateY(-1.5px);
-    background-color: var(--surface-overlay) !important;
-    border-color: var(--border-strong) !important;
-    box-shadow: 
-      inset 0 1px 0 0 rgba(255, 255, 255, 0.08),
-      0 4px 14px -2px rgba(0, 0, 0, 0.1);
+    &::after { opacity: 1; }
   }
 
-  /* Secondary compress: settles down rather than inward — distinct from primary */
   &:active {
-    transform: translateY(0.5px) scale(0.984);
-    border-color: var(--border-strong) !important;
-    box-shadow: 
-      inset 0 2px 4px 0 rgba(0, 0, 0, 0.06),
-      0 0px 1px 0 rgba(0, 0, 0, 0.04) !important;
-    transition-duration: 60ms !important;
+    transform: translateY(1px) scale(0.945);
+    &::after { opacity: 0; }
+    transition: transform 80ms cubic-bezier(0.22, 1, 0.36, 1) !important;
   }
 }
 
@@ -489,24 +580,21 @@
   background-color: transparent !important;
   border: 1px solid transparent !important;
   font-weight: 500;
+
+  /* Elastic spring-back on release */
   transition:
-    transform 200ms cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 180ms ease,
-    border-color 180ms ease,
-    background-color 180ms ease !important;
-  will-change: transform;
+    transform 400ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 180ms cubic-bezier(0.22, 1, 0.36, 1);
 
   &:hover {
-    background-color: var(--surface) !important;
-    border-color: var(--border) !important;
     transform: translateY(-1px);
+    opacity: 0.9;
   }
 
-  /* Ghost press: minimal compression, stays nearly flat */
   &:active {
-    transform: translateY(0px) scale(0.992);
-    opacity: 0.75;
-    transition-duration: 55ms !important;
+    transform: scale(0.95);
+    opacity: 0.7;
+    transition: transform 80ms cubic-bezier(0.22, 1, 0.36, 1) !important;
   }
 }
 
@@ -552,7 +640,8 @@
     left: 0;
     background-color: currentColor;
     transform-origin: bottom right;
-    transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+    /* GPU-safe: only transform (clip-path alternative) */
+    transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
   }
   &:hover::after {
     transform: scaleX(1);
@@ -610,28 +699,30 @@
   }
 }
 
-/* Grayscale Image Reveal */
+/* Grayscale Image Reveal:
+   - Mobile: keeps the natural image colors without grayscale or hover flash.
+   - PC / Mac / Desktop site: preserves the signature monochrome reveal on hover. */
 @utility animate-grayscale-hover {
+  filter: none;
   transition:
     filter 320ms cubic-bezier(0.16, 1, 0.3, 1),
     transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
-  filter: grayscale(85%) contrast(105%);
-  &:hover {
-    filter: grayscale(0%) contrast(100%);
-    transform: scale(1.015);
+
+  @media (min-width: 769px) {
+    filter: grayscale(85%) contrast(105%);
+
+    &:hover {
+      filter: grayscale(0%) contrast(100%);
+      transform: scale(1.015);
+    }
   }
 }
 
-/* Subtle Badge Hover */
+/* Subtle Badge Hover — GPU safe: transform only */
 @utility animate-badge-glow {
-  transition:
-    transform 200ms cubic-bezier(0.16, 1, 0.3, 1),
-    border-color 180ms ease,
-    background-color 180ms ease;
+  transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
   &:hover {
-    transform: translateY(-1px);
-    border-color: var(--border-strong);
-    background-color: var(--surface-overlay);
+    transform: translateY(-1.5px) scale(1.02);
   }
 }
 
@@ -648,42 +739,45 @@
 
 /* Name font */
 @utility font-hero-name {
-  font-family: var(--font-hero-name), var(--font-inter), sans-serif;
-  letter-spacing: -0.035em;
+  font-family: var(--font-hero-name, var(--font-geist-sans)), -apple-system, BlinkMacSystemFont, sans-serif;
+  letter-spacing: -0.02em;
 }
 
-/* Card float utility */
+/* Card float utility — GPU safe: transform + opacity shadow reveal */
 @utility animate-card-float {
-  transition:
-    transform 240ms cubic-bezier(0.16, 1, 0.3, 1),
-    border-color 180ms ease,
-    box-shadow 240ms cubic-bezier(0.16, 1, 0.3, 1),
-    background-color 180ms ease;
+  position: relative;
+  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.13);
+    opacity: 0;
+    transition: opacity 240ms cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+  }
+  .dark &::after {
+    box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.55);
+  }
+
   &:hover {
     transform: translateY(-3px);
-    border-color: var(--border-strong);
-    box-shadow: 
-      0 8px 24px -4px rgba(0, 0, 0, 0.12);
-  }
-  .dark &:hover {
-    box-shadow: 
-      0 12px 32px -4px rgba(0, 0, 0, 0.55);
+    &::after { opacity: 1; }
   }
 }
 
 @utility animate-btn-scale {
   transition:
-    transform 200ms cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1),
-    border-color 180ms ease,
-    opacity 160ms ease;
-  will-change: transform, box-shadow;
+    transform 400ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 180ms cubic-bezier(0.22, 1, 0.36, 1);
   &:hover {
     transform: translateY(-1px);
   }
   &:active {
-    transform: translateY(0.5px) scale(0.984);
-    transition-duration: 60ms;
+    transform: translateY(1px) scale(0.94);
+    transition: transform 80ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 }
 
@@ -787,7 +881,7 @@
     var(--surface-overlay) 100%
   );
   background-size: 200% 100%;
-  animation: shimmer 1.6s ease-in-out infinite;
+  animation: shimmer 2.2s ease-in-out infinite;
 }
 @keyframes shimmer {
   0%   { background-position: -200% 0; }
@@ -803,7 +897,7 @@
 
 /* Alert & Check animations */
 @utility animate-alert-scale {
-  animation: alertScaleIn 280ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: alertScaleIn 400ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 @keyframes alertScaleIn {
   from { opacity: 0; transform: scale(0.97); }
@@ -811,12 +905,27 @@
 }
 
 @utility animate-check-pop {
-  animation: checkPop 380ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: checkPop 520ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 @keyframes checkPop {
   0%   { opacity: 0; transform: scale(0); }
   70%  { opacity: 1; transform: scale(1.08); }
   100% { opacity: 1; transform: scale(1); }
+}
+
+/* Page content reveal animation */
+@utility animate-page-reveal {
+  animation: pageReveal 420ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes pageReveal {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ════════════════════════════════════════════════════════════
@@ -879,6 +988,66 @@
   to   { opacity: 1; transform: scale(1) rotate(0deg); }
 }
 
+/* ── Jitter UI Elements: Isometric Animations & Choreography ── */
+@keyframes jitter-iso-entrance {
+  0% {
+    opacity: 0;
+    transform: perspective(1000px) rotateX(12deg) rotateY(-10deg) translate3d(0, 24px, -30px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(1000px) rotateX(0deg) rotateY(0deg) translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes jitter-pop-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.84);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes jitter-iso-float {
+  0%, 100% {
+    transform: perspective(1000px) rotateX(4deg) rotateY(-4deg) translateY(0px);
+  }
+  50% {
+    transform: perspective(1000px) rotateX(2deg) rotateY(-2deg) translateY(-6px);
+  }
+}
+
+.jitter-iso-card {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 320ms ease, border-color 200ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .jitter-iso-card:hover {
+    transform: perspective(1000px) rotateX(3.5deg) rotateY(-4deg) translateY(-6px) scale3d(1.015, 1.015, 1.015);
+    box-shadow: 0 16px 36px -12px rgba(0, 0, 0, 0.12);
+  }
+  .dark .jitter-iso-card:hover {
+    box-shadow: 0 16px 36px -12px rgba(0, 0, 0, 0.65), 0 0 0 1px var(--border-strong);
+  }
+}
+
+.jitter-iso-badge {
+  transform-style: preserve-3d;
+  transition: transform 240ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.jitter-iso-badge:hover {
+  transform: perspective(600px) rotateX(6deg) rotateY(-6deg) scale(1.05);
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-new(root),
@@ -892,7 +1061,9 @@
   .animate-check-pop,
   .animate-clip-reveal,
   .animate-clip-reveal-h,
-  .animate-shimmer {
+  .animate-shimmer,
+  .animate-page-reveal,
+  .animate-drawer-up {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
@@ -910,4 +1081,476 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
   }
+}
+
+/* ── Universal Low-GPU Optimizations (Laptops & Phones) ────────────────── */
+/* Prevents continuous multi-pass shaders & permanent VRAM layer allocations */
+*, *::before, *::after {
+  will-change: auto !important;
+}
+
+@media (max-width: 768px) {
+  /* Mobile: keep texture sharp on high-DPI phone screens */
+  body::before {
+    background-size: 200px 200px;
+  }
+
+  /* Prevent iOS Safari auto-zoom on input focus */
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+
+  .backdrop-blur-2xl,
+  .backdrop-blur-xl,
+  .backdrop-blur-lg,
+  .backdrop-blur-md,
+  .backdrop-blur-sm,
+  .backdrop-blur-xs,
+  .frosted-surface,
+  .liquid-glass,
+  .liquid-glass-card {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* Mobile: keep image colors natural and eliminate black grayscale hover flash */
+  .animate-grayscale-hover,
+  .animate-grayscale-hover:hover,
+  .animate-grayscale-hover:active,
+  .animate-grayscale-hover:focus {
+    filter: none !important;
+    -webkit-filter: none !important;
+    transform: none !important;
+  }
+}
+
+@keyframes drawer-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0.8;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@utility animate-drawer-up {
+  animation: drawer-up 340ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ── Mobile Safe Area Utilities ────────────────────────────────────────────── */
+@utility pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@utility pt-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+@utility scroll-touch {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ════════════════════════════════════════════════════════════
+   MagicUI-Inspired Animation Utilities
+   ════════════════════════════════════════════════════════════ */
+
+/* ── Scroll-Snap Horizontal Carousel (MagicUI benefits strip) ────────────── */
+@utility snap-carousel {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  gap: 1.25rem;
+  padding-inline: 1rem;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@utility snap-carousel-item {
+  flex-shrink: 0;
+  scroll-snap-align: start;
+}
+
+/* Gradient fade masks on left/right edges of a scroll container */
+@utility carousel-fade-edges {
+  position: relative;
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 5rem;
+    z-index: 2;
+    pointer-events: none;
+  }
+  &::before {
+    left: 0;
+    background: linear-gradient(to right, var(--background) 0%, transparent 100%);
+  }
+  &::after {
+    right: 0;
+    background: linear-gradient(to left, var(--background) 0%, transparent 100%);
+  }
+}
+
+/* ── Parallax scroll container (JS-driven y via CSS var) ─────────────────── */
+/* Note: will-change:transform is set only while scrolling via JS, not statically */
+@utility parallax-card {
+  transition: transform 0ms linear;
+}
+
+/* ── Section heading reveal — MagicUI float-in style ────────────────────── */
+@utility section-eyebrow {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+/* ── Bento card — GPU-safe: opacity-reveal shadow, transform-only lift ─────── */
+@utility bento-card {
+  background-color: var(--surface-overlay);
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  position: relative;
+  transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Pre-render shadow — reveal via opacity (GPU-safe) */
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow:
+      0 12px 40px -8px rgba(0, 0, 0, 0.14),
+      0 4px 16px -4px rgba(0, 0, 0, 0.08);
+    opacity: 0;
+    transition: opacity 280ms cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+  }
+  .dark &::after {
+    box-shadow:
+      0 16px 48px -8px rgba(0, 0, 0, 0.55),
+      0 4px 16px -4px rgba(0, 0, 0, 0.35);
+  }
+
+  &:hover {
+    transform: translateY(-4px);
+    &::after { opacity: 1; }
+  }
+}
+
+/* ── Card image zoom on hover — GPU-safe scale transform ─────────────────── */
+/* Note: object-position is NOT GPU-composited (triggers layout). Use scale instead. */
+@utility image-pan-hover {
+  overflow: hidden;
+  img {
+    transition: transform 480ms cubic-bezier(0.22, 1, 0.36, 1);
+    transform-origin: center top;
+  }
+  &:hover img {
+    transform: scale(1.04) translateY(-2px);
+  }
+}
+
+/* ── Continuous animations REMOVED (GPU drain on low-end devices) ────────────
+   animate-float-pulse: causes compositor layer to stay promoted indefinitely.
+   text-shimmer: background-position animation triggers paint on every frame.
+   Both removed — Apple never uses looping transforms as ambient effects.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+/* ── Stagger fan-spread entrance (MagicUI hero device fan) ───────────────── */
+@utility stagger-fan-container {
+  & > *:nth-child(1) { transition-delay: 0ms; }
+  & > *:nth-child(2) { transition-delay: 60ms; }
+  & > *:nth-child(3) { transition-delay: 120ms; }
+  & > *:nth-child(4) { transition-delay: 180ms; }
+  & > *:nth-child(5) { transition-delay: 240ms; }
+  & > *:nth-child(6) { transition-delay: 300ms; }
+}
+
+/* ── Precise card lift — GPU-safe: transform + opacity shadow reveal ─────── */
+@utility animate-glow-hover {
+  position: relative;
+  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow:
+      0 8px 32px -4px rgba(0, 0, 0, 0.15),
+      0 2px 8px -2px rgba(0, 0, 0, 0.08);
+    opacity: 0;
+    transition: opacity 260ms cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+  }
+  .dark &::after {
+    box-shadow:
+      0 8px 32px -4px rgba(0, 0, 0, 0.5),
+      0 2px 8px -2px rgba(0, 0, 0, 0.3);
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    &::after { opacity: 1; }
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Apple-Grade Micro-Interaction Utilities
+   Pure transform/opacity only — zero paint, zero layout on every frame.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* Precise 2px lift on any interactive element — elastic spring-back */
+@utility hover-lift-sm {
+  transition: transform 380ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  &:hover { transform: translateY(-2px); }
+  &:active {
+    transform: translateY(1px) scale(0.95);
+    transition: transform 80ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
+/* Icon micro-nudge: arrow/chevron nudges 2px on parent hover */
+@utility icon-nudge {
+  & .icon-target,
+  & svg:last-child,
+  & [data-icon] {
+    display: inline-block;
+    transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  &:hover .icon-target,
+  &:hover svg:last-child,
+  &:hover [data-icon] {
+    transform: translateX(3px);
+  }
+}
+
+/* Inline link opacity dimming on hover — Apple's subtlest interaction */
+@utility link-dim-hover {
+  transition: opacity 140ms cubic-bezier(0.22, 1, 0.36, 1);
+  &:hover { opacity: 0.65; }
+  &:active { opacity: 0.45; transition-duration: 50ms; }
+}
+
+/* Active press state — elastic bouncy haptic feedback */
+@utility press-active {
+  transition: transform 380ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              opacity 180ms cubic-bezier(0.22, 1, 0.36, 1);
+  &:active {
+    transform: scale(0.94);
+    opacity: 0.85;
+    transition: transform 80ms cubic-bezier(0.22, 1, 0.36, 1) !important;
+  }
+}
+
+/* Timeline dot reveal — scale-in when scrolled into view */
+@utility timeline-dot {
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 220ms cubic-bezier(0.22, 1, 0.36, 1);
+  &:hover {
+    transform: scale(1.2);
+  }
+}
+
+/* Content section horizontal divider with draw-in effect */
+@utility divider-draw {
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--border-strong);
+    transition: width 400ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  &:hover::before { width: 100%; }
+}
+
+/* Skill badge breathe — elastic press */
+@utility badge-breathe {
+  transition: transform 380ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  &:hover {
+    transform: scale(1.04) translateY(-1px);
+  }
+  &:active {
+    transform: scale(0.93);
+    transition: transform 80ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
+/* ── Scroll progress reveal bar (MagicUI top stripe) ────────────────────── */
+@utility scroll-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: var(--foreground);
+  transform-origin: left;
+  z-index: 9999;
+  opacity: 0.7;
+}
+
+/* ── Feature highlight slide row — alternating left/right content reveal ─── */
+@utility feature-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3rem;
+  padding-bottom: 3.5rem;
+  @media (min-width: 1024px) {
+    flex-direction: row;
+  }
+  & + & {
+    border-top: 1px solid var(--border);
+    padding-top: 3.5rem;
+  }
+}
+
+@utility feature-row-reverse {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3rem;
+  padding-bottom: 3.5rem;
+  @media (min-width: 1024px) {
+    flex-direction: row-reverse;
+  }
+  & + & {
+    border-top: 1px solid var(--border);
+    padding-top: 3.5rem;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════
+   UI Design Themes (Admin Controlled Dynamic Design System)
+   ════════════════════════════════════════════════════════════ */
+
+/* Theme 2: Cyber Emerald */
+[data-ui-design="obsidian"] {
+  --accent: #10b981;
+  --accent-border: rgba(16, 185, 129, 0.3);
+  --focus-ring: #10b981;
+}
+.dark[data-ui-design="obsidian"],
+[data-ui-design="obsidian"].dark,
+[data-ui-design="obsidian"] .dark {
+  --background: #050807;
+  --surface: #0a110e;
+  --surface-raised: #101c17;
+  --surface-overlay: #152720;
+  --border: rgba(16, 185, 129, 0.12);
+  --border-strong: rgba(16, 185, 129, 0.28);
+  --accent: #10b981;
+  --accent-muted: rgba(16, 185, 129, 0.1);
+  --focus-ring: #10b981;
+}
+
+/* Theme 3: Nordic Atelier */
+[data-ui-design="nordic"] {
+  --background: #faf8f5;
+  --surface: #f3efe9;
+  --surface-raised: #ffffff;
+  --surface-overlay: #ebe4da;
+  --foreground: #1c1917;
+  --muted-foreground: #78716c;
+  --border: rgba(120, 113, 108, 0.14);
+  --border-strong: rgba(120, 113, 108, 0.28);
+  --accent: #d97706;
+  --focus-ring: #d97706;
+}
+.dark[data-ui-design="nordic"],
+[data-ui-design="nordic"].dark,
+[data-ui-design="nordic"] .dark {
+  --background: #0f0e0d;
+  --surface: #1a1715;
+  --surface-raised: #24201c;
+  --surface-overlay: #2f2a25;
+  --foreground: #f5f0eb;
+  --muted-foreground: #a8a29e;
+  --border: rgba(217, 119, 6, 0.15);
+  --border-strong: rgba(217, 119, 6, 0.3);
+  --accent: #f59e0b;
+  --accent-muted: rgba(245, 158, 11, 0.1);
+  --focus-ring: #f59e0b;
+}
+
+/* Theme 4: Tokyo Neon */
+[data-ui-design="tokyo"] {
+  --accent: #ec4899;
+  --focus-ring: #ec4899;
+}
+.dark[data-ui-design="tokyo"],
+[data-ui-design="tokyo"].dark,
+[data-ui-design="tokyo"] .dark {
+  --background: #09060e;
+  --surface: #130d1e;
+  --surface-raised: #1c142b;
+  --surface-overlay: #271c3c;
+  --border: rgba(236, 72, 153, 0.15);
+  --border-strong: rgba(236, 72, 153, 0.3);
+  --accent: #ec4899;
+  --accent-muted: rgba(236, 72, 153, 0.1);
+  --focus-ring: #ec4899;
+}
+
+/* Theme 5: Monolith Titanium */
+[data-ui-design="monolith"] {
+  --background: #ffffff;
+  --surface: #f4f4f5;
+  --surface-raised: #ffffff;
+  --surface-overlay: #e4e4e7;
+  --foreground: #000000;
+  --accent: #000000;
+  --focus-ring: #000000;
+}
+.dark[data-ui-design="monolith"],
+[data-ui-design="monolith"].dark,
+[data-ui-design="monolith"] .dark {
+  --background: #000000;
+  --surface: #0d0d0d;
+  --surface-raised: #141414;
+  --surface-overlay: #1c1c1c;
+  --border: rgba(255, 255, 255, 0.12);
+  --border-strong: rgba(255, 255, 255, 0.25);
+  --foreground: #ffffff;
+  --accent: #ffffff;
+  --focus-ring: #ffffff;
+}
+
+/* Theme 6: Velvet Gold */
+[data-ui-design="aurora"] {
+  --accent: #d97706;
+  --focus-ring: #d97706;
+}
+.dark[data-ui-design="aurora"],
+[data-ui-design="aurora"].dark,
+[data-ui-design="aurora"] .dark {
+  --background: #080806;
+  --surface: #14130d;
+  --surface-raised: #1f1d14;
+  --surface-overlay: #2c291c;
+  --border: rgba(234, 179, 8, 0.15);
+  --border-strong: rgba(234, 179, 8, 0.3);
+  --accent: #eab308;
+  --accent-muted: rgba(234, 179, 8, 0.1);
+  --focus-ring: #eab308;
 }

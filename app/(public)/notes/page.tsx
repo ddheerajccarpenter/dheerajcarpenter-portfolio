@@ -5,8 +5,7 @@ import { SkeletonWrapper } from "@/components/ui/skeleton-wrapper";
 import { AnimateIn } from "@/components/ui/animate-in";
 import { CheckCircle2, Pin } from "lucide-react";
 
-export const revalidate = 0;
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 export default async function PublicNotesPage() {
   const notes = await getAdminNotes();
@@ -16,11 +15,10 @@ export default async function PublicNotesPage() {
       <div className="py-16 md:py-24 space-y-12">
         <Container className="space-y-4">
           <AnimateIn from="up" distance={16} duration={0.4} viewport={false}>
-            <div className="inline-flex items-center gap-2 text-caption font-bold uppercase tracking-[0.14em] text-muted mb-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-foreground inline-block opacity-60" />
+            <p className="mono-eyebrow text-muted mb-2">
               Engineering Logs & Scratchpad
-            </div>
-            <h1 className="text-h1 font-bold tracking-tight sm:text-[3rem] text-editorial-gradient">
+            </p>
+            <h1 className="text-h1 font-bold tracking-tight sm:text-[3rem] text-foreground">
               Notes & Thoughts
             </h1>
           </AnimateIn>
@@ -42,7 +40,7 @@ export default async function PublicNotesPage() {
               {notes.map((note, index) => (
                 <AnimateIn key={note.id} from="up" distance={16} staggerIndex={index}>
                   <Card
-                    className={`p-6 flex flex-col justify-between space-y-4 h-full tactile-card ${
+                    className={`p-6 flex flex-col justify-between space-y-4 h-full geist-card ${
                       note.pinned ? "border-border-strong shadow-xs" : ""
                     }`}
                   >
@@ -57,10 +55,10 @@ export default async function PublicNotesPage() {
                           {note.title}
                         </h3>
                         {note.pinned && (
-                          <Badge variant="pill" className="shrink-0 gap-1 font-mono text-[10px]">
+                          <span className="notion-tag text-[10px] shrink-0">
                             <Pin className="h-2.5 w-2.5" />
                             Pinned
-                          </Badge>
+                          </span>
                         )}
                       </div>
 

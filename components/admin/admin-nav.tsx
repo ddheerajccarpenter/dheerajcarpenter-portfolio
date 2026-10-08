@@ -9,49 +9,49 @@ import { cn } from "@/lib/utils";
 import { ADMIN_NAV } from "@/lib/constants";
 
 const NAV_FLATICON_CLASSES: Record<string, string> = {
-  "/admin": "fi fi-br-apps",
-  "/admin/content": "fi fi-br-file",
-  "/admin/notifications": "fi fi-br-bell",
-  "/admin/projects": "fi fi-br-folder",
-  "/admin/posts": "fi fi-br-edit",
-  "/admin/services": "fi fi-br-cube",
-  "/admin/testimonials": "fi fi-br-comment-alt",
-  "/admin/experience": "fi fi-br-calendar",
-  "/admin/skills": "fi fi-br-layers",
-  "/admin/media": "fi fi-br-picture",
-  "/admin/messages": "fi fi-br-envelope",
-  "/admin/notes": "fi fi-br-copy",
-  "/admin/audit-logs": "fi fi-br-shield-check",
-  "/admin/seo": "fi fi-br-search",
-  "/admin/settings": "fi fi-br-settings",
-  "/admin/analytics": "fi fi-br-chart-histogram",
-  "/admin/users": "fi fi-br-users",
+  "/dc": "fi fi-br-apps",
+  "/dc/content": "fi fi-br-file",
+  "/dc/notifications": "fi fi-br-bell",
+  "/dc/projects": "fi fi-br-folder",
+  "/dc/posts": "fi fi-br-edit",
+  "/dc/services": "fi fi-br-cube",
+  "/dc/testimonials": "fi fi-br-comment-alt",
+  "/dc/experience": "fi fi-br-calendar",
+  "/dc/skills": "fi fi-br-layers",
+  "/dc/media": "fi fi-br-picture",
+  "/dc/messages": "fi fi-br-envelope",
+  "/dc/notes": "fi fi-br-copy",
+  "/dc/audit-logs": "fi fi-br-shield-check",
+  "/dc/seo": "fi fi-br-search",
+  "/dc/settings": "fi fi-br-settings",
+  "/dc/analytics": "fi fi-br-chart-histogram",
+  "/dc/users": "fi fi-br-users",
 };
 
 /** Categorised navigation sections for clear administrative hierarchy */
 const NAV_SECTIONS = [
   {
     title: "Core",
-    items: ["/admin", "/admin/content", "/admin/notifications"],
+    items: ["/dc", "/dc/content", "/dc/notifications"],
   },
   {
     title: "Publishing",
-    items: ["/admin/projects", "/admin/posts", "/admin/services", "/admin/testimonials"],
+    items: ["/dc/projects", "/dc/posts", "/dc/services", "/dc/testimonials"],
   },
   {
     title: "Portfolio Data",
-    items: ["/admin/experience", "/admin/skills", "/admin/media"],
+    items: ["/dc/experience", "/dc/skills", "/dc/media"],
   },
   {
     title: "System & Management",
     items: [
-      "/admin/messages",
-      "/admin/notes",
-      "/admin/audit-logs",
-      "/admin/seo",
-      "/admin/settings",
-      "/admin/analytics",
-      "/admin/users",
+      "/dc/messages",
+      "/dc/notes",
+      "/dc/audit-logs",
+      "/dc/seo",
+      "/dc/settings",
+      "/dc/analytics",
+      "/dc/users",
     ],
   },
 ];
@@ -63,7 +63,7 @@ export function AdminSidebar() {
   const handleLogout = async () => {
     const supabase = createClient();
     await supabase.auth.signOut();
-    router.push("/admin/login");
+    router.push("/dc/login");
     router.refresh();
   };
 
@@ -109,8 +109,8 @@ export function AdminSidebar() {
 
                   const iconClass = NAV_FLATICON_CLASSES[item.href] || "fi fi-br-settings";
                   const isActive =
-                    item.href === "/admin"
-                      ? pathname === "/admin"
+                    item.href === "/dc"
+                      ? pathname === "/dc"
                       : pathname.startsWith(item.href);
 
                   return (
@@ -178,14 +178,14 @@ export function AdminMobileNav() {
   const handleLogout = async () => {
     const supabase = createClient();
     await supabase.auth.signOut();
-    router.push("/admin/login");
+    router.push("/dc/login");
     router.refresh();
   };
 
   const primaryNav = [
-    { href: "/admin", label: "Overview", icon: "fi fi-br-apps" },
-    { href: "/admin/content", label: "Content", icon: "fi fi-br-file" },
-    { href: "/admin/projects", label: "Projects", icon: "fi fi-br-folder" },
+    { href: "/dc", label: "Overview", icon: "fi fi-br-apps" },
+    { href: "/dc/content", label: "Content", icon: "fi fi-br-file" },
+    { href: "/dc/projects", label: "Projects", icon: "fi fi-br-folder" },
   ];
 
   return (
@@ -197,8 +197,8 @@ export function AdminMobileNav() {
         <div className="grid grid-cols-4 w-full h-full max-w-md mx-auto">
           {primaryNav.map((item) => {
             const isActive =
-              item.href === "/admin"
-                ? pathname === "/admin"
+              item.href === "/dc"
+                ? pathname === "/dc"
                 : pathname.startsWith(item.href);
 
             return (
@@ -281,8 +281,8 @@ export function AdminMobileNav() {
 
                         const iconClass = NAV_FLATICON_CLASSES[item.href] || "fi fi-br-settings";
                         const isActive =
-                          item.href === "/admin"
-                            ? pathname === "/admin"
+                          item.href === "/dc"
+                            ? pathname === "/dc"
                             : pathname.startsWith(item.href);
 
                         return (

@@ -48,6 +48,7 @@ export const contactFormSchema = z.object({
   email: z.string().email("Invalid email address"),
   subject: z.string().max(200).default(""),
   message: z.string().min(1, "Message is required").max(5000),
+  hp: z.string().max(200).optional(),
 });
 export type ContactFormValues = z.infer<typeof contactFormSchema>;
 

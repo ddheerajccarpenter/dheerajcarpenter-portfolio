@@ -5,8 +5,7 @@ import { Card, Badge } from "@/components/ui";
 import { Calendar, Clock, ArrowRight, Newspaper } from "lucide-react";
 import { AnimateIn } from "@/components/ui/animate-in";
 
-export const revalidate = 0;
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 export default async function BlogPage() {
   const posts = await getPublishedPosts();
@@ -15,11 +14,10 @@ export default async function BlogPage() {
     <div className="py-16 md:py-24 space-y-12">
       <Container className="space-y-4">
         <AnimateIn from="up" distance={16} duration={0.4} viewport={false}>
-          <div className="inline-flex items-center gap-2 text-caption font-bold uppercase tracking-[0.14em] text-muted mb-2">
-            <span className="h-1.5 w-1.5 rounded-full bg-foreground inline-block opacity-60" />
+          <p className="mono-eyebrow text-muted mb-2">
             Writing & Engineering Notes
-          </div>
-          <h1 className="text-h1 font-bold tracking-tight sm:text-[3rem] text-editorial-gradient">
+          </p>
+          <h1 className="text-h1 font-bold tracking-tight sm:text-[3rem] text-foreground">
             Articles & Insights
           </h1>
         </AnimateIn>

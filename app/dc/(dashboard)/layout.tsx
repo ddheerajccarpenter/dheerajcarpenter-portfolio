@@ -18,14 +18,14 @@ export default async function AdminLayout({
 
   return (
     <AdminToastProvider>
-      <div className="flex min-h-screen bg-background text-foreground transition-colors duration-200">
+      <div data-admin-root="true" className="flex min-h-screen bg-background text-foreground transition-colors duration-200">
         {/* Desktop Sidebar */}
         <AdminSidebar />
 
         {/* Main Panel */}
         <div className="flex-1 flex flex-col min-w-0 pb-16 md:pb-0">
           {/* Top Header */}
-          <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-border bg-background/95 backdrop-blur-md px-4 md:px-8">
+          <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-border bg-background px-4 md:px-8">
             <div className="flex items-center space-x-3">
               <div className="flex items-center space-x-2 text-caption text-muted font-medium">
                 <span className="inline-flex items-center text-xs font-semibold px-2 py-0.5 rounded bg-surface border border-border text-foreground">

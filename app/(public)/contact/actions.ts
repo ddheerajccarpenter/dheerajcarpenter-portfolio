@@ -4,10 +4,15 @@ import { createClient } from "@/lib/supabase/server";
 import { contactFormSchema } from "@/lib/validators";
 import { ZodError } from "zod";
 
-export async function submitContactForm(formData: { name: string; email: string; subject?: string; message: string }) {
+export async function submitContactForm(formData: { name: string; email: string; subject?: string; message: string; hp?: string }) {
   try {
     // Validate inputs
     const validated = contactFormSchema.parse(formData);
+
+    // Bot honeypot check: If the hidden honeypot field is filled, silently discard
+    if (validated.hp && validated.hp.trim().length > 0) {
+      return { success: true, error: null };
+    }
 
     const supabase = await createClient();
     const { error } = await supabase

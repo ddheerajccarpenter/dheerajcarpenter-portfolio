@@ -207,20 +207,20 @@ export function SettingsEditor({ initialData }: { initialData: SiteSettingsValue
             className={cn(
               "flex flex-col items-start gap-2 rounded-sm border p-4 text-left transition-colors relative",
               watch("ui_design") === "monolith"
-                ? "border-indigo-500 bg-indigo-950/20 ring-1 ring-indigo-500"
-                : "border-border hover:border-indigo-500/50 hover:bg-surface/50"
+                ? "border-foreground bg-surface ring-1 ring-foreground"
+                : "border-border hover:border-border-strong hover:bg-surface/50"
             )}
           >
             <div className="flex items-center justify-between w-full">
-              <span className="text-small font-bold text-indigo-600 dark:text-indigo-400">5. Monolith Slate</span>
+              <span className="text-small font-bold text-foreground">5. Monolith Titanium</span>
               {watch("ui_design") === "monolith" && (
-                <span className="text-[9px] font-bold uppercase tracking-wider border border-indigo-500 text-indigo-500 px-1.5 py-0.5 rounded-sm">
+                <span className="text-[9px] font-bold uppercase tracking-wider border border-foreground text-foreground px-1.5 py-0.5 rounded-sm">
                   Active
                 </span>
               )}
             </div>
             <p className="text-caption text-muted leading-relaxed">
-              Deep titanium slate background, royal indigo & cobalt highlights, sharp architectural precision.
+              Deep titanium carbon background, crisp pure monochrome highlights, sharp architectural precision.
             </p>
           </button>
 

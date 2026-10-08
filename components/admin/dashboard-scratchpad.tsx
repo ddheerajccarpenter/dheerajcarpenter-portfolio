@@ -114,7 +114,7 @@ export function DashboardScratchpad({ initialNotes }: { initialNotes: NoteItem[]
   const activeCount = notes.filter((n) => !n.completed).length;
 
   return (
-    <Card className="liquid-glass-card p-5 space-y-4">
+    <Card className="bg-surface border border-border shadow-2xs p-5 space-y-4">
       <div className="flex items-center justify-between pb-3 border-b border-border">
         <div className="flex items-center space-x-2.5">
           <div className="p-2 rounded-lg bg-surface border border-border shadow-2xs">
@@ -258,7 +258,7 @@ export function DashboardScratchpad({ initialNotes }: { initialNotes: NoteItem[]
           Showing {Math.min(filteredNotes.length, 8)} of {notes.length} notes
         </span>
         <Link
-          href="/admin/notes"
+          href="/dc/notes"
           className="inline-flex items-center text-caption font-semibold text-foreground hover:underline underline-offset-4"
         >
           <span>Open Full Scratchpad</span>

@@ -8,7 +8,7 @@ import {
   deleteTestimonial,
 } from "@/lib/data/actions";
 import { Button, Input, Textarea, Card, Badge } from "@/components/ui";
-import { Plus, Trash2, Edit2, Star, Quote, ArrowUpDown, Check, Sparkles } from "lucide-react";
+import { Plus, Trash2, Edit2, Star, Quote } from "lucide-react";
 
 import { useAdminToast } from "@/components/admin/admin-toast";
 
@@ -262,7 +262,7 @@ export function TestimonialsManager({ initialTestimonials }: TestimonialsManager
         <div className="p-12 text-center border border-dashed border-border rounded-sm text-muted">
           <Quote className="mx-auto h-8 w-8 mb-3 opacity-50" />
           <p className="text-body font-medium">No testimonials added yet.</p>
-          <p className="text-small text-muted mt-1">Click "Add Testimonial" above to create your first recommendation.</p>
+          <p className="text-small text-muted mt-1">Click &quot;Add Testimonial&quot; above to create your first recommendation.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -285,7 +285,7 @@ export function TestimonialsManager({ initialTestimonials }: TestimonialsManager
                 </div>
 
                 <p className="text-body italic text-muted prose-readable">
-                  "{item.quote}"
+                  &ldquo;{item.quote}&rdquo;
                 </p>
               </div>
 

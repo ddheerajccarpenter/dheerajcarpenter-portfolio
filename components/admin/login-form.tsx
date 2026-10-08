@@ -43,8 +43,14 @@ export function LoginForm() {
       return;
     }
 
-    // Redirect to dashboard (or matching path)
-    const redirectTo = searchParams.get("redirect") || "/admin";
+    // Redirect to dashboard (safeguarded against open redirects)
+    const rawRedirect = searchParams.get("redirect");
+    const isSafeInternal =
+      rawRedirect &&
+      rawRedirect.startsWith("/") &&
+      !rawRedirect.startsWith("//") &&
+      !rawRedirect.includes(":");
+    const redirectTo = isSafeInternal ? rawRedirect : "/dc";
     router.push(redirectTo);
     router.refresh();
   };

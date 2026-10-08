@@ -24,12 +24,12 @@ export async function proxy(request: NextRequest) {
   const { user, response } = await updateSession(request);
 
   const { pathname } = request.nextUrl;
-  const isAdminRoute = pathname.startsWith("/admin");
-  const isLoginRoute = pathname === "/admin/login";
+  const isAdminRoute = pathname.startsWith("/dc");
+  const isLoginRoute = pathname === "/dc/login";
 
   if (isAdminRoute && !isLoginRoute && !user) {
     const loginUrl = request.nextUrl.clone();
-    loginUrl.pathname = "/admin/login";
+    loginUrl.pathname = "/dc/login";
     loginUrl.searchParams.set("redirect", pathname);
     return NextResponse.redirect(loginUrl);
   }
@@ -37,7 +37,7 @@ export async function proxy(request: NextRequest) {
   // Authenticated users visiting login are sent to the dashboard.
   if (isLoginRoute && user) {
     const dashboardUrl = request.nextUrl.clone();
-    dashboardUrl.pathname = "/admin";
+    dashboardUrl.pathname = "/dc";
     dashboardUrl.search = "";
     return NextResponse.redirect(dashboardUrl);
   }

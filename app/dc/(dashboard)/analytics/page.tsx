@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Card, Label } from "@/components/ui";
-import { BarChart3, TrendingUp, Users, Clock, ArrowUpRight, ArrowDownRight, Globe, Laptop, Globe2 } from "lucide-react";
+import { Card } from "@/components/ui";
+import { BarChart3, TrendingUp, Users, Clock, ArrowUpRight, ArrowDownRight, Laptop, Globe2 } from "lucide-react";
 
 // Types for data structures
 interface StatCard {
@@ -10,7 +10,7 @@ interface StatCard {
   value: string;
   change: string;
   isPositive: boolean;
-  icon: React.ComponentType<any>;
+  icon: React.ComponentType<{ className?: string }>;
 }
 
 interface AnalyticsData {

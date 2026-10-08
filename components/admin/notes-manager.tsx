@@ -7,7 +7,7 @@ import {
   updateAdminNote,
   deleteAdminNote,
 } from "@/lib/data/actions";
-import { Button, Input, Textarea, Card, Badge } from "@/components/ui";
+import { Button, Input, Textarea, Card } from "@/components/ui";
 import { Plus, Trash2, Pin, CheckSquare, Square, StickyNote, Copy, Check } from "lucide-react";
 
 interface NotesManagerProps {
@@ -233,7 +233,7 @@ export function NotesManager({ initialNotes }: NotesManagerProps) {
         <div className="p-12 text-center border border-dashed border-border rounded-sm text-muted">
           <StickyNote className="mx-auto h-8 w-8 mb-3 opacity-50" />
           <p className="text-body font-medium">No notes created yet.</p>
-          <p className="text-small text-muted mt-1">Click "Add Note" above to write quick thoughts or task checklists.</p>
+          <p className="text-small text-muted mt-1">Click &quot;Add Note&quot; above to write quick thoughts or task checklists.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

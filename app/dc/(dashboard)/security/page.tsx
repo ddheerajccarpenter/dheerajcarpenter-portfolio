@@ -87,7 +87,7 @@ export default function SecurityCenterPage() {
       const supabase = createClient();
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
-      router.push("/admin/login");
+      router.push("/dc/login");
       router.refresh();
     } catch (err) {
       alert("Failed to sign out all sessions");

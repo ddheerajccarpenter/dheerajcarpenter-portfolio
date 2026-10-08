@@ -8,8 +8,7 @@ import { ExternalLink, Github, ArrowLeft } from "lucide-react";
 import { SkeletonWrapper } from "@/components/ui/skeleton-wrapper";
 import { AnimateIn } from "@/components/ui/animate-in";
 
-export const revalidate = 0;
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 interface ProjectPageProps {
   params: Promise<{
@@ -45,7 +44,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
         <Container className="space-y-6">
           <div className="space-y-4 max-w-[800px]">
             <AnimateIn from="up" distance={16} duration={0.4} viewport={false}>
-              <h1 className="text-h1 font-bold tracking-tight sm:text-[3.25rem] leading-tight text-editorial-gradient">
+              <h1 className="text-h1 font-bold tracking-tight sm:text-[3.25rem] leading-tight text-foreground">
                 {project.title}
               </h1>
             </AnimateIn>
@@ -98,8 +97,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
         <Container className="grid grid-cols-1 lg:grid-cols-3 gap-12 pt-4">
           {/* Left Column: Case Study */}
           <AnimateIn from="up" distance={16} className="lg:col-span-2 space-y-6">
-            <h2 className="text-h2 font-bold tracking-tight border-b border-border/80 pb-3 flex items-center gap-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-foreground inline-block opacity-60" />
+            <h2 className="text-h2 font-bold tracking-tight border-b border-border/80 pb-3">
               Project Overview
             </h2>
             <div className="pt-2">
@@ -113,13 +111,14 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
             {project.tags && project.tags.length > 0 && (
               <AnimateIn from="up" distance={14} delay={0.08}>
                 <div className="space-y-3 tactile-panel p-6 rounded-2xl border border-border">
-                  <h3 className="text-caption font-bold uppercase tracking-wider text-muted flex items-center gap-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-foreground inline-block opacity-60" />
+                  <h3 className="mono-eyebrow text-muted">
                     Technologies Used
                   </h3>
                   <div className="flex flex-wrap gap-2 pt-1">
                     {project.tags.map((tag) => (
-                      <Badge key={tag} variant="pill">{tag}</Badge>
+                      <span key={tag} className="notion-tag">
+                        {tag}
+                      </span>
                     ))}
                   </div>
                 </div>
@@ -129,8 +128,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
             {/* Additional details */}
             <AnimateIn from="up" distance={14} delay={0.16}>
               <div className="space-y-3 tactile-panel p-6 rounded-2xl border border-border text-small text-muted">
-                <h3 className="text-caption font-bold uppercase tracking-wider text-muted flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-foreground inline-block opacity-60" />
+                <h3 className="mono-eyebrow text-muted">
                   Project Details
                 </h3>
                 <div className="space-y-2.5 pt-1">
@@ -156,8 +154,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
             <Container className="space-y-8">
               <AnimateIn from="up" distance={14}>
                 <div className="space-y-1">
-                  <p className="text-caption font-bold uppercase tracking-[0.14em] text-muted flex items-center gap-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-foreground inline-block opacity-60" />
+                  <p className="mono-eyebrow text-muted">
                     Visual Artifacts
                   </p>
                   <h2 id="gallery-title" className="text-h2 font-bold tracking-tight">

@@ -43,7 +43,7 @@ async function runMigration() {
     try {
       await client.query("ALTER TYPE public.user_role ADD VALUE IF NOT EXISTS 'super_admin';");
       console.log("  ↳ Pre-committed 'super_admin' to user_role enum if present.");
-    } catch (enumErr) {
+    } catch {
       // Ignore if user_role enum doesn't exist yet
     }
 

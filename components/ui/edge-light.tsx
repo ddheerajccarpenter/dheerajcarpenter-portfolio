@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, type ReactNode, type CSSProperties } from "react";
+import { useRef, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 interface EdgeLightProps {

@@ -12,8 +12,7 @@ import { GraduationCap, Calendar, MapPin } from "lucide-react";
 import { SkeletonWrapper } from "@/components/ui/skeleton-wrapper";
 import { AnimateIn } from "@/components/ui/animate-in";
 
-export const revalidate = 0;
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 export default async function AboutPage() {
   const [aboutContent, skills, experience, testimonials] = await Promise.all([
@@ -46,11 +45,10 @@ export default async function AboutPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12 items-start">
               <div className="space-y-4 md:col-span-2">
                 <AnimateIn from="up" distance={16} duration={0.4} viewport={false}>
-                  <div className="inline-flex items-center gap-2 text-caption font-bold uppercase tracking-[0.14em] text-muted mb-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-foreground inline-block opacity-60" />
+                  <p className="mono-eyebrow text-muted mb-2">
                     Background & Philosophy
-                  </div>
-                  <h1 id="about-headline" className="text-h1 font-bold tracking-tight sm:text-[3rem] text-editorial-gradient">
+                  </p>
+                  <h1 id="about-headline" className="text-h1 font-bold tracking-tight sm:text-[3rem] text-foreground">
                     {headline}
                   </h1>
                 </AnimateIn>
@@ -87,8 +85,7 @@ export default async function AboutPage() {
             <Container className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <AnimateIn from="up" distance={12}>
                 <div className="space-y-1">
-                  <p className="text-caption font-bold uppercase tracking-[0.14em] text-muted flex items-center gap-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-foreground inline-block opacity-60" />
+                  <p className="mono-eyebrow text-muted">
                     Overview
                   </p>
                   <h2 id="personal-overview-title" className="text-h2 font-bold tracking-tight">
@@ -97,7 +94,9 @@ export default async function AboutPage() {
                 </div>
               </AnimateIn>
               <AnimateIn from="up" distance={12} delay={0.08} className="md:col-span-2">
-                <Markdown content={overview} />
+                <div className="notion-callout">
+                  <Markdown content={overview} />
+                </div>
               </AnimateIn>
             </Container>
           </section>
@@ -106,10 +105,9 @@ export default async function AboutPage() {
         <section id="skills" className="border-t border-border/80 pt-20" aria-labelledby="skills-title">
           <Container>
             <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-start">
-              <AnimateIn from="up" distance={12} className="md:col-span-4" viewport>
+              <AnimateIn variant="slide-right" distance={24} duration={0.4} className="md:col-span-4" viewport>
                 <div className="space-y-1 md:sticky md:top-28">
-                  <p className="text-caption font-bold uppercase tracking-[0.14em] text-muted flex items-center gap-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-foreground inline-block opacity-60" />
+                  <p className="mono-eyebrow text-muted">
                     Stack & Competencies
                   </p>
                   <h2 id="skills-title" className="text-h2 font-bold tracking-tight">
@@ -124,15 +122,14 @@ export default async function AboutPage() {
                   </div>
                 ) : (
                   Object.entries(skillsByCategory).map(([category, items], catIndex) => (
-                    <AnimateIn key={category} from="up" distance={14} staggerIndex={catIndex} viewport>
+                    <AnimateIn key={category} variant="fade-rise" distance={20} duration={0.38} staggerIndex={catIndex} viewport viewportAmount={0.05}>
                       <div className="space-y-4">
-                        <h3 className="text-caption font-bold uppercase tracking-widest text-foreground border-b border-border/80 pb-2 flex items-center gap-2">
-                          <span className="h-1 w-1 rounded-full bg-foreground inline-block opacity-60" />
+                        <h3 className="mono-eyebrow text-foreground border-b border-border/80 pb-2">
                           {category}
                         </h3>
                         <div className="flex flex-wrap gap-2">
                           {items.map((skill) => (
-                            <Badge key={skill.id} variant="pill" className="text-small py-1.5 px-4 animate-badge-glow">
+                            <Badge key={skill.id} variant="pill" className="text-small py-1.5 px-4 badge-breathe">
                               {skill.name}
                               {skill.proficiency !== null && (
                                 <span className="ml-1.5 text-caption opacity-60 font-mono">{skill.proficiency}%</span>
@@ -154,8 +151,7 @@ export default async function AboutPage() {
             <Container className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <AnimateIn from="up" distance={12}>
                 <div className="space-y-1">
-                  <p className="text-caption font-bold uppercase tracking-[0.14em] text-muted flex items-center gap-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-foreground inline-block opacity-60" />
+                  <p className="mono-eyebrow text-muted">
                     Feedback
                   </p>
                   <h2 id="about-testimonials-title" className="text-h2 font-bold tracking-tight">
@@ -199,8 +195,7 @@ export default async function AboutPage() {
           <Container className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <AnimateIn from="up" distance={12}>
               <div className="space-y-1">
-                <p className="text-caption font-bold uppercase tracking-[0.14em] text-muted flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-foreground inline-block opacity-60" />
+                <p className="mono-eyebrow text-muted">
                   Academic History
                 </p>
                 <h2 id="education-title" className="text-h2 font-bold tracking-tight">
@@ -218,7 +213,7 @@ export default async function AboutPage() {
                   {education.map((edu, index) => (
                     <AnimateIn key={edu.id} from="up" distance={14} staggerIndex={index}>
                       <div className="relative">
-                        <span className="absolute -left-[33px] top-1 bg-surface p-1.5 border border-border rounded-full shadow-xs">
+                        <span className="absolute -left-[33px] top-1 bg-surface p-1.5 border border-border rounded-full shadow-xs timeline-dot">
                           <GraduationCap className="h-3.5 w-3.5 text-foreground opacity-80" />
                         </span>
                         <div className="space-y-1.5">

@@ -17,8 +17,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
-export const revalidate = 0;
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 const PLATFORM_ICONS: Record<string, LucideIcon> = {
   github: Github,
@@ -48,11 +47,10 @@ export default async function ContactPage() {
           <div className="space-y-8">
             <div className="space-y-3">
               <AnimateIn from="up" distance={16} duration={0.4} viewport={false}>
-                <div className="inline-flex items-center gap-2 text-caption font-bold uppercase tracking-[0.14em] text-muted mb-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-foreground inline-block opacity-60" />
+                <p className="mono-eyebrow text-muted mb-2">
                   Get In Touch
-                </div>
-                <h1 className="text-h1 font-bold tracking-tight sm:text-[3rem] text-editorial-gradient">
+                </p>
+                <h1 className="text-h1 font-bold tracking-tight sm:text-[3rem] text-foreground">
                   Contact
                 </h1>
               </AnimateIn>
@@ -99,8 +97,7 @@ export default async function ContactPage() {
               {/* Social Channels */}
               {socialLinks.length > 0 && (
                 <div className="space-y-3 pt-6 border-t border-border/80">
-                  <h3 className="text-caption font-bold uppercase tracking-wider text-muted flex items-center gap-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-foreground inline-block opacity-60" />
+                  <h3 className="mono-eyebrow text-muted">
                     Network & Profiles
                   </h3>
                   <div className="flex flex-col space-y-2.5 pt-1">
@@ -126,9 +123,9 @@ export default async function ContactPage() {
             </div>
           </div>
 
-          {/* Right Side: Contact Form Framed in Bento Card */}
+          {/* Right Side: Contact Form Framed in Geist Card */}
           <AnimateIn from="up" distance={16} delay={0.15}>
-            <div className="bento-card p-6 md:p-8 rounded-3xl space-y-6">
+            <div className="geist-card p-6 md:p-8 rounded-2xl border border-border space-y-6">
               <div>
                 <h2 className="text-xl font-bold tracking-tight text-foreground">
                   Send a Message

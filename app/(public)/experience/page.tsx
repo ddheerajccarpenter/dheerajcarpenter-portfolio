@@ -5,8 +5,7 @@ import { SkeletonWrapper } from "@/components/ui/skeleton-wrapper";
 import { AnimateIn } from "@/components/ui/animate-in";
 import { Briefcase, GraduationCap, Award, Calendar, MapPin, ExternalLink } from "lucide-react";
 
-export const revalidate = 0;
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 const TYPE_ICONS = {
   work: Briefcase,
@@ -28,11 +27,10 @@ export default async function ExperiencePage() {
       <div className="py-16 md:py-24 space-y-12">
         <Container className="space-y-4">
           <AnimateIn from="up" distance={16} duration={0.4} viewport={false}>
-            <div className="inline-flex items-center gap-2 text-caption font-bold uppercase tracking-[0.14em] text-muted mb-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-foreground inline-block opacity-60" />
+            <p className="mono-eyebrow text-muted mb-2">
               Career & Credentials
-            </div>
-            <h1 className="text-h1 font-bold tracking-tight sm:text-[3rem] text-editorial-gradient">
+            </p>
+            <h1 className="text-h1 font-bold tracking-tight sm:text-[3rem] text-foreground">
               Experience
             </h1>
           </AnimateIn>
@@ -57,10 +55,10 @@ export default async function ExperiencePage() {
                 const typeLabel = TYPE_LABELS[exp.type] || "Experience";
 
                 return (
-                  <AnimateIn key={exp.id} from="up" distance={16} staggerIndex={index}>
+                  <AnimateIn key={exp.id} variant="fade-rise" distance={24} duration={0.42} staggerIndex={index} delay={0.02} viewport viewportAmount={0.05}>
                     <div className="relative group tactile-card rounded-2xl p-6 md:p-7 border border-border">
                       {/* Timeline Dot Indicator */}
-                      <span className="absolute -left-[49px] top-6 bg-surface p-2 border border-border rounded-full shadow-xs group-hover:border-foreground transition-colors">
+                      <span className="absolute -left-[49px] top-6 bg-surface p-2 border border-border rounded-full shadow-xs timeline-dot">
                         <IconComponent className="h-4 w-4 text-foreground opacity-80" />
                       </span>
 
@@ -77,7 +75,7 @@ export default async function ExperiencePage() {
                               ? new Date(exp.end_date).toLocaleDateString("en-US", { year: "numeric", month: "short" })
                               : ""}
                           </span>
-                          <Badge variant="pill" className="uppercase tracking-wider text-[10px] py-0.5 px-2">
+                          <Badge variant="pill" className="uppercase tracking-wider text-[10px] py-0.5 px-2 badge-breathe">
                             {typeLabel}
                           </Badge>
                         </div>

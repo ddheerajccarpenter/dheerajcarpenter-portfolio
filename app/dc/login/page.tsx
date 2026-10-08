@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 
 export default function LoginPage() {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-background px-6 py-24 transition-colors duration-200">
+    <main data-admin-root="true" className="flex min-h-screen items-center justify-center bg-background px-6 py-24 transition-colors duration-200">
       <div className="w-full max-w-[400px] space-y-8">
         {/* Back Link */}
         <div>

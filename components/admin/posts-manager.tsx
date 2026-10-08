@@ -8,7 +8,7 @@ import {
   deleteBlogPost,
 } from "@/lib/data/actions";
 import { Button, Input, Textarea, Card, Badge } from "@/components/ui";
-import { Plus, Trash2, Edit2, FileText, ExternalLink, Calendar, Clock, Eye, Globe } from "lucide-react";
+import { Plus, Trash2, Edit2, FileText, Clock, Eye } from "lucide-react";
 import Link from "next/link";
 
 import { useAdminToast } from "@/components/admin/admin-toast";
@@ -269,7 +269,7 @@ export function PostsManager({ initialPosts }: PostsManagerProps) {
         <div className="p-12 text-center border border-dashed border-border rounded-sm text-muted">
           <FileText className="mx-auto h-8 w-8 mb-3 opacity-50" />
           <p className="text-body font-medium">No blog posts written yet.</p>
-          <p className="text-small text-muted mt-1">Click "New Article" above to draft your first post.</p>
+          <p className="text-small text-muted mt-1">Click &quot;New Article&quot; above to draft your first post.</p>
         </div>
       ) : (
         <div className="space-y-4">

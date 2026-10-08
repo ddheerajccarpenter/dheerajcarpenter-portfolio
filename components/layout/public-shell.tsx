@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { getSettings, getActivePublicNotification, getSocialLinks } from "@/lib/data/public";
 import { ThemeToggle } from "./theme-toggle";
-import { DesktopNav, MobileNav, MobileHeaderMenu } from "./public-nav";
+import { DesktopNav, MobileNav } from "./public-nav";
 import { Container } from "./container";
 import { HiddenAdminTrigger } from "./hidden-admin-trigger";
 import { ThemeInjector } from "./theme-injector";
 import { PublicNotificationBanner } from "./public-notification-banner";
-import { ScrollProgress } from "@/components/ui/scroll-progress";
+import { ScrollTexture } from "@/components/ui/scroll-texture";
+import { AnakManjaHighlighter } from "@/components/ui/anak-manja-highlighter";
 import { Github } from "lucide-react";
 
 export async function PublicShell({ children }: { children: React.ReactNode }) {
@@ -24,28 +25,25 @@ export async function PublicShell({ children }: { children: React.ReactNode }) {
 
   return (
     <>
+      <ScrollTexture />
+      <AnakManjaHighlighter />
       <ThemeInjector uiDesign={uiDesign} />
       <PublicNotificationBanner notification={activeNotif} />
-      <ScrollProgress />
       <div
-        className="flex min-h-screen flex-col bg-background text-foreground transition-colors duration-200 bg-ambient-grid relative"
+        className="flex min-h-screen flex-col bg-background text-foreground transition-colors duration-150"
         data-anim={animStyle}
         data-ui-design={uiDesign}
       >
         <HiddenAdminTrigger />
 
-        {/* Top Header — Frosted translucent bar */}
-        <header className="sticky top-0 z-40 w-full border-b border-border/60 bg-background/70 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60 shadow-xs">
-          <Container className="flex h-16 items-center justify-between">
+        {/* Top Header — Solid opaque background for zero GPU overhead */}
+        <header className="sticky top-0 z-40 w-full border-b border-border bg-background">
+          <Container className="flex h-14 items-center justify-between">
             <Link
               href="/"
-              className="text-small font-bold font-hero-name tracking-tight hover:opacity-80 transition-opacity flex items-center gap-2.5 group"
+              className="text-base font-normal tracking-wide hover:opacity-80 transition-opacity flex items-center gap-2"
             >
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-              </span>
-              <span className="font-semibold text-foreground tracking-tight group-hover:text-foreground/90">{siteTitle}</span>
+              <span className="font-anak-manja text-foreground text-lg sm:text-xl font-normal tracking-wide">{siteTitle}</span>
             </Link>
 
             <div className="flex items-center space-x-1.5 md:space-x-3">
@@ -57,13 +55,12 @@ export async function PublicShell({ children }: { children: React.ReactNode }) {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="GitHub Profile"
-                  className="h-8.5 w-8.5 rounded-xl border border-border bg-surface/80 hover:bg-surface-raised flex items-center justify-center text-muted hover:text-foreground transition-all duration-150"
+                  className="h-8.5 w-8.5 rounded-xl border border-border bg-surface/80 hover:bg-surface-raised flex items-center justify-center text-muted hover:text-foreground transition-all duration-150 hidden md:flex"
                 >
                   <Github className="h-4 w-4" />
                 </a>
               )}
               <ThemeToggle />
-              <MobileHeaderMenu />
             </div>
           </Container>
         </header>
@@ -75,16 +72,15 @@ export async function PublicShell({ children }: { children: React.ReactNode }) {
 
         {/* Footer — Editorial & Minimalist */}
         <footer className="border-t border-border/80 bg-surface/40 py-12 mt-auto pb-28 md:pb-12">
-          <Container>
+          <Container className="space-y-8">
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
               {/* Brand + copyright */}
               <div className="space-y-1.5">
-                <p className="text-small font-bold text-foreground font-hero-name tracking-tight flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-foreground inline-block shrink-0 opacity-70" />
+                <p className="text-base sm:text-lg font-normal text-foreground font-anak-manja tracking-wide">
                   {siteTitle}
                 </p>
                 <p className="text-caption text-muted">
-                  © {new Date().getFullYear()} All rights reserved. Built with modern, tactile design.
+                  © {new Date().getFullYear()} <span className="font-anak-manja text-foreground text-xs">{siteTitle}</span>. All rights reserved.
                 </p>
               </div>
 
@@ -132,6 +128,24 @@ export async function PublicShell({ children }: { children: React.ReactNode }) {
                     <span className="underline underline-offset-4">GitHub</span>
                   </a>
                 )}
+              </div>
+            </div>
+
+            {/* Sub-footer: FAQ, Privacy Policy, Terms & Conditions */}
+            <div className="pt-6 border-t border-border/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-caption text-muted">
+              <div className="flex items-center gap-6 flex-wrap">
+                <Link href="/faq" className="hover:text-foreground transition-colors">
+                  FAQ
+                </Link>
+                <Link href="/privacy" className="hover:text-foreground transition-colors">
+                  Privacy Policy
+                </Link>
+                <Link href="/terms" className="hover:text-foreground transition-colors">
+                  Terms &amp; Conditions
+                </Link>
+              </div>
+              <div className="text-xs text-muted/60 font-mono">
+                Engineered with Next.js 15 &amp; React 19
               </div>
             </div>
           </Container>

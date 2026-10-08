@@ -68,7 +68,7 @@ export default async function ContentHubPage({ searchParams }: PageProps) {
           return (
             <Link
               key={t.key}
-              href={`/admin/content?tab=${t.key}`}
+              href={`/dc/content?tab=${t.key}`}
               className={`pb-3 text-small font-semibold border-b-2 transition-colors shrink-0 ${
                 isActive ? "border-foreground text-foreground" : "border-transparent text-muted hover:text-foreground"
               }`}

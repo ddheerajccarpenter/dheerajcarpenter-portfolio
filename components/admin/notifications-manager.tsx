@@ -90,8 +90,8 @@ export function NotificationsManager({ initialNotifications }: NotificationsMana
   };
 
   const iconMap = {
-    info: <Bell className="h-4 w-4 text-blue-500 shrink-0" />,
-    announcement: <Megaphone className="h-4 w-4 text-indigo-500 shrink-0" />,
+    info: <Bell className="h-4 w-4 text-foreground shrink-0" />,
+    announcement: <Megaphone className="h-4 w-4 text-foreground shrink-0" />,
     alert: <AlertTriangle className="h-4 w-4 text-amber-500 shrink-0" />,
     success: <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0" />,
   };
@@ -157,7 +157,7 @@ export function NotificationsManager({ initialNotifications }: NotificationsMana
                 <label className="text-caption font-semibold text-foreground">Category Type</label>
                 <select
                   value={type}
-                  onChange={(e) => setType(e.target.value as any)}
+                  onChange={(e) => setType(e.target.value as "info" | "announcement" | "alert" | "success")}
                   className="h-10 w-full rounded-md border border-border bg-background px-3 text-small text-foreground"
                   disabled={isSubmitting}
                 >

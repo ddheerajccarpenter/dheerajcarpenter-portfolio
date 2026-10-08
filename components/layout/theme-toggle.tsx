@@ -9,7 +9,6 @@ import { Sun, Moon } from "lucide-react";
 export function ThemeToggle({ className }: { className?: string }) {
   const { setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(false);
   const [isHolding, setIsHolding] = useState(false);
 
   const holdTimerRef = useRef<NodeJS.Timeout | null>(null);
@@ -22,9 +21,6 @@ export function ThemeToggle({ className }: { className?: string }) {
   const isDark = mounted ? resolvedTheme === "dark" : false;
 
   const triggerThemeToggle = (element: HTMLElement, isSlow: boolean) => {
-    setIsAnimating(true);
-    setTimeout(() => setIsAnimating(false), isSlow ? 2200 : 500);
-
     const nextIsDark = !isDark;
     const nextTheme = nextIsDark ? "dark" : "light";
 
@@ -46,9 +42,13 @@ export function ThemeToggle({ className }: { className?: string }) {
       setTheme(nextTheme);
     };
 
-    if (typeof document !== "undefined" && (document as any).startViewTransition) {
+    const docWithTransition = typeof document !== "undefined"
+      ? (document as unknown as { startViewTransition?: (cb: () => void) => void })
+      : null;
+
+    if (docWithTransition && typeof docWithTransition.startViewTransition === "function") {
       try {
-        (document as any).startViewTransition(() => {
+        docWithTransition.startViewTransition(() => {
           applyThemeChange();
         });
       } catch {
@@ -107,7 +107,7 @@ export function ThemeToggle({ className }: { className?: string }) {
     >
       <AnimatePresence mode="wait" initial={false}>
         {!mounted ? (
-          <span key="skeleton" className="h-4 w-4 rounded-full bg-muted/20 animate-pulse" />
+          <span key="skeleton" className="h-4 w-4 rounded-full opacity-0" />
         ) : isDark ? (
           <motion.div
             key="moon"

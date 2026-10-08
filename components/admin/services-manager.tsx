@@ -7,8 +7,8 @@ import {
   updateServiceOffering,
   deleteServiceOffering,
 } from "@/lib/data/actions";
-import { Button, Input, Textarea, Card, Badge } from "@/components/ui";
-import { Plus, Trash2, Edit2, Wrench, CheckCircle2, ShieldCheck, Tag } from "lucide-react";
+import { Button, Input, Textarea, Card } from "@/components/ui";
+import { Plus, Trash2, Edit2, Wrench, CheckCircle2 } from "lucide-react";
 
 import { useAdminToast } from "@/components/admin/admin-toast";
 
@@ -241,7 +241,7 @@ export function ServicesManager({ initialServices }: ServicesManagerProps) {
         <div className="p-12 text-center border border-dashed border-border rounded-sm text-muted">
           <Wrench className="mx-auto h-8 w-8 mb-3 opacity-50" />
           <p className="text-body font-medium">No service offerings created yet.</p>
-          <p className="text-small text-muted mt-1">Click "Add Service" to list your consulting or development offerings.</p>
+          <p className="text-small text-muted mt-1">Click &quot;Add Service&quot; to list your consulting or development offerings.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

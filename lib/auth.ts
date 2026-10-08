@@ -1,4 +1,6 @@
 import { redirect } from "next/navigation";
+import { cache } from "react";
+import { unstable_cache } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 
 /**
@@ -27,7 +29,7 @@ export interface AdminSession extends SessionUser {
  * Return the authenticated user, or null when there is no session.
  * Safe to call in any Server Component / Route Handler / Server Action.
  */
-export async function getSession(): Promise<SessionUser | null> {
+export const getSession = cache(async (): Promise<SessionUser | null> => {
   const supabase = await createClient();
   const {
     data: { user },
@@ -35,14 +37,13 @@ export async function getSession(): Promise<SessionUser | null> {
 
   if (!user) return null;
   return { id: user.id, email: user.email ?? "" };
-}
+});
 
 /**
  * Return the session only if the user has an admin role.
- * Returns null for unauthenticated users.
- * Automatically provisions missing profile rows to prevent lockout.
+ * Cached per-request to avoid redundant network roundtrips.
  */
-export async function getAdminSession(): Promise<AdminSession | null> {
+export const getAdminSession = cache(async (): Promise<AdminSession | null> => {
   try {
     const supabase = await createClient();
     const {
@@ -92,16 +93,16 @@ export async function getAdminSession(): Promise<AdminSession | null> {
     console.error("Error in getAdminSession:", err);
     return null;
   }
-}
+});
 
 /**
  * Guard for admin Server Components and layouts.
- * Redirects to /admin/login when the request is not from an admin.
+ * Redirects to /dc/login when the request is not from an admin.
  */
 export async function requireAdmin(): Promise<AdminSession> {
   const session = await getAdminSession();
   if (!session) {
-    redirect("/admin/login");
+    redirect("/dc/login");
   }
   return session;
 }

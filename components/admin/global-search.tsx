@@ -24,16 +24,16 @@ export function GlobalSearch() {
 
   // Quick navigation pages
   const systemPages: SearchResult[] = [
-    { id: "overview", title: "Overview / Dashboard", category: "pages", href: "/admin" },
-    { id: "content", title: "Content Manager Hub", category: "pages", href: "/admin/content" },
-    { id: "notifications", title: "Public Announcements & Notifications", category: "pages", href: "/admin/notifications" },
-    { id: "media", title: "Media Library", category: "pages", href: "/admin/media" },
-    { id: "messages", title: "Contact Messages Inbox", category: "pages", href: "/admin/messages" },
-    { id: "seo", title: "SEO Metadata Settings", category: "pages", href: "/admin/seo" },
-    { id: "analytics", title: "Analytics Dashboard", category: "pages", href: "/admin/analytics" },
-    { id: "security", title: "Security settings & passwords", category: "pages", href: "/admin/security" },
-    { id: "backups", title: "Backup & Export Center", category: "pages", href: "/admin/backups" },
-    { id: "users", title: "User Accounts Manager", category: "pages", href: "/admin/users" },
+    { id: "overview", title: "Overview / Dashboard", category: "pages", href: "/dc" },
+    { id: "content", title: "Content Manager Hub", category: "pages", href: "/dc/content" },
+    { id: "notifications", title: "Public Announcements & Notifications", category: "pages", href: "/dc/notifications" },
+    { id: "media", title: "Media Library", category: "pages", href: "/dc/media" },
+    { id: "messages", title: "Contact Messages Inbox", category: "pages", href: "/dc/messages" },
+    { id: "seo", title: "SEO Metadata Settings", category: "pages", href: "/dc/seo" },
+    { id: "analytics", title: "Analytics Dashboard", category: "pages", href: "/dc/analytics" },
+    { id: "security", title: "Security settings & passwords", category: "pages", href: "/dc/security" },
+    { id: "backups", title: "Backup & Export Center", category: "pages", href: "/dc/backups" },
+    { id: "users", title: "User Accounts Manager", category: "pages", href: "/dc/users" },
   ];
 
   // Hotkey listener: Ctrl+K or Cmd+K
@@ -100,7 +100,7 @@ export function GlobalSearch() {
               title: p.title,
               category: "projects",
               subtitle: `/projects/${p.slug}`,
-              href: `/admin/projects`, // Routes to projects listing where they edit
+              href: `/dc/projects`, // Routes to projects listing where they edit
             });
           });
         }
@@ -119,7 +119,7 @@ export function GlobalSearch() {
               title: exp.role,
               category: "experience",
               subtitle: exp.organization,
-              href: `/admin/experience`,
+              href: `/dc/experience`,
             });
           });
         }
@@ -138,7 +138,7 @@ export function GlobalSearch() {
               title: s.name,
               category: "skills",
               subtitle: s.category,
-              href: `/admin/skills`,
+              href: `/dc/skills`,
             });
           });
         }
@@ -157,7 +157,7 @@ export function GlobalSearch() {
               title: m.subject || "(No Subject)",
               category: "messages",
               subtitle: `From: ${m.name}`,
-              href: `/admin/messages`,
+              href: `/dc/messages`,
             });
           });
         }

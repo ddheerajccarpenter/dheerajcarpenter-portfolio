@@ -25,6 +25,7 @@ export function ContactForm() {
       email: "",
       subject: "",
       message: "",
+      hp: "",
     },
   });
 
@@ -64,6 +65,18 @@ export function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4.5">
+      {/* Bot Honeypot — invisible to humans, attracts automated bots */}
+      <div className="hidden" aria-hidden="true" style={{ display: "none" }}>
+        <label htmlFor="company_website">Company Website</label>
+        <input
+          id="company_website"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          {...register("hp")}
+        />
+      </div>
+
       {errorMsg && (
         <div className="border border-border-strong p-4 rounded-xl bg-surface-overlay flex items-start space-x-3 text-small text-foreground animate-alert-scale">
           <AlertCircle className="h-5 w-5 shrink-0 text-muted" />

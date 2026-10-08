@@ -1,13 +1,5 @@
 import Link from "next/link";
-import {
-  getAllProjects,
-  getAllExperience,
-  getContactSubmissions,
-  getAllPosts,
-  getAllServices,
-  getAllTestimonials,
-  getAdminNotes,
-} from "@/lib/data/public";
+import { getAdminDashboardSummary } from "@/lib/data/public";
 import { Card, Button, Badge } from "@/components/ui";
 import { SubmissionsTable } from "@/components/admin/submissions-table";
 import { QuickActionsToolbar } from "@/components/admin/quick-actions-toolbar";
@@ -29,15 +21,15 @@ import {
 export const revalidate = 0; // Dynamic rendering for admin dashboard
 
 export default async function AdminDashboardPage() {
-  const [projects, experiences, submissions, posts, services, testimonials, notes] = await Promise.all([
-    getAllProjects(),
-    getAllExperience(),
-    getContactSubmissions(),
-    getAllPosts(),
-    getAllServices(),
-    getAllTestimonials(),
-    getAdminNotes(),
-  ]);
+  const {
+    projects,
+    experiences,
+    submissions,
+    posts,
+    services,
+    testimonials,
+    notes,
+  } = await getAdminDashboardSummary();
 
   const totalProjects = projects.length;
   const totalExperience = experiences.length;
@@ -67,7 +59,7 @@ export default async function AdminDashboardPage() {
           </div>
 
           <div className="flex items-center space-x-3">
-            <div className="flex items-center space-x-2 text-caption font-semibold uppercase tracking-wider text-foreground border border-border/80 px-3 py-1.5 liquid-glass rounded-lg shadow-2xs">
+            <div className="flex items-center space-x-2 text-caption font-semibold uppercase tracking-wider text-foreground border border-border px-3 py-1.5 bg-surface rounded-lg shadow-2xs">
               <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
               <span>System Active & Verified</span>
             </div>
@@ -83,8 +75,8 @@ export default async function AdminDashboardPage() {
       {/* ─── Key Metrics Grid ──────────────────────────────────────────────── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <AnimateIn from="up" distance={16} staggerIndex={0} viewport={false}>
-          <Link href="/admin/projects" className="block group">
-            <Card className="liquid-glass-card flex items-center justify-between p-5 hover:border-border-strong transition-all">
+          <Link href="/dc/projects" className="block group">
+            <Card className="bg-surface border border-border flex items-center justify-between p-5 hover:border-border-strong transition-all shadow-2xs">
               <div className="space-y-1">
                 <span className="text-caption font-bold uppercase tracking-wider text-muted">
                   Total Projects
@@ -96,7 +88,7 @@ export default async function AdminDashboardPage() {
                   {projects.filter((p) => p.published).length} Published on site →
                 </span>
               </div>
-              <div className="p-3 bg-surface/80 border border-border rounded-xl shadow-2xs group-hover:scale-110 transition-transform">
+              <div className="p-3 bg-surface-raised border border-border rounded-xl shadow-2xs group-hover:scale-105 transition-transform">
                 <i className="fi fi-br-folder text-xl text-foreground leading-none" aria-hidden="true" />
               </div>
             </Card>
@@ -104,8 +96,8 @@ export default async function AdminDashboardPage() {
         </AnimateIn>
 
         <AnimateIn from="up" distance={16} staggerIndex={1} viewport={false}>
-          <Link href="/admin/posts" className="block group">
-            <Card className="liquid-glass-card flex items-center justify-between p-5 hover:border-border-strong transition-all">
+          <Link href="/dc/posts" className="block group">
+            <Card className="bg-surface border border-border flex items-center justify-between p-5 hover:border-border-strong transition-all shadow-2xs">
               <div className="space-y-1">
                 <span className="text-caption font-bold uppercase tracking-wider text-muted">
                   Blog Articles
@@ -117,7 +109,7 @@ export default async function AdminDashboardPage() {
                   {posts.filter((p) => p.published).length} Published articles →
                 </span>
               </div>
-              <div className="p-3 bg-surface/80 border border-border rounded-xl shadow-2xs group-hover:scale-110 transition-transform">
+              <div className="p-3 bg-surface-raised border border-border rounded-xl shadow-2xs group-hover:scale-105 transition-transform">
                 <i className="fi fi-br-edit text-xl text-foreground leading-none" aria-hidden="true" />
               </div>
             </Card>
@@ -125,8 +117,8 @@ export default async function AdminDashboardPage() {
         </AnimateIn>
 
         <AnimateIn from="up" distance={16} staggerIndex={2} viewport={false}>
-          <Link href="/admin/services" className="block group">
-            <Card className="liquid-glass-card flex items-center justify-between p-5 hover:border-border-strong transition-all">
+          <Link href="/dc/services" className="block group">
+            <Card className="bg-surface border border-border flex items-center justify-between p-5 hover:border-border-strong transition-all shadow-2xs">
               <div className="space-y-1">
                 <span className="text-caption font-bold uppercase tracking-wider text-muted">
                   Services Offered
@@ -138,7 +130,7 @@ export default async function AdminDashboardPage() {
                   Active offerings →
                 </span>
               </div>
-              <div className="p-3 bg-surface/80 border border-border rounded-xl shadow-2xs group-hover:scale-110 transition-transform">
+              <div className="p-3 bg-surface-raised border border-border rounded-xl shadow-2xs group-hover:scale-105 transition-transform">
                 <i className="fi fi-br-cube text-xl text-foreground leading-none" aria-hidden="true" />
               </div>
             </Card>
@@ -146,8 +138,8 @@ export default async function AdminDashboardPage() {
         </AnimateIn>
 
         <AnimateIn from="up" distance={16} staggerIndex={3} viewport={false}>
-          <Link href="/admin/messages" className="block group">
-            <Card className="liquid-glass-card flex items-center justify-between p-5 hover:border-border-strong transition-all">
+          <Link href="/dc/messages" className="block group">
+            <Card className="bg-surface border border-border flex items-center justify-between p-5 hover:border-border-strong transition-all shadow-2xs">
               <div className="space-y-1">
                 <span className="text-caption font-bold uppercase tracking-wider text-muted">
                   Contact Inquiries
@@ -159,7 +151,7 @@ export default async function AdminDashboardPage() {
                   {unreadSubmissions > 0 ? `${unreadSubmissions} Unread pending →` : "All inbox resolved →"}
                 </span>
               </div>
-              <div className="p-3 bg-surface/80 border border-border rounded-xl shadow-2xs group-hover:scale-110 transition-transform">
+              <div className="p-3 bg-surface-raised border border-border rounded-xl shadow-2xs group-hover:scale-105 transition-transform">
                 <i className="fi fi-br-envelope text-xl text-foreground leading-none" aria-hidden="true" />
               </div>
             </Card>
@@ -198,7 +190,7 @@ export default async function AdminDashboardPage() {
               </p>
             </div>
             <Link
-              href="/admin/messages"
+              href="/dc/messages"
               className="text-small font-semibold text-foreground hover:underline underline-offset-4"
             >
               Open Full Inbox →
@@ -218,39 +210,39 @@ export default async function AdminDashboardPage() {
             </p>
           </div>
 
-          <Card className="liquid-glass-card space-y-2.5 p-5">
+          <Card className="bg-surface border border-border shadow-2xs space-y-2.5 p-5">
             <Button asChild className="w-full justify-start animate-btn-scale" variant="primary">
-              <Link href="/admin/posts">
+              <Link href="/dc/posts">
                 <Plus className="mr-2.5 h-4 w-4" />
                 Write New Article
               </Link>
             </Button>
             <Button asChild className="w-full justify-start animate-btn-scale" variant="secondary">
-              <Link href="/admin/projects">
+              <Link href="/dc/projects">
                 <Plus className="mr-2.5 h-4 w-4" />
                 Publish Project Case Study
               </Link>
             </Button>
             <Button asChild className="w-full justify-start animate-btn-scale" variant="secondary">
-              <Link href="/admin/services">
+              <Link href="/dc/services">
                 <Plus className="mr-2.5 h-4 w-4" />
                 Add Service Offering
               </Link>
             </Button>
             <Button asChild className="w-full justify-start animate-btn-scale" variant="secondary">
-              <Link href="/admin/testimonials">
+              <Link href="/dc/testimonials">
                 <Plus className="mr-2.5 h-4 w-4" />
                 Add Client Testimonial
               </Link>
             </Button>
             <Button asChild className="w-full justify-start animate-btn-scale" variant="secondary">
-              <Link href="/admin/notifications">
+              <Link href="/dc/notifications">
                 <Zap className="mr-2.5 h-4 w-4" />
                 Broadcast Notification Banner
               </Link>
             </Button>
             <Button asChild className="w-full justify-start animate-btn-scale" variant="ghost">
-              <Link href="/admin/audit-logs">
+              <Link href="/dc/audit-logs">
                 <ShieldCheck className="mr-2.5 h-4 w-4" />
                 Review System Audit Logs
               </Link>

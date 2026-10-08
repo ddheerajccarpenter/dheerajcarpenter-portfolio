@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e \"console.log\\(require\\('./node_modules/react-markdown/package.json'\\).version\\)\")",
+      "Bash(node -e ' *)"
+    ]
+  }
+}

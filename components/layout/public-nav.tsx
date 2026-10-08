@@ -16,7 +16,7 @@ import {
   Edit3,
   Mail,
   MoreHorizontal,
-  Menu,
+  HelpCircle,
   X,
   ChevronRight,
   ChevronDown,
@@ -40,14 +40,6 @@ const PRIMARY_HREFS = new Set(["/", "/about", "/projects", "/blog", "/contact"])
 
 const PRIMARY_NAV = NAV_ITEMS.filter((item) => PRIMARY_HREFS.has(item.href));
 const SECONDARY_NAV = NAV_ITEMS.filter((item) => !PRIMARY_HREFS.has(item.href));
-
-const MOBILE_BOTTOM_NAV = [
-  { href: "/", label: "Home", icon: Home },
-  { href: "/about", label: "About", icon: User },
-  { href: "/projects", label: "Work", icon: FolderGit2 },
-  { href: "/blog", label: "Blog", icon: Edit3 },
-  { href: "/contact", label: "Contact", icon: Mail },
-] as const;
 
 export function DesktopNav() {
   const pathname = usePathname();
@@ -181,60 +173,34 @@ export function DesktopNav() {
   );
 }
 
+const MOBILE_BOTTOM_PRIMARY = [
+  { href: "/", label: "Home", icon: Home },
+  { href: "/about", label: "About", icon: User },
+  { href: "/projects", label: "Work", icon: FolderGit2 },
+  { href: "/contact", label: "Contact", icon: Mail },
+] as const;
+
+const MOBILE_MORE_ITEMS = [
+  { href: "/experience", label: "Experience", icon: Briefcase, desc: "Career timeline & roles" },
+  { href: "/blog", label: "Articles", icon: Edit3, desc: "Writing & tech thoughts" },
+  { href: "/skills", label: "Skills", icon: FileText, desc: "Technologies & tools" },
+  { href: "/services", label: "Services", icon: Headphones, desc: "Offerings & deliverables" },
+  { href: "/notes", label: "Notes", icon: FileText, desc: "Quick notes & ideas" },
+  { href: "/faq", label: "FAQ", icon: HelpCircle, desc: "Frequently asked questions" },
+] as const;
+
 export function MobileNav() {
   const pathname = usePathname();
+  const [moreOpen, setMoreOpen] = useState(false);
 
-  return (
-    <nav
-      className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-background/90 backdrop-blur-xl border-t border-border/80 h-16 px-2 pb-safe flex items-center shadow-2xl"
-      aria-label="Mobile bottom navigation"
-    >
-      <div className="grid grid-cols-5 w-full h-full max-w-lg mx-auto">
-        {MOBILE_BOTTOM_NAV.map((item) => {
-          const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
-          const Icon = item.icon;
-
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "flex flex-col items-center justify-center h-full py-1 rounded-xl transition-all duration-200 select-none relative",
-                isActive
-                  ? "text-foreground font-bold"
-                  : "text-muted hover:text-foreground"
-              )}
-            >
-              <Icon
-                className={cn("h-4 w-4 mb-0.5 shrink-0", isActive ? "text-foreground" : "text-muted")}
-                aria-hidden="true"
-              />
-              <span className="text-[10px] tracking-tight font-medium">{item.label}</span>
-              {isActive && (
-                <motion.span
-                  layoutId="mobile-nav-indicator"
-                  className="absolute bottom-1 w-4 h-0.5 rounded-full bg-foreground"
-                  transition={{ type: "spring", stiffness: 320, damping: 28, mass: 0.7 }}
-                />
-              )}
-            </Link>
-          );
-        })}
-      </div>
-    </nav>
-  );
-}
-
-export function MobileHeaderMenu() {
-  const [isOpen, setIsOpen] = useState(false);
-  const pathname = usePathname();
-
+  // Close sheet on route change
   useEffect(() => {
-    setIsOpen(false);
+    setMoreOpen(false);
   }, [pathname]);
 
+  // Lock scroll when More sheet is open
   useEffect(() => {
-    if (isOpen) {
+    if (moreOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
@@ -242,81 +208,137 @@ export function MobileHeaderMenu() {
     return () => {
       document.body.style.overflow = "";
     };
-  }, [isOpen]);
+  }, [moreOpen]);
+
+  const isMoreActive = MOBILE_MORE_ITEMS.some(
+    (item) => pathname === item.href || pathname.startsWith(item.href)
+  );
 
   return (
-    <div className="md:hidden">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-center h-9 w-9 rounded-xl border border-border bg-surface text-foreground hover:bg-surface-raised transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus cursor-pointer"
-        aria-label={isOpen ? "Close menu" : "Open menu"}
-        aria-expanded={isOpen}
-      >
-        {isOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
-      </button>
+    <>
+      {/* Lightweight Bottom Drawer for Secondary Navigation */}
+      {moreOpen && (
+        <div className="md:hidden fixed inset-0 z-50 flex flex-col justify-end">
+          {/* Backdrop — pure opacity, zero blur for GPU friendliness */}
+          <div
+            className="fixed inset-0 bg-black/60 transition-opacity"
+            onClick={() => setMoreOpen(false)}
+            aria-hidden="true"
+          />
 
-      <AnimatePresence>
-        {isOpen && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.18 }}
-              onClick={() => setIsOpen(false)}
-              className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs md:hidden"
-            />
+          {/* Drawer content */}
+          <div className="relative z-10 w-full max-w-lg mx-auto bg-background border-t border-border rounded-t-3xl p-5 pb-safe space-y-4 shadow-xl animate-drawer-up">
+            <div className="flex items-center justify-between border-b border-border pb-3 px-1">
+              <span className="text-caption uppercase tracking-wider font-bold text-muted">
+                Explore More
+              </span>
+              <button
+                onClick={() => setMoreOpen(false)}
+                className="p-1.5 rounded-full hover:bg-surface text-muted hover:text-foreground transition-colors"
+                aria-label="Close menu"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: -12, scale: 0.96 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -8, scale: 0.97 }}
-              transition={{ type: "spring", stiffness: 380, damping: 30 }}
-              className="fixed top-16 right-4 left-4 z-50 max-w-sm ml-auto frosted-surface rounded-2xl shadow-2xl overflow-hidden p-4 space-y-3 md:hidden max-h-[80vh] flex flex-col border border-border"
-            >
-              <div className="flex items-center justify-between border-b border-border pb-3 px-1">
-                <span className="text-caption uppercase tracking-wider font-bold text-muted">
-                  Menu
-                </span>
-                <span className="text-caption text-muted font-mono">
-                  {NAV_ITEMS.length} Pages
-                </span>
-              </div>
+            <div className="grid grid-cols-1 gap-1.5 max-h-[60vh] overflow-y-auto scroll-touch overscroll-contain">
+              {MOBILE_MORE_ITEMS.map((item) => {
+                const isActive = pathname === item.href || pathname.startsWith(item.href);
+                const Icon = item.icon;
 
-              <div className="overflow-y-auto space-y-1 pr-1 custom-scrollbar flex-1">
-                {NAV_ITEMS.map((item) => {
-                  const isActive =
-                    pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
-                  const Icon = NAV_ICONS[item.href] || FolderGit2;
-
-                  return (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      onClick={() => setIsOpen(false)}
-                      className={cn(
-                        "flex items-center justify-between px-3.5 py-2.5 rounded-xl text-small font-medium transition-all duration-150",
-                        isActive
-                          ? "bg-surface-raised text-foreground font-semibold border border-border shadow-xs"
-                          : "text-muted hover:text-foreground hover:bg-surface/50"
-                      )}
-                    >
-                      <div className="flex items-center space-x-3">
-                        <Icon
-                          className={cn("h-4 w-4 shrink-0", isActive ? "text-foreground" : "text-muted")}
-                          aria-hidden="true"
-                        />
-                        <span>{item.label}</span>
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setMoreOpen(false)}
+                    className={cn(
+                      "flex items-center justify-between p-3 rounded-xl transition-colors",
+                      isActive
+                        ? "bg-surface-raised text-foreground font-semibold border border-border"
+                        : "text-muted hover:text-foreground hover:bg-surface"
+                    )}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className={cn(
+                        "p-2 rounded-lg",
+                        isActive ? "bg-foreground text-background" : "bg-surface text-foreground"
+                      )}>
+                        <Icon className="h-4 w-4" />
                       </div>
-                      <ChevronRight className="h-4 w-4 text-muted opacity-50" />
-                    </Link>
-                  );
-                })}
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-    </div>
+                      <div>
+                        <p className="text-small font-medium text-foreground">{item.label}</p>
+                        <p className="text-[11px] text-muted">{item.desc}</p>
+                      </div>
+                    </div>
+                    <ChevronRight className="h-4 w-4 text-muted opacity-60" />
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modern Low-GPU Bottom Navigation Bar */}
+      <nav
+        className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-background border-t border-border min-h-16 h-[calc(4rem+env(safe-area-inset-bottom,0px))] px-2 pb-safe flex items-center shadow-lg"
+        aria-label="Mobile bottom navigation"
+      >
+        <div className="grid grid-cols-5 w-full h-full max-w-lg mx-auto items-center">
+          {MOBILE_BOTTOM_PRIMARY.map((item) => {
+            const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
+            const Icon = item.icon;
+
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn(
+                  "flex flex-col items-center justify-center h-full py-1 transition-colors select-none relative",
+                  isActive
+                    ? "text-foreground font-semibold"
+                    : "text-muted hover:text-foreground"
+                )}
+              >
+                <Icon
+                  className={cn("h-4.5 w-4.5 mb-1 shrink-0", isActive ? "text-foreground scale-105" : "text-muted")}
+                  aria-hidden="true"
+                />
+                <span className="text-[11px] tracking-tight">{item.label}</span>
+                {isActive && (
+                  <span className="w-1 h-1 rounded-full bg-foreground mt-0.5" />
+                )}
+              </Link>
+            );
+          })}
+
+          {/* 5th Tab: "More" Drawer Trigger */}
+          <button
+            onClick={() => setMoreOpen(!moreOpen)}
+            className={cn(
+              "flex flex-col items-center justify-center h-full py-1 transition-colors select-none cursor-pointer",
+              isMoreActive || moreOpen
+                ? "text-foreground font-semibold"
+                : "text-muted hover:text-foreground"
+            )}
+            aria-label="More navigation options"
+            aria-expanded={moreOpen}
+          >
+            <MoreHorizontal
+              className={cn("h-4.5 w-4.5 mb-1 shrink-0", (isMoreActive || moreOpen) ? "text-foreground scale-105" : "text-muted")}
+              aria-hidden="true"
+            />
+            <span className="text-[11px] tracking-tight">More</span>
+            {isMoreActive && (
+              <span className="w-1 h-1 rounded-full bg-foreground mt-0.5" />
+            )}
+          </button>
+        </div>
+      </nav>
+    </>
   );
+}
+
+export function MobileHeaderMenu() {
+  return null;
 }

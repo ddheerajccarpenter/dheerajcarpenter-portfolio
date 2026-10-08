@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Geist, Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { MotionProvider } from "@/components/providers/motion-provider";
@@ -28,6 +29,17 @@ const plusJakartaSans = Plus_Jakarta_Sans({
   weight: ["700", "800"],
   display: "swap",
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  viewportFit: "cover",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#fafafa" },
+    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+  ],
+};
 
 export const metadata: Metadata = {
   title: {
@@ -99,7 +111,6 @@ export default async function RootLayout({
       <body className="min-h-full bg-background text-foreground flex flex-col">
         <ThemeProvider defaultTheme={defaultTheme}>
           <MotionProvider>
-            <ContentGuard />
             {/* Skip link — first focusable element for keyboard users */}
             <a
               href="#main"
@@ -107,9 +118,24 @@ export default async function RootLayout({
             >
               Skip to content
             </a>
+            <ContentGuard />
             {children}
           </MotionProvider>
         </ThemeProvider>
+        {/* Google tag (gtag.js) */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-6NR7FKV3Y1"
+          strategy="afterInteractive"
+        />
+
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){window.dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-6NR7FKV3Y1');
+          `}
+        </Script>
       </body>
     </html>
   );
