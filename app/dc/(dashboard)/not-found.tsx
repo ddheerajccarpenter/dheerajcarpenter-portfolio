@@ -14,7 +14,7 @@ export default function AdminNotFound() {
 
         <div className="space-y-2">
           <Badge variant="pill" className="text-xs px-2.5 py-0.5 border border-border bg-surface text-foreground font-mono">
-            404 — Admin
+            404 — dear
           </Badge>
           <h1 className="text-2xl font-bold tracking-tight text-foreground">
             CMS Resource Not Found
