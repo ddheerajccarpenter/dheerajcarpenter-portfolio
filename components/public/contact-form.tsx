@@ -64,7 +64,7 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4.5">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       {/* Bot Honeypot — invisible to humans, attracts automated bots */}
       <div className="hidden" aria-hidden="true" style={{ display: "none" }}>
         <label htmlFor="company_website">Company Website</label>

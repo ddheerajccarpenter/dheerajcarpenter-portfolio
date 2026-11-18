@@ -49,9 +49,9 @@ export default async function PublicCertificationsPage() {
                           <h2 className="text-h3 font-bold text-foreground leading-snug">{cert.title}</h2>
                           <p className="text-body font-medium text-muted">{cert.issuer}</p>
                           {cert.issue_date && (
-                            <p className="text-caption text-muted flex items-center space-x-1 pt-1 font-mono">
-                              <Calendar className="h-3 w-3 inline mr-1 text-muted" />
-                              Issued: {new Date(cert.issue_date).toLocaleDateString("en-US", { month: "long", year: "numeric" })}
+                            <p className="text-caption text-muted flex items-center gap-1.5 pt-1 font-mono">
+                              <Calendar className="h-3 w-3 text-muted shrink-0" />
+                              <span>Issued: {new Date(cert.issue_date).toLocaleDateString("en-US", { month: "long", year: "numeric" })}</span>
                             </p>
                           )}
                         </div>

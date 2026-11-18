@@ -86,6 +86,8 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                 <img
                   src={project.cover_url}
                   alt={`${project.title} cover image`}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -169,6 +171,8 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                       <img
                         src={url}
                         alt={`${project.title} screenshot ${index + 1}`}
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover"
                       />
                     </div>

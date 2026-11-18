@@ -17,7 +17,7 @@ export default function ForbiddenPage() {
         {/* Isometric 403 Visual Hero */}
         <AnimateIn variant="iso" duration={0.4} viewport={false}>
           <div className="relative mx-auto w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center">
-            <div className="absolute inset-0 rounded-3xl bg-surface border border-border jitter-iso-card flex items-center justify-center shadow-md">
+            <div className="absolute inset-0 rounded-3xl bg-surface border border-border flex items-center justify-center shadow-sm">
               <ShieldAlert className="h-12 w-12 text-rose-500" />
             </div>
             <div className="absolute -top-2 -right-2">
@@ -32,15 +32,13 @@ export default function ForbiddenPage() {
         <AnimateIn variant="fade-rise" distance={16} duration={0.35} delay={0.1} viewport={false}>
           <div className="space-y-3">
             <p className="font-mono text-xs uppercase tracking-widest text-muted">
-              Security Boundary — Restricted Sector
+              Error 403 — Forbidden
             </p>
             <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-foreground">
-              Administrative Clearance Required
+              Access Denied
             </h1>
             <p className="text-body text-muted max-w-[480px] mx-auto leading-relaxed">
-              You do not have the credentials or role assignment required to enter this sector of{" "}
-              <span className="font-anak-manja text-foreground inline-block">Dheeraj Carpenter</span>
-              &apos;s workspace.
+              You do not have permission to access this page or resource.
             </p>
           </div>
         </AnimateIn>

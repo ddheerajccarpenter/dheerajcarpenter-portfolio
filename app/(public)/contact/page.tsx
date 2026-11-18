@@ -1,13 +1,14 @@
 import { getSettings, getSocialLinks } from "@/lib/data/public";
 import { Container } from "@/components/layout/container";
 import { ContactForm } from "@/components/public/contact-form";
-import { Button } from "@/components/ui";
+import { Button, CopyEmailBadge } from "@/components/ui";
 import { SkeletonWrapper } from "@/components/ui/skeleton-wrapper";
 import { AnimateIn } from "@/components/ui/animate-in";
 import {
   Mail,
   FileText,
   ArrowUpRight,
+  Download,
   Github,
   Linkedin,
   Twitter,
@@ -56,7 +57,7 @@ export default async function ContactPage() {
               </AnimateIn>
               <AnimateIn from="up" distance={12} delay={0.1} viewport={false}>
                 <p className="prose-readable text-body-lg text-muted">
-                  Available for engineering contracts, technical advisory, design consulting, or collaborative projects.
+                  Feel free to reach out for project inquiries, collaborations, or just to say hello.
                 </p>
               </AnimateIn>
             </div>
@@ -65,16 +66,14 @@ export default async function ContactPage() {
               {/* Direct Email & Resume */}
               <div className="space-y-6 pt-4 border-t border-border/80">
                 {contactEmail && (
-                  <div className="space-y-1.5">
+                  <div className="space-y-2">
                     <span className="text-caption font-semibold uppercase tracking-wider text-muted flex items-center gap-2">
                       <Mail className="h-3.5 w-3.5 text-foreground opacity-80" />
                       Direct Email
                     </span>
-                    <p className="text-body font-semibold">
-                      <a href={`mailto:${contactEmail}`} className="underline underline-offset-4 hover:opacity-80 transition-opacity">
-                        {contactEmail}
-                      </a>
-                    </p>
+                    <div>
+                      <CopyEmailBadge email={contactEmail} />
+                    </div>
                   </div>
                 )}
 
@@ -87,7 +86,7 @@ export default async function ContactPage() {
                     <Button asChild variant="secondary" size="md">
                       <a href={resumeUrl} download={resumeFilename} target="_blank" rel="noopener noreferrer">
                         Download Resume (PDF)
-                        <ArrowUpRight className="h-4 w-4 ml-1.5 opacity-80" />
+                        <Download className="h-4 w-4 ml-1.5 opacity-80" />
                       </a>
                     </Button>
                   </div>

@@ -191,7 +191,7 @@ export function AdminMobileNav() {
   return (
     <>
       <nav
-        className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-background/95 backdrop-blur-md border-t border-border h-16 px-4 pb-safe flex items-center shadow-lg"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-background/95 backdrop-blur-md border-t border-border min-h-16 h-[calc(4rem+env(safe-area-inset-bottom,0px))] px-4 pb-safe flex items-center shadow-lg"
         aria-label="Admin mobile navigation"
       >
         <div className="grid grid-cols-4 w-full h-full max-w-md mx-auto">
@@ -249,7 +249,7 @@ export function AdminMobileNav() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: "100%" }}
               transition={{ type: "spring", stiffness: 360, damping: 32 }}
-              className="fixed bottom-0 left-0 right-0 z-50 bg-background border-t border-border rounded-t-2xl p-4 max-h-[80vh] flex flex-col space-y-3 md:hidden shadow-2xl"
+              className="fixed bottom-0 left-0 right-0 z-50 bg-background border-t border-border rounded-t-2xl p-4 pb-[calc(1rem+env(safe-area-inset-bottom,0px))] max-h-[80vh] flex flex-col space-y-3 md:hidden shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-center justify-between border-b border-border pb-3 px-1">

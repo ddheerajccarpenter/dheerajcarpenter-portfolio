@@ -49,7 +49,7 @@ export default function ProjectDetailLoading() {
 
         {/* Sidebar */}
         <div className="space-y-6">
-          <div className="border border-border p-6 rounded-sm bg-background space-y-3">
+          <div className="border border-border p-6 rounded-2xl bg-background space-y-3">
             <Skeleton className="h-3 w-36" />
             <div className="flex flex-wrap gap-2">
               {[60, 80, 56, 72, 64].map((w, i) => (
@@ -57,7 +57,7 @@ export default function ProjectDetailLoading() {
               ))}
             </div>
           </div>
-          <div className="border border-border p-6 rounded-sm bg-background space-y-3">
+          <div className="border border-border p-6 rounded-2xl bg-background space-y-3">
             <Skeleton className="h-3 w-28" />
             <div className="space-y-2">
               <div className="flex justify-between">

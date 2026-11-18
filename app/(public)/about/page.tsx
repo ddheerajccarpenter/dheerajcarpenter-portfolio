@@ -66,6 +66,8 @@ export default async function AboutPage() {
                       <img
                         src={photoUrl}
                         alt="Profile Photo"
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover"
                       />
                     </div>
@@ -219,7 +221,7 @@ export default async function AboutPage() {
                         <div className="space-y-1.5">
                           <span className="text-caption font-semibold uppercase tracking-wider text-muted flex items-center gap-1.5 font-mono">
                             <Calendar className="h-3 w-3" />
-                            {new Date(edu.start_date).toLocaleDateString("en-US", { year: "numeric", month: "short" })}
+                            {edu.start_date ? new Date(edu.start_date).toLocaleDateString("en-US", { year: "numeric", month: "short" }) : ""}
                             {" – "}
                             {edu.current
                               ? "Present"

@@ -8,6 +8,7 @@ import { ThemeInjector } from "./theme-injector";
 import { PublicNotificationBanner } from "./public-notification-banner";
 import { ScrollTexture } from "@/components/ui/scroll-texture";
 import { AnakManjaHighlighter } from "@/components/ui/anak-manja-highlighter";
+import { CopyEmailBadge } from "@/components/ui/copy-email-badge";
 import { Github } from "lucide-react";
 
 export async function PublicShell({ children }: { children: React.ReactNode }) {
@@ -55,7 +56,7 @@ export async function PublicShell({ children }: { children: React.ReactNode }) {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="GitHub Profile"
-                  className="h-8.5 w-8.5 rounded-xl border border-border bg-surface/80 hover:bg-surface-raised flex items-center justify-center text-muted hover:text-foreground transition-all duration-150 hidden md:flex"
+                  className="h-9 w-9 rounded-xl border border-border bg-surface/80 hover:bg-surface-raised flex items-center justify-center text-muted hover:text-foreground transition-all duration-150 hidden md:flex"
                 >
                   <Github className="h-4 w-4" />
                 </a>
@@ -66,7 +67,7 @@ export async function PublicShell({ children }: { children: React.ReactNode }) {
         </header>
 
         {/* Main Content Area */}
-        <main id="main" className="flex-1 pb-24 md:pb-0">
+        <main id="main" className="flex-1">
           {children}
         </main>
 
@@ -96,12 +97,7 @@ export async function PublicShell({ children }: { children: React.ReactNode }) {
               {/* Social links */}
               <div className="flex flex-wrap items-center gap-4">
                 {contactEmail && (
-                  <a
-                    href={`mailto:${contactEmail}`}
-                    className="text-caption text-muted hover:text-foreground transition-colors underline underline-offset-4"
-                  >
-                    {contactEmail}
-                  </a>
+                  <CopyEmailBadge email={contactEmail} />
                 )}
                 {socialLinks.length > 0 ? (
                   socialLinks.map((link) => (
@@ -124,7 +120,7 @@ export async function PublicShell({ children }: { children: React.ReactNode }) {
                     className="inline-flex items-center gap-1.5 text-caption text-muted hover:text-foreground transition-colors"
                     aria-label="GitHub profile"
                   >
-                    <i className="fi fi-brands-github text-sm leading-none" aria-hidden="true" />
+                    <Github className="h-3.5 w-3.5" aria-hidden="true" />
                     <span className="underline underline-offset-4">GitHub</span>
                   </a>
                 )}

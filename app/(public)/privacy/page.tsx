@@ -56,7 +56,7 @@ export default function PrivacyPage() {
           <AnimateIn from="up" distance={12} delay={0.2}>
             <section className="space-y-3">
               <h2 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded-sm border border-border bg-surface text-muted">01</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded-md border border-border bg-surface text-muted">01</span>
                 Information We Collect
               </h2>
               <p className="text-body text-muted leading-relaxed">
@@ -83,7 +83,7 @@ export default function PrivacyPage() {
           <AnimateIn from="up" distance={12} delay={0.25}>
             <section className="space-y-3">
               <h2 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded-sm border border-border bg-surface text-muted">02</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded-md border border-border bg-surface text-muted">02</span>
                 How Your Information is Used
               </h2>
               <p className="text-body text-muted leading-relaxed">
@@ -92,11 +92,7 @@ export default function PrivacyPage() {
               <ul className="space-y-2 text-small text-muted">
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
-                  <span>Responding to your engineering inquiries, project briefs, and freelance availability questions.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
-                  <span>Negotiating and drafting consulting contracts, project milestones, or architectural scopes.</span>
+                  <span>Responding to your messages, questions, and project collaboration inquiries.</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
@@ -110,7 +106,7 @@ export default function PrivacyPage() {
           <AnimateIn from="up" distance={12} delay={0.3}>
             <section className="space-y-3">
               <h2 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded-sm border border-border bg-surface text-muted">03</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded-md border border-border bg-surface text-muted">03</span>
                 Local Storage & Cookies
               </h2>
               <div className="flex items-start gap-3 p-4 rounded-xl border border-border bg-surface/40">
@@ -136,7 +132,7 @@ export default function PrivacyPage() {
           <AnimateIn from="up" distance={12} delay={0.35}>
             <section className="space-y-3">
               <h2 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded-sm border border-border bg-surface text-muted">04</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded-md border border-border bg-surface text-muted">04</span>
                 Infrastructure & Security Measures
               </h2>
               <p className="text-body text-muted leading-relaxed">
@@ -169,7 +165,7 @@ export default function PrivacyPage() {
           <AnimateIn from="up" distance={12} delay={0.4}>
             <section className="space-y-3">
               <h2 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded-sm border border-border bg-surface text-muted">05</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded-md border border-border bg-surface text-muted">05</span>
                 Your Rights (GDPR & CCPA Compliance)
               </h2>
               <p className="text-body text-muted leading-relaxed">
@@ -187,7 +183,7 @@ export default function PrivacyPage() {
           <AnimateIn from="up" distance={12} delay={0.45}>
             <section className="space-y-3 border-t border-border/60 pt-8">
               <h2 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded-sm border border-border bg-surface text-muted">06</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded-md border border-border bg-surface text-muted">06</span>
                 Privacy Inquiries
               </h2>
               <p className="text-body text-muted leading-relaxed">

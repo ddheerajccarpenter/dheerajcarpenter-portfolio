@@ -47,7 +47,13 @@ export default async function PublicNotesPage() {
                     <div className="space-y-3">
                       {note.image_url && (
                         <div className="overflow-hidden rounded-xl border border-border max-h-48 mb-2 bg-surface-overlay">
-                          <img src={note.image_url} alt={note.title} className="w-full h-36 object-cover" />
+                          <img
+                            src={note.image_url}
+                            alt={note.title}
+                            loading="lazy"
+                            decoding="async"
+                            className="w-full h-36 object-cover"
+                          />
                         </div>
                       )}
                       <div className="flex items-start justify-between gap-2">

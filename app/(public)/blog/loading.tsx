@@ -12,7 +12,7 @@ export default function BlogLoading() {
       <Container>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="border border-border p-6 md:p-8 rounded-sm bg-surface space-y-4">
+            <div key={i} className="border border-border p-6 md:p-8 rounded-2xl bg-surface space-y-4">
               <Skeleton className="h-4 w-44" />
               <Skeleton className="h-8 w-3/4" />
               <div className="space-y-2">

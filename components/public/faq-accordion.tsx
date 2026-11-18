@@ -2,86 +2,65 @@
 
 import { useState } from "react";
 import { Card } from "@/components/ui";
-import { ChevronDown, Sparkles, Code2, Briefcase, Users2 } from "lucide-react";
+import { ChevronDown, Sparkles, Code2, GraduationCap, Mail } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 
 interface FAQItem {
   id: string;
-  category: "all" | "engineering" | "freelance" | "collaboration";
+  category: "all" | "background" | "tech" | "contact";
   question: string;
   answer: string;
 }
 
 const FAQ_ITEMS: FAQItem[] = [
   {
-    id: "services",
-    category: "engineering",
-    question: "What engineering and design services do you provide?",
+    id: "studies",
+    category: "background",
+    question: "What are you studying and what are your main interests?",
     answer:
-      "I specialize in end-to-end full-stack web applications, custom SaaS architectures, high-performance UI engineering, and API integrations. Additionally, I deliver frontend performance audits, design token implementations (Vercel & Apple aesthetic), database schema migrations, and admin dashboard CMS platforms.",
+      "I am an engineering student with a deep passion for technology, coding, video editing, and creative design. I enjoy building modern, fast web applications and exploring new technologies while continuously improving my technical skills.",
   },
   {
     id: "tech-stack",
-    category: "engineering",
+    category: "tech",
     question: "What is your primary technology stack?",
     answer:
-      "My core production stack is TypeScript, Next.js (App Router, Server Actions), React 19, Tailwind CSS, PostgreSQL, Supabase, and Vercel. For interactive micro-interactions and high-performance physics, I leverage Motion and Web APIs, always with a focus on low GPU overhead and fast LCP times.",
+      "My primary development stack includes TypeScript, Next.js, React, Tailwind CSS, PostgreSQL, and Supabase. For creative work, interface design, and multimedia, I use Figma and standard digital editing tools.",
   },
   {
-    id: "availability",
-    category: "freelance",
-    question: "Are you available for freelance contracts or full-time roles?",
+    id: "projects",
+    category: "tech",
+    question: "What kind of projects do you enjoy building?",
     answer:
-      "Yes. I take on selective freelance contracts, technical architecture consultations, and senior frontend/full-stack roles. I intentionally cap the number of active clients at any given time to ensure rigorous attention to code quality and delivery deadlines.",
+      "I build full-stack web applications, interactive web tools, and clean content platforms. I focus on clean architecture, responsive layouts, accessibility, and high performance.",
   },
   {
-    id: "timeline",
-    category: "freelance",
-    question: "What is your typical turnaround time for a project?",
+    id: "opportunities",
+    category: "background",
+    question: "Are you open to internships or collaborative projects?",
     answer:
-      "Timelines are structured around iterative sprints. A focused MVP or marketing platform typically spans 2 to 4 weeks. Complex full-stack platforms with custom admin CMS, authentication, payment gateways, and database integrations take between 4 to 8 weeks.",
+      "Yes! I am always eager to collaborate on exciting projects, contribute to open-source software, and explore engineering internships or developer opportunities.",
   },
   {
-    id: "pricing",
-    category: "freelance",
-    question: "How do you handle project pricing and billing?",
+    id: "contact",
+    category: "contact",
+    question: "How can I get in touch with you?",
     answer:
-      "Engagements are usually structured as milestone-based fixed contracts (50% upfront, remaining 50% upon milestone completion and deployment) or weekly sprint retainers for agile product teams. Detailed scope estimates are provided upfront with zero hidden costs.",
-  },
-  {
-    id: "nda",
-    category: "collaboration",
-    question: "Can we sign a Mutual NDA before discussing our product?",
-    answer:
-      "Absolutely. I regularly sign standard mutual non-disclosure agreements before reviewing proprietary pitch decks, business logic, or codebase repositories.",
-  },
-  {
-    id: "post-launch",
-    category: "collaboration",
-    question: "Do you offer post-launch maintenance and support?",
-    answer:
-      "Yes. Every build includes a 30-day post-launch warranty for critical bug fixes and environment adjustments. For ongoing feature iterations, database optimization, and performance monitoring, monthly maintenance retainers are available.",
-  },
-  {
-    id: "get-started",
-    category: "collaboration",
-    question: "How do we get started on a project together?",
-    answer:
-      "Reach out through the Contact page or email me directly at dheerajcarpenter@gmail.com with your project brief, preferred timeline, and budget. I will review the scope and respond within 24 hours to schedule a 30-minute discovery call.",
+      "The easiest way is through the Contact page or by emailing me directly at dheerajcarpenter@gmail.com. You can also find my work and repositories on GitHub.",
   },
 ];
 
 const CATEGORIES = [
   { id: "all", label: "All Questions", icon: Sparkles },
-  { id: "engineering", label: "Engineering & Stack", icon: Code2 },
-  { id: "freelance", label: "Freelance & Pricing", icon: Briefcase },
-  { id: "collaboration", label: "Collaboration & Support", icon: Users2 },
+  { id: "background", label: "Background & Studies", icon: GraduationCap },
+  { id: "tech", label: "Tech & Stack", icon: Code2 },
+  { id: "contact", label: "Contact", icon: Mail },
 ] as const;
 
 export function FaqAccordion() {
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [openIds, setOpenIds] = useState<Record<string, boolean>>({
-    services: true,
+    studies: true,
     "tech-stack": true,
   });
 
@@ -99,7 +78,7 @@ export function FaqAccordion() {
   return (
     <div className="space-y-8">
       {/* Category Pills */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+      <div className="relative flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none select-none">
         {CATEGORIES.map((cat) => {
           const Icon = cat.icon;
           const isActive = activeCategory === cat.id;
@@ -108,12 +87,19 @@ export function FaqAccordion() {
               key={cat.id}
               type="button"
               onClick={() => setActiveCategory(cat.id)}
-              className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
+              className={`relative inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors duration-150 cursor-pointer active:scale-95 ${
                 isActive
-                  ? "bg-foreground text-background shadow-xs font-semibold"
+                  ? "text-background font-semibold"
                   : "border border-border bg-surface/50 text-muted hover:text-foreground hover:bg-surface"
               }`}
             >
+              {isActive && (
+                <motion.span
+                  layoutId="faqCategoryPill"
+                  className="absolute inset-0 bg-foreground rounded-full -z-10 shadow-xs"
+                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                />
+              )}
               <Icon className="h-3.5 w-3.5" />
               <span>{cat.label}</span>
             </button>
@@ -128,7 +114,7 @@ export function FaqAccordion() {
           return (
             <Card
               key={item.id}
-              className={`transition-all duration-200 border ${
+              className={`transition-all duration-200 border !p-0 overflow-hidden ${
                 isOpen ? "border-foreground/30 bg-surface/80" : "border-border/80 bg-surface/30 hover:border-border"
               }`}
             >

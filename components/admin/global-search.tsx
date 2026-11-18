@@ -207,11 +207,11 @@ export function GlobalSearch() {
       {/* Header Search Trigger Button */}
       <button
         onClick={() => setIsOpen(true)}
-        className="flex items-center space-x-2 border border-border bg-surface px-3 py-1.5 rounded-sm hover:bg-surface/80 transition-colors text-muted hover:text-foreground text-caption"
+        className="flex items-center space-x-2 border border-border bg-surface px-3 py-1.5 rounded-md hover:bg-surface/80 transition-colors text-muted hover:text-foreground text-caption"
       >
         <Search className="h-3.5 w-3.5" />
         <span className="hidden sm:inline font-medium">Search CMS...</span>
-        <div className="hidden lg:flex items-center space-x-0.5 border border-border bg-background px-1 py-0.2 rounded-sm text-[9px] font-bold">
+        <div className="hidden lg:flex items-center space-x-0.5 border border-border bg-background px-1 py-0.5 rounded text-[9px] font-bold">
           <Command className="h-2 w-2" />
           <span>K</span>
         </div>
@@ -222,7 +222,7 @@ export function GlobalSearch() {
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-start justify-center pt-20 px-4 md:pt-32">
           <div
             ref={modalRef}
-            className="bg-background border border-border w-full max-w-[600px] rounded-sm overflow-hidden flex flex-col shadow-2xl animate-dialog-enter"
+            className="bg-background border border-border w-full max-w-[600px] rounded-2xl overflow-hidden flex flex-col shadow-2xl animate-dialog-enter"
           >
             {/* Input Header */}
             <div className="flex items-center border-b border-border px-4 py-3 bg-surface/30">
@@ -237,7 +237,7 @@ export function GlobalSearch() {
               />
               <button
                 onClick={() => setIsOpen(false)}
-                className="p-1 hover:bg-surface border border-border rounded-sm transition-colors ml-3"
+                className="p-1 hover:bg-surface border border-border rounded-md transition-colors ml-3"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -261,7 +261,7 @@ export function GlobalSearch() {
                       <button
                         key={page.id}
                         onClick={() => handleSelect(page.href)}
-                        className="flex items-center space-x-3 p-3 border border-border rounded-sm hover:bg-surface transition-colors text-left text-small font-semibold text-foreground"
+                        className="flex items-center space-x-3 p-3 border border-border rounded-xl hover:bg-surface transition-colors text-left text-small font-semibold text-foreground"
                       >
                         {getCategoryIcon(page.category)}
                         <span className="truncate">{page.title}</span>
@@ -283,7 +283,7 @@ export function GlobalSearch() {
                     <button
                       key={`${res.category}-${res.id}`}
                       onClick={() => handleSelect(res.href)}
-                      className="w-full flex items-center justify-between p-3 border border-border hover:border-foreground rounded-sm hover:bg-surface/50 transition-colors text-left"
+                      className="w-full flex items-center justify-between p-3 border border-border hover:border-foreground rounded-xl hover:bg-surface/50 transition-colors text-left"
                     >
                       <div className="flex items-center space-x-3 min-w-0">
                         {getCategoryIcon(res.category)}
@@ -298,7 +298,7 @@ export function GlobalSearch() {
                           )}
                         </div>
                       </div>
-                      <span className="text-[9px] font-bold border border-border px-2 py-0.5 rounded-sm uppercase tracking-wider text-muted shrink-0 capitalize ml-3">
+                      <span className="text-[9px] font-bold border border-border px-2 py-0.5 rounded-full uppercase tracking-wider text-muted shrink-0 capitalize ml-3">
                         {res.category}
                       </span>
                     </button>

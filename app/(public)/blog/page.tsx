@@ -41,13 +41,15 @@ export default async function BlogPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
             {posts.map((post, index) => (
               <AnimateIn key={post.id} from="up" distance={16} staggerIndex={index}>
-                <Card className="flex flex-col h-full justify-between p-6 md:p-8 card-accent-bar !p-0 overflow-hidden">
+                <Card className="flex flex-col h-full justify-between card-accent-bar !p-0 overflow-hidden">
                   {/* Cover image if available */}
                   {post.cover_url && (
                     <div className="relative aspect-[16/9] w-full overflow-hidden border-b border-border animate-grayscale-hover bg-surface-overlay">
                       <img
                         src={post.cover_url}
                         alt={post.title}
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover"
                       />
                     </div>

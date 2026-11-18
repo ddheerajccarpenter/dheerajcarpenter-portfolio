@@ -9,7 +9,7 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Frequently Asked Questions — Dheeraj Carpenter",
-  description: "Answers to frequently asked questions about full-stack engineering, tech stack, freelance availability, turnaround time, and collaboration.",
+  description: "Answers to common questions about my background, development stack, projects, and collaboration.",
 };
 
 export default function FaqPage() {
@@ -27,7 +27,7 @@ export default function FaqPage() {
         </AnimateIn>
         <AnimateIn from="up" distance={12} delay={0.1} viewport={false}>
           <p className="prose-readable text-body-lg text-muted max-w-[640px]">
-            Everything you need to know about working together, project scopes, turnaround times, and engineering stack.
+            Common questions about my background, technology stack, projects, and how to get in touch.
           </p>
         </AnimateIn>
       </Container>

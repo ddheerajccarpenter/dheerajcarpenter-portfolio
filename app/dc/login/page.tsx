@@ -26,7 +26,7 @@ export default function LoginPage() {
           </p>
         </div>
 
-        <div className="border border-border p-6 rounded-sm bg-background">
+        <div className="border border-border p-6 rounded-2xl bg-surface/50 shadow-sm">
           <LoginForm />
         </div>
       </div>

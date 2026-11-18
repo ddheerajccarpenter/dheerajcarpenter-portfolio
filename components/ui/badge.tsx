@@ -10,13 +10,14 @@ interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
 /**
  * Badge Component
  * Clean, optical label styling for tags, categories, and status indicators.
+ * Includes subtle tactile hover lift and bouncy press state.
  */
 export function Badge({ className, variant = "default", children, ...props }: BadgeProps) {
   if (variant === "dot") {
     return (
       <span
         className={cn(
-          "inline-flex items-center gap-2 text-caption font-medium text-foreground select-none",
+          "inline-flex items-center gap-2 text-caption font-medium text-foreground select-none transition-transform duration-200 hover:-translate-y-0.5 active:scale-95",
           className,
         )}
         {...props}
@@ -34,7 +35,7 @@ export function Badge({ className, variant = "default", children, ...props }: Ba
     return (
       <span
         className={cn(
-          "inline-flex items-center border border-border-strong px-2.5 py-1 text-[11px] font-medium text-foreground bg-surface-overlay rounded-full tracking-wide transition-all duration-200",
+          "inline-flex items-center border border-border-strong px-2.5 py-1 text-[11px] font-medium text-foreground bg-surface-overlay rounded-full tracking-wide transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xs active:scale-95 select-none",
           className,
         )}
         {...props}
@@ -47,7 +48,7 @@ export function Badge({ className, variant = "default", children, ...props }: Ba
   return (
     <span
       className={cn(
-        "inline-flex items-center border border-border px-2.5 py-0.5 text-[11px] font-medium text-muted-foreground bg-surface/80 tracking-wide transition-all duration-200 hover:border-border-strong hover:text-foreground",
+        "inline-flex items-center border border-border px-2.5 py-0.5 text-[11px] font-medium text-muted-foreground bg-surface/80 tracking-wide transition-all duration-200 hover:border-border-strong hover:text-foreground hover:-translate-y-0.5 active:scale-95 select-none",
         variant === "pill" ? "rounded-full" : "rounded-lg",
         className,
       )}

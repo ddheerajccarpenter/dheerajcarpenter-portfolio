@@ -72,7 +72,13 @@ export function AnakManjaHighlighter() {
           }
         });
 
-        textNode.parentNode?.replaceChild(fragment, textNode);
+        try {
+          if (textNode.parentNode) {
+            textNode.parentNode.replaceChild(fragment, textNode);
+          }
+        } catch {
+          // Ignore DOM detachment during React route transitions
+        }
       }
     };
 

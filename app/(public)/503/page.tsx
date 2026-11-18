@@ -17,8 +17,8 @@ export default function ServiceUnavailablePage() {
         {/* Isometric 503 Visual Hero */}
         <AnimateIn variant="iso" duration={0.4} viewport={false}>
           <div className="relative mx-auto w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center">
-            <div className="absolute inset-0 rounded-3xl bg-surface border border-border jitter-iso-card flex items-center justify-center shadow-md">
-              <Wrench className="h-12 w-12 text-sky-500 animate-pulse" />
+            <div className="absolute inset-0 rounded-3xl bg-surface border border-border flex items-center justify-center shadow-sm">
+              <Wrench className="h-12 w-12 text-foreground/70" />
             </div>
             <div className="absolute -top-2 -right-2">
               <Badge variant="pill" className="text-[11px] font-mono px-2.5 py-0.5 border border-border bg-foreground text-background font-bold shadow-xs">
@@ -31,19 +31,14 @@ export default function ServiceUnavailablePage() {
         {/* Text Details */}
         <AnimateIn variant="fade-rise" distance={16} duration={0.35} delay={0.1} viewport={false}>
           <div className="space-y-3">
-            <div className="flex items-center justify-center gap-2">
-              <span className="h-2 w-2 rounded-full bg-sky-500 animate-ping" />
-              <p className="font-mono text-xs uppercase tracking-widest text-muted">
-                System Upgrade & Synchronization
-              </p>
-            </div>
+            <p className="font-mono text-xs uppercase tracking-widest text-muted">
+              Error 503 — Maintenance
+            </p>
             <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-foreground">
-              Scheduled Platform Maintenance
+              Under Maintenance
             </h1>
             <p className="text-body text-muted max-w-[480px] mx-auto leading-relaxed">
-              We are currently performing routine database optimization and cache infrastructure upgrades for{" "}
-              <span className="font-anak-manja text-foreground inline-block">Dheeraj Carpenter</span>
-              &apos;s portfolio. Services will resume in seconds.
+              This site is currently undergoing temporary maintenance. Please check back shortly.
             </p>
           </div>
         </AnimateIn>

@@ -227,7 +227,7 @@ export function MobileNav() {
           />
 
           {/* Drawer content */}
-          <div className="relative z-10 w-full max-w-lg mx-auto bg-background border-t border-border rounded-t-3xl p-5 pb-safe space-y-4 shadow-xl animate-drawer-up">
+          <div className="relative z-10 w-full max-w-lg mx-auto bg-background border-t border-border rounded-t-3xl p-5 pb-[calc(1.5rem+env(safe-area-inset-bottom,0px))] space-y-4 shadow-xl animate-drawer-up">
             <div className="flex items-center justify-between border-b border-border pb-3 px-1">
               <span className="text-caption uppercase tracking-wider font-bold text-muted">
                 Explore More
@@ -294,19 +294,25 @@ export function MobileNav() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "flex flex-col items-center justify-center h-full py-1 transition-colors select-none relative",
+                  "flex flex-col items-center justify-center h-full py-1 transition-colors select-none relative active:scale-90 transition-transform duration-100",
                   isActive
                     ? "text-foreground font-semibold"
                     : "text-muted hover:text-foreground"
                 )}
               >
                 <Icon
-                  className={cn("h-4.5 w-4.5 mb-1 shrink-0", isActive ? "text-foreground scale-105" : "text-muted")}
+                  className={cn("h-5 w-5 mb-0.5 shrink-0 transition-transform duration-150", isActive ? "text-foreground scale-110" : "text-muted")}
                   aria-hidden="true"
                 />
                 <span className="text-[11px] tracking-tight">{item.label}</span>
-                {isActive && (
-                  <span className="w-1 h-1 rounded-full bg-foreground mt-0.5" />
+                {isActive ? (
+                  <motion.span
+                    layoutId="mobile-nav-dot"
+                    className="w-1.5 h-1 rounded-full bg-foreground mt-0.5"
+                    transition={{ type: "spring", stiffness: 450, damping: 30 }}
+                  />
+                ) : (
+                  <span className="w-1.5 h-1 mt-0.5" />
                 )}
               </Link>
             );
@@ -316,7 +322,7 @@ export function MobileNav() {
           <button
             onClick={() => setMoreOpen(!moreOpen)}
             className={cn(
-              "flex flex-col items-center justify-center h-full py-1 transition-colors select-none cursor-pointer",
+              "flex flex-col items-center justify-center h-full py-1 transition-colors select-none cursor-pointer active:scale-90 transition-transform duration-100",
               isMoreActive || moreOpen
                 ? "text-foreground font-semibold"
                 : "text-muted hover:text-foreground"
@@ -325,12 +331,18 @@ export function MobileNav() {
             aria-expanded={moreOpen}
           >
             <MoreHorizontal
-              className={cn("h-4.5 w-4.5 mb-1 shrink-0", (isMoreActive || moreOpen) ? "text-foreground scale-105" : "text-muted")}
+              className={cn("h-5 w-5 mb-0.5 shrink-0 transition-transform duration-150", (isMoreActive || moreOpen) ? "text-foreground scale-110" : "text-muted")}
               aria-hidden="true"
             />
             <span className="text-[11px] tracking-tight">More</span>
-            {isMoreActive && (
-              <span className="w-1 h-1 rounded-full bg-foreground mt-0.5" />
+            {isMoreActive ? (
+              <motion.span
+                layoutId="mobile-nav-dot"
+                className="w-1.5 h-1 rounded-full bg-foreground mt-0.5"
+                transition={{ type: "spring", stiffness: 450, damping: 30 }}
+              />
+            ) : (
+              <span className="w-1.5 h-1 mt-0.5" />
             )}
           </button>
         </div>

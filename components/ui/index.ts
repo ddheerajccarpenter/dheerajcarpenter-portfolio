@@ -23,3 +23,4 @@ export { MagneticCta } from "./magnetic-cta";
 export { StatCounter } from "./stat-counter";
 export { EdgeLight } from "./edge-light";
 export { HeroParallax } from "./hero-parallax";
+export { CopyEmailBadge } from "./copy-email-badge";

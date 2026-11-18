@@ -58,7 +58,7 @@ export function LoginForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       {errorMsg && (
-        <div className="border border-border p-4 rounded-sm bg-surface flex items-start space-x-3 text-small text-foreground animate-alert-scale">
+        <div className="border border-border p-4 rounded-xl bg-surface flex items-start space-x-3 text-small text-foreground animate-alert-scale">
           <AlertCircle className="h-5 w-5 shrink-0" />
           <span>{errorMsg}</span>
         </div>

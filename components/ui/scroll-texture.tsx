@@ -10,6 +10,9 @@ import { useEffect } from "react";
  */
 export function ScrollTexture() {
   useEffect(() => {
+    // Skip active inertial parallax on mobile devices to prevent GPU scroll lag
+    if (typeof window === "undefined" || window.innerWidth < 768) return;
+
     let rafId: number | null = null;
     let lastScrollY = -1;
 

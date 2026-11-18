@@ -55,7 +55,7 @@ export default async function AdminLayout({
           </header>
 
           {/* Content Container with Entrance Animation */}
-          <main className="flex-1 p-4 sm:p-6 md:p-8 overflow-y-auto animate-page-reveal">
+          <main className="flex-1 p-4 sm:p-6 md:p-8 pb-24 md:pb-8 overflow-y-auto animate-page-reveal">
             {children}
           </main>
         </div>

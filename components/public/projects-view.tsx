@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { motion } from "motion/react";
 import type { Project } from "@/types/database";
 import { Card, Badge, Button } from "@/components/ui";
 import { AnimateIn } from "@/components/ui/animate-in";
@@ -63,24 +64,31 @@ export function ProjectsView({ projects }: ProjectsViewProps) {
           <span className="capitalize">{viewMode} view</span>
         </div>
 
-        {/* Segmented View Switcher */}
+        {/* Segmented View Switcher with spring sliding pill */}
         <div
           role="radiogroup"
           aria-label="View format"
-          className="inline-flex items-center p-0.5 rounded-lg border border-border bg-surface/50 backdrop-blur-sm shadow-xs"
+          className="relative inline-flex items-center p-0.5 rounded-lg border border-border bg-surface/50 backdrop-blur-sm shadow-xs select-none"
         >
           <button
             type="button"
             role="radio"
             aria-checked={viewMode === "grid"}
             onClick={() => handleToggle("grid")}
-            className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md transition-all cursor-pointer ${
+            className={`relative flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md transition-colors duration-150 cursor-pointer ${
               viewMode === "grid"
-                ? "bg-foreground text-background shadow-xs font-semibold"
+                ? "text-background font-semibold"
                 : "text-muted hover:text-foreground"
             }`}
             title="Grid View"
           >
+            {viewMode === "grid" && (
+              <motion.span
+                layoutId="projects-view-pill"
+                className="absolute inset-0 bg-foreground rounded-md -z-10 shadow-xs"
+                transition={{ type: "spring", stiffness: 450, damping: 32 }}
+              />
+            )}
             <LayoutGrid className="h-3.5 w-3.5" />
             <span className="hidden sm:inline">Grid</span>
           </button>
@@ -89,13 +97,20 @@ export function ProjectsView({ projects }: ProjectsViewProps) {
             role="radio"
             aria-checked={viewMode === "list"}
             onClick={() => handleToggle("list")}
-            className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md transition-all cursor-pointer ${
+            className={`relative flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md transition-colors duration-150 cursor-pointer ${
               viewMode === "list"
-                ? "bg-foreground text-background shadow-xs font-semibold"
+                ? "text-background font-semibold"
                 : "text-muted hover:text-foreground"
             }`}
             title="List View"
           >
+            {viewMode === "list" && (
+              <motion.span
+                layoutId="projects-view-pill"
+                className="absolute inset-0 bg-foreground rounded-md -z-10 shadow-xs"
+                transition={{ type: "spring", stiffness: 450, damping: 32 }}
+              />
+            )}
             <ListIcon className="h-3.5 w-3.5" />
             <span className="hidden sm:inline">List</span>
           </button>
@@ -123,6 +138,8 @@ export function ProjectsView({ projects }: ProjectsViewProps) {
                     <img
                       src={project.cover_url}
                       alt={project.title}
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                     />
                     {project.live_url && (
@@ -141,7 +158,7 @@ export function ProjectsView({ projects }: ProjectsViewProps) {
                   </div>
                 ) : (
                   <div className="relative aspect-[16/10] w-full bg-surface-overlay border-b border-border/70 flex items-center justify-center text-caption text-muted font-mono">
-                    Interactive Project
+                    Project
                   </div>
                 )}
 
@@ -209,6 +226,8 @@ export function ProjectsView({ projects }: ProjectsViewProps) {
                         <img
                           src={project.cover_url}
                           alt={project.title}
+                          loading="lazy"
+                          decoding="async"
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
                       </div>

@@ -43,7 +43,7 @@ export default function TermsPage() {
           <AnimateIn from="up" distance={12} delay={0.15}>
             <section className="space-y-3">
               <h2 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded-sm border border-border bg-surface text-muted">01</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded-md border border-border bg-surface text-muted">01</span>
                 Acceptance of Terms
               </h2>
               <p className="text-body text-muted leading-relaxed">
@@ -56,7 +56,7 @@ export default function TermsPage() {
           <AnimateIn from="up" distance={12} delay={0.2}>
             <section className="space-y-3">
               <h2 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded-sm border border-border bg-surface text-muted">02</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded-md border border-border bg-surface text-muted">02</span>
                 Intellectual Property & Code Ownership
               </h2>
               <p className="text-body text-muted leading-relaxed">
@@ -78,11 +78,11 @@ export default function TermsPage() {
           <AnimateIn from="up" distance={12} delay={0.25}>
             <section className="space-y-3">
               <h2 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded-sm border border-border bg-surface text-muted">03</span>
-                Consulting & Freelance Engagements
+                <span className="text-xs font-mono px-2 py-0.5 rounded-md border border-border bg-surface text-muted">03</span>
+                Direct Inquiries &amp; Outreach
               </h2>
               <p className="text-body text-muted leading-relaxed">
-                Inquiries initiated through the contact form, email, or direct outreach do not establish an attorney-client, agency, employment, or contractual obligation. Formal freelance and engineering consulting relationships are established solely through written and countersigned Master Services Agreements (MSA) or Statements of Work (SOW) detailing scope, timelines, IP assignment, and milestone payments.
+                Inquiries initiated through the contact form, email, or direct outreach do not establish an employment, agency, or formal contractual obligation. Any project collaboration or formal engagement is established solely through written mutual agreement.
               </p>
             </section>
           </AnimateIn>
@@ -91,7 +91,7 @@ export default function TermsPage() {
           <AnimateIn from="up" distance={12} delay={0.3}>
             <section className="space-y-3">
               <h2 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded-sm border border-border bg-surface text-muted">04</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded-md border border-border bg-surface text-muted">04</span>
                 Acceptable Use & Security
               </h2>
               <p className="text-body text-muted leading-relaxed">
@@ -109,7 +109,7 @@ export default function TermsPage() {
           <AnimateIn from="up" distance={12} delay={0.35}>
             <section className="space-y-3">
               <h2 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded-sm border border-border bg-surface text-muted">05</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded-md border border-border bg-surface text-muted">05</span>
                 External Links & Third-Party Platforms
               </h2>
               <p className="text-body text-muted leading-relaxed">
@@ -122,7 +122,7 @@ export default function TermsPage() {
           <AnimateIn from="up" distance={12} delay={0.4}>
             <section className="space-y-3">
               <h2 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded-sm border border-border bg-surface text-muted">06</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded-md border border-border bg-surface text-muted">06</span>
                 Limitation of Liability & Warranty Disclaimer
               </h2>
               <Card className="p-4 bg-surface/30 border-border text-small text-muted space-y-2">
@@ -141,7 +141,7 @@ export default function TermsPage() {
           <AnimateIn from="up" distance={12} delay={0.45}>
             <section className="space-y-3 border-t border-border/60 pt-8">
               <h2 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded-sm border border-border bg-surface text-muted">07</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded-md border border-border bg-surface text-muted">07</span>
                 Contact & Legal Inquiries
               </h2>
               <p className="text-body text-muted leading-relaxed">

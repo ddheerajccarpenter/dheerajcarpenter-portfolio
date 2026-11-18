@@ -67,7 +67,7 @@ export default async function ExperiencePage() {
                         <div className="flex flex-wrap items-center gap-3">
                           <span className="text-caption font-semibold uppercase tracking-wider text-muted flex items-center gap-1.5 font-mono">
                             <Calendar className="h-3.5 w-3.5 text-muted" />
-                            {new Date(exp.start_date).toLocaleDateString("en-US", { year: "numeric", month: "short" })}
+                            {exp.start_date ? new Date(exp.start_date).toLocaleDateString("en-US", { year: "numeric", month: "short" }) : ""}
                             {" – "}
                             {exp.current
                               ? "Present"

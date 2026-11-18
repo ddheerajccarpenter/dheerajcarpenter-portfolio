@@ -25,7 +25,7 @@ export default function Error({
         {/* Isometric 500 Visual Hero */}
         <AnimateIn variant="iso" duration={0.4} viewport={false}>
           <div className="relative mx-auto w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center">
-            <div className="absolute inset-0 rounded-3xl bg-surface border border-border jitter-iso-card flex items-center justify-center shadow-md">
+            <div className="absolute inset-0 rounded-3xl bg-surface border border-border flex items-center justify-center shadow-sm">
               <AlertTriangle className="h-12 w-12 text-amber-500" />
             </div>
             <div className="absolute -top-2 -right-2">
@@ -43,7 +43,7 @@ export default function Error({
               Error 500 — Internal Server Issue
             </p>
             <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-foreground">
-              Something Interrupted the Signal
+              Something Went Wrong
             </h1>
             <p className="text-body text-muted max-w-[480px] mx-auto leading-relaxed">
               An unexpected runtime error occurred while executing this component. The exception has been logged.
@@ -53,7 +53,7 @@ export default function Error({
 
         {/* Diagnostic Digest if present */}
         {error.digest && (
-          <AnimateIn variant="jitter-pop" delay={0.15} viewport={false}>
+          <AnimateIn variant="fade-rise" delay={0.15} viewport={false}>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-surface border border-border text-caption font-mono text-muted">
               <span>Incident Digest:</span>
               <span className="text-foreground font-semibold select-all">{error.digest}</span>

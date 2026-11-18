@@ -17,7 +17,7 @@ export default function ProjectsLoading() {
           {[1, 2, 3, 4, 5, 6].map((i) => (
             <div
               key={i}
-              className="border border-border rounded-sm bg-surface overflow-hidden flex flex-col"
+              className="border border-border rounded-2xl bg-surface overflow-hidden flex flex-col"
             >
               {/* Cover */}
               <Skeleton className="aspect-[16/10] w-full rounded-none border-0 border-b border-border" />

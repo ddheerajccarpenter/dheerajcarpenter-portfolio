@@ -1,4 +1,5 @@
 import { type ReactNode } from "react";
+import { cn } from "@/lib/utils";
 
 interface MagneticCtaProps {
   children: ReactNode;
@@ -9,15 +10,8 @@ interface MagneticCtaProps {
 }
 
 /**
- * MagneticCta — Lightweight low-GPU wrapper.
+ * MagneticCta — Clean wrapper with zero gimmicks or button displacement.
  */
-export function MagneticCta({
-  children,
-  className,
-}: MagneticCtaProps) {
-  return (
-    <div className={className}>
-      {children}
-    </div>
-  );
+export function MagneticCta({ children, className }: MagneticCtaProps) {
+  return <div className={cn("inline-block", className)}>{children}</div>;
 }

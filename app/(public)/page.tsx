@@ -6,7 +6,7 @@ import {
   getSkills,
   getPublishedExperience,
 } from "@/lib/data/public";
-import { Button, Card, Badge } from "@/components/ui";
+import { Button, Card } from "@/components/ui";
 import { Container } from "@/components/layout/container";
 import { SkeletonWrapper } from "@/components/ui/skeleton-wrapper";
 import { AnimateIn } from "@/components/ui/animate-in";
@@ -14,7 +14,6 @@ import {
   ArrowRight,
   ArrowUpRight,
   Mail,
-  Briefcase,
 } from "lucide-react";
 
 export const revalidate = 3600;
@@ -35,24 +34,24 @@ export default async function HomePage() {
   ]);
 
   const name = homeContent?.hero_name || "Dheeraj Carpenter";
-  const role = homeContent?.hero_role || "Software Engineer & Designer";
+  const role = homeContent?.hero_role || "Engineering Student";
   const intro =
     homeContent?.hero_intro ||
-    "I build high-performance, accessible digital experiences with a sharp focus on typography and usability.";
+    "Hi, I'm Dheeraj, an engineering student with a passion for technology, coding, video editing, and creative design.";
   const aboutPreview =
     homeContent?.about_preview ||
-    "Designer and developer focused on clean code and functional design. I prioritize accessibility, performance, and simplicity.";
+    "Focused on clean code, modern web technologies, and functional design. I prioritize simplicity, performance, and continuous learning.";
 
   const displayProjects =
     featuredProjects.length > 0 ? featuredProjects.slice(0, 3) : allProjects.slice(0, 3);
 
-  // Compute years of experience
+  // Compute years of experience safely
   const workEntries = experience.filter((e) => e.type === "work");
-  const earliestWork =
-    workEntries.length > 0
-      ? Math.min(...workEntries.map((e) => new Date(e.start_date).getFullYear()))
-      : new Date().getFullYear();
-  const yearsExp = new Date().getFullYear() - earliestWork;
+  const workYears = workEntries
+    .map((e) => new Date(e.start_date).getFullYear())
+    .filter((y) => !isNaN(y) && y > 1970 && y <= new Date().getFullYear());
+  const earliestWork = workYears.length > 0 ? Math.min(...workYears) : new Date().getFullYear();
+  const yearsExp = Math.max(0, new Date().getFullYear() - earliestWork);
 
   return (
     <SkeletonWrapper pageType="home">
@@ -62,20 +61,12 @@ export default async function HomePage() {
           <Container>
             <div className="max-w-[760px] space-y-6 md:space-y-8">
 
-              {/* MagicUI-style icon zoom-out + eyebrow */}
-              <AnimateIn from="none" distance={0} duration={0.25} delay={0} viewport={false}>
-                <div className="flex items-center gap-3 mb-2">
-                  {/* Icon that starts scaled-up and snaps down — MagicUI hero logo */}
-                  <AnimateIn variant="scale-zoom" initialScale={3} duration={0.06} delay={0} viewport={false}>
-                    <div className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-foreground text-background shadow-sm">
-                      <Briefcase className="h-4 w-4" />
-                    </div>
-                  </AnimateIn>
-                  <AnimateIn variant="fade-rise" distance={20} duration={0.28} delay={0.3} viewport={false}>
-                    <span className="font-mono text-xs uppercase tracking-widest text-muted">
-                      {role}
-                    </span>
-                  </AnimateIn>
+              {/* Clean Eyebrow */}
+              <AnimateIn variant="fade-rise" distance={14} duration={0.28} delay={0.05} viewport={false}>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="font-mono text-xs uppercase tracking-widest text-muted">
+                    {role}
+                  </span>
                 </div>
               </AnimateIn>
 
@@ -86,15 +77,15 @@ export default async function HomePage() {
                 </h1>
               </AnimateIn>
 
-              {/* Intro Statement — fade-rise like MagicUI subtitle */}
-              <AnimateIn variant="fade-rise" distance={24} duration={0.32} delay={0.18} viewport={false}>
+              {/* Intro Statement */}
+              <AnimateIn variant="fade-rise" distance={20} duration={0.32} delay={0.16} viewport={false}>
                 <p className="prose-readable text-body sm:text-body-lg text-muted max-w-[620px] leading-relaxed">
                   {intro}
                 </p>
               </AnimateIn>
 
-              {/* Action CTAs — slide up with slight delay */}
-              <AnimateIn variant="fade-rise" distance={18} duration={0.3} delay={0.28} viewport={false}>
+              {/* Action CTAs */}
+              <AnimateIn variant="fade-rise" distance={16} duration={0.3} delay={0.24} viewport={false}>
                 <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 pt-1">
                   <Button
                     asChild
@@ -118,12 +109,12 @@ export default async function HomePage() {
                 </div>
               </AnimateIn>
 
-              {/* Metric Row — stagger fan-spread like MagicUI stats */}
+              {/* Metric Row */}
               {(yearsExp > 0 || allProjects.length > 0 || allSkills.length > 0) && (
                 <div className="pt-5 sm:pt-8 border-t border-border mt-4 sm:mt-6 max-w-[440px]">
                   <div className="grid grid-cols-3 gap-3 sm:gap-6">
                     {yearsExp > 0 && (
-                      <AnimateIn variant="fade-rise" distance={20} duration={0.3} delay={0.38} viewport={false}>
+                      <AnimateIn variant="fade-rise" distance={16} duration={0.3} delay={0.32} viewport={false}>
                         <div className="space-y-0.5">
                           <p className="text-xl sm:text-3xl font-bold tracking-tight text-foreground tabular-nums">
                             {yearsExp}+
@@ -135,7 +126,7 @@ export default async function HomePage() {
                       </AnimateIn>
                     )}
                     {allProjects.length > 0 && (
-                      <AnimateIn variant="fade-rise" distance={20} duration={0.3} delay={0.44} viewport={false}>
+                      <AnimateIn variant="fade-rise" distance={16} duration={0.3} delay={0.36} viewport={false}>
                         <div className="space-y-0.5">
                           <p className="text-xl sm:text-3xl font-bold tracking-tight text-foreground tabular-nums">
                             {allProjects.length}+
@@ -147,7 +138,7 @@ export default async function HomePage() {
                       </AnimateIn>
                     )}
                     {allSkills.length > 0 && (
-                      <AnimateIn variant="fade-rise" distance={20} duration={0.3} delay={0.5} viewport={false}>
+                      <AnimateIn variant="fade-rise" distance={16} duration={0.3} delay={0.4} viewport={false}>
                         <div className="space-y-0.5">
                           <p className="text-xl sm:text-3xl font-bold tracking-tight text-foreground tabular-nums">
                             {allSkills.length}
@@ -170,8 +161,7 @@ export default async function HomePage() {
           <section className="border-t border-border/80 pt-12 md:pt-16" aria-labelledby="featured-title">
             <Container className="space-y-8">
               <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-                {/* Section heading — Jitter UI isometric entrance */}
-                <AnimateIn variant="iso" distance={30} duration={0.38} viewport viewportAmount={0.1}>
+                <AnimateIn variant="fade-rise" distance={20} duration={0.35} viewport viewportAmount={0.1}>
                   <div className="space-y-1">
                     <p className="mono-eyebrow text-muted">01 — Selected Work</p>
                     <h2 id="featured-title" className="text-2xl sm:text-3xl font-bold tracking-tight">
@@ -179,7 +169,7 @@ export default async function HomePage() {
                     </h2>
                   </div>
                 </AnimateIn>
-                <AnimateIn variant="fade-rise" distance={20} duration={0.3} delay={0.08} viewport viewportAmount={0.1}>
+                <AnimateIn variant="fade-rise" distance={16} duration={0.3} delay={0.06} viewport viewportAmount={0.1}>
                   <Link
                     href="/projects"
                     className="text-xs font-mono text-muted hover:text-foreground inline-flex items-center gap-1.5 transition-colors"
@@ -190,24 +180,27 @@ export default async function HomePage() {
                 </AnimateIn>
               </div>
 
-              {/* Jitter UI Isometric cards with 3D spring tilt & lift */}
+              {/* Clean responsive card grid */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {displayProjects.map((project, index) => (
                   <AnimateIn
                     key={project.id}
-                    variant="iso-card"
-                    duration={0.42}
+                    variant="fade-rise"
+                    distance={20}
+                    duration={0.38}
                     staggerIndex={index}
-                    delay={0.05}
+                    delay={0.04}
                     viewport
                     viewportAmount={0.05}
                   >
-                    <Card className="flex flex-col h-full geist-card jitter-iso-card !p-0 overflow-hidden group">
+                    <Card className="flex flex-col h-full geist-card !p-0 overflow-hidden group">
                       {project.cover_url ? (
                         <div className="relative aspect-[16/10] w-full overflow-hidden border-b border-border/70 bg-surface-overlay image-pan-hover">
                           <img
                             src={project.cover_url}
                             alt={project.title}
+                            loading="lazy"
+                            decoding="async"
                             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                           />
                           {project.live_url && (
@@ -226,7 +219,7 @@ export default async function HomePage() {
                         </div>
                       ) : (
                         <div className="relative aspect-[16/10] w-full bg-surface-overlay border-b border-border/70 flex items-center justify-center text-caption text-muted font-mono">
-                          Interactive Project
+                          Project
                         </div>
                       )}
 
@@ -268,33 +261,31 @@ export default async function HomePage() {
           </section>
         )}
 
-        {/* ─── Engineering Philosophy / About Snapshot ───────────────────────── */}
+        {/* ─── About Snapshot ────────────────────────────────────────────────── */}
         <section className="border-t border-border/80 pt-12 md:pt-16" aria-labelledby="about-preview-title">
           <Container>
             <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-10 items-start">
-              {/* MagicUI slide-right: label/heading enters from the left */}
-              <AnimateIn variant="slide-right" distance={30} duration={0.45} className="md:col-span-4" viewport viewportAmount={0.1}>
+              <AnimateIn variant="fade-rise" distance={20} duration={0.35} className="md:col-span-4" viewport viewportAmount={0.1}>
                 <div className="space-y-1">
                   <p className="mono-eyebrow text-muted">02 — Background</p>
                   <h2 id="about-preview-title" className="text-2xl sm:text-3xl font-bold tracking-tight">
-                    Engineering Approach
+                    About Me
                   </h2>
                 </div>
               </AnimateIn>
 
-              {/* MagicUI slide-left: body content enters from the right */}
               <div className="md:col-span-8 space-y-5">
-                <AnimateIn variant="slide-left" distance={30} duration={0.45} delay={0.06} viewport viewportAmount={0.1}>
+                <AnimateIn variant="fade-rise" distance={20} duration={0.35} delay={0.06} viewport viewportAmount={0.1}>
                   <p className="text-body sm:text-body-lg text-muted leading-relaxed max-w-[65ch]">
                     {aboutPreview}
                   </p>
                 </AnimateIn>
-                <AnimateIn variant="fade-rise" distance={16} duration={0.3} delay={0.14} viewport viewportAmount={0.1}>
+                <AnimateIn variant="fade-rise" distance={16} duration={0.3} delay={0.12} viewport viewportAmount={0.1}>
                   <Link
                     href="/about"
                     className="inline-flex items-center text-small font-semibold hover:underline underline-offset-4 text-foreground gap-1.5"
                   >
-                    Read complete background &amp; philosophy
+                    Read full background &amp; skills
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                 </AnimateIn>
@@ -303,36 +294,28 @@ export default async function HomePage() {
           </Container>
         </section>
 
-        {/* ─── Contact CTA Banner ────────────────────────────────────────────── */}
-        <section className="border-t border-border/80 pt-12 md:pt-16" aria-label="Collaboration Inquiry">
+        {/* ─── Contact Banner ─────────────────────────────────────────────────── */}
+        <section className="border-t border-border/80 pt-12 md:pt-16" aria-label="Get in Touch">
           <Container>
-            <AnimateIn variant="fade-rise" distance={24} duration={0.4} viewport viewportAmount={0.1}>
+            <AnimateIn variant="fade-rise" distance={20} duration={0.35} viewport viewportAmount={0.1}>
               <div className="p-8 sm:p-10 rounded-2xl border border-border bg-surface/40 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                 <div className="space-y-2 max-w-xl">
-                  <AnimateIn variant="slide-right" distance={20} duration={0.4} viewport viewportAmount={0.15}>
-                    <p className="mono-eyebrow text-muted">03 — Get In Touch</p>
-                  </AnimateIn>
-                  <AnimateIn variant="slide-right" distance={20} duration={0.4} delay={0.06} viewport viewportAmount={0.15}>
-                    <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
-                      Ready to collaborate on your next project?
-                    </h2>
-                  </AnimateIn>
-                  <AnimateIn variant="fade-rise" distance={16} duration={0.3} delay={0.12} viewport viewportAmount={0.15}>
-                    <p className="text-small text-muted leading-relaxed">
-                      Available for select freelance contracts, engineering architecture consulting, and product design.
-                    </p>
-                  </AnimateIn>
+                  <p className="mono-eyebrow text-muted">03 — Get In Touch</p>
+                  <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+                    Let&apos;s connect
+                  </h2>
+                  <p className="text-small text-muted leading-relaxed">
+                    Have an idea, project inquiry, or just want to chat about technology? Feel free to reach out anytime.
+                  </p>
                 </div>
-                <AnimateIn variant="slide-left" distance={24} duration={0.4} delay={0.1} viewport viewportAmount={0.15}>
-                  <div className="flex items-center gap-3 shrink-0">
-                    <Button asChild variant="primary" size="lg" className="rounded-full px-6 text-sm font-semibold icon-nudge">
-                      <Link href="/contact">
-                        <Mail className="h-4 w-4 mr-2" />
-                        Contact Me
-                      </Link>
-                    </Button>
-                  </div>
-                </AnimateIn>
+                <div className="flex items-center gap-3 shrink-0">
+                  <Button asChild variant="primary" size="lg" className="rounded-full px-6 text-sm font-semibold icon-nudge">
+                    <Link href="/contact">
+                      <Mail className="h-4 w-4 mr-2" />
+                      Contact Me
+                    </Link>
+                  </Button>
+                </div>
               </div>
             </AnimateIn>
           </Container>

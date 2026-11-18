@@ -236,69 +236,47 @@ export function AnimateIn({
     );
   }
 
-  // ── Isometric 3D (Jitter UI): 3D perspective entrance ────────────────────
+  // ── Isometric Entrance (simplified to clean elevation) ───────────────────
   if (variant === "iso") {
-    const rx = mobile ? 6 : 14;
-    const ry = mobile ? -6 : -12;
-    const dy = mobile ? 12 : 24;
+    const dy = mobile ? 8 : 14;
     return (
       <Component
-        initial={{
-          opacity: 0,
-          rotateX: rx,
-          rotateY: ry,
-          y: dy,
-          scale: 0.94,
-        }}
+        initial={{ opacity: 0, y: dy }}
         {...(viewport
           ? {
-              whileInView: { opacity: 1, rotateX: 0, rotateY: 0, y: 0, scale: 1 },
+              whileInView: { opacity: 1, y: 0 },
               viewport: { once: true, amount: viewportAmount },
             }
-          : { animate: { opacity: 1, rotateX: 0, rotateY: 0, y: 0, scale: 1 } })}
+          : { animate: { opacity: 1, y: 0 } })}
         transition={{
-          duration: d * 1.15,
+          duration: d,
           delay: totalDelay,
           ease: [0.16, 1, 0.3, 1],
         }}
         className={className}
-        style={{ transformStyle: "preserve-3d", perspective: 1200 }}
       >
         {children}
       </Component>
     );
   }
 
-  // ── Isometric Card (Jitter UI): 3D perspective + interactive hover lift ──
+  // ── Isometric Card (simplified to clean subtle entrance) ───────────────────
   if (variant === "iso-card") {
     return (
       <Component
-        initial={{ opacity: 0, rotateX: 10, rotateY: -8, y: 16, scale: 0.96 }}
+        initial={{ opacity: 0, y: 12 }}
         {...(viewport
           ? {
-              whileInView: { opacity: 1, rotateX: 0, rotateY: 0, y: 0, scale: 1 },
+              whileInView: { opacity: 1, y: 0 },
               viewport: { once: true, amount: viewportAmount },
             }
-          : { animate: { opacity: 1, rotateX: 0, rotateY: 0, y: 0, scale: 1 } })}
-        whileHover={
-          mobile
-            ? undefined
-            : {
-                rotateX: 3.5,
-                rotateY: -4,
-                y: -6,
-                scale: 1.015,
-                transition: { duration: 0.28, ease: [0.16, 1, 0.3, 1] },
-              }
-        }
-        whileTap={{ scale: 0.97 }}
+          : { animate: { opacity: 1, y: 0 } })}
         transition={{
-          duration: d * 1.1,
+          duration: d,
           delay: totalDelay,
           ease: [0.16, 1, 0.3, 1],
         }}
         className={className}
-        style={{ transformStyle: "preserve-3d", perspective: 1000 }}
       >
         {children}
       </Component>

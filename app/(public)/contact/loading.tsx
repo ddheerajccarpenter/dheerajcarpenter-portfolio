@@ -45,7 +45,7 @@ export default function ContactLoading() {
         </div>
 
         {/* Right Column: Contact Form */}
-        <div className="border border-border p-6 md:p-8 rounded-sm bg-background space-y-6">
+        <div className="border border-border p-6 md:p-8 rounded-2xl bg-background space-y-6">
           <Skeleton className="h-7 w-40" />
           <div className="space-y-4">
             <div className="space-y-2">
