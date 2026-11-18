@@ -129,6 +129,7 @@ export function useAdminToast() {
     // Fallback stub if used outside provider
     return {
       showToast: () => {},
+      toast: () => {},
       success: () => {},
       error: () => {},
     };
