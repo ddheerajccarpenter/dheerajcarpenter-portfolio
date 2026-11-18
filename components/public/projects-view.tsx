@@ -230,10 +230,10 @@ export function ProjectsView({ projects }: ProjectsViewProps) {
                             Live
                           </span>
                         )}
-                        {project.year && (
+                        {project.created_at && (
                           <span className="inline-flex items-center gap-1 text-xs text-muted font-mono">
                             <Calendar className="h-3 w-3 opacity-60" />
-                            {project.year}
+                            {new Date(project.created_at).getFullYear()}
                           </span>
                         )}
                       </div>

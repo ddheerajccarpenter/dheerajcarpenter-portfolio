@@ -13,8 +13,17 @@ export interface ToastItem {
   message?: string;
 }
 
+export interface ToastParams {
+  title: string;
+  description?: string;
+  message?: string;
+  variant?: ToastType | string;
+  type?: ToastType;
+}
+
 interface ToastContextType {
   showToast: (params: { type: ToastType; title: string; message?: string }) => void;
+  toast: (params: ToastParams) => void;
   success: (title: string, message?: string) => void;
   error: (title: string, message?: string) => void;
 }
@@ -50,8 +59,16 @@ export function AdminToastProvider({ children }: { children: ReactNode }) {
     [showToast]
   );
 
+  const toast = useCallback(
+    ({ title, description, message, variant, type }: ToastParams) => {
+      const toastType: ToastType = (type || variant) === "error" ? "error" : "success";
+      showToast({ type: toastType, title, message: description || message });
+    },
+    [showToast]
+  );
+
   return (
-    <ToastContext.Provider value={{ showToast, success, error }}>
+    <ToastContext.Provider value={{ showToast, toast, success, error }}>
       {children}
 
       {/* Top Right Toast Notification Container */}
