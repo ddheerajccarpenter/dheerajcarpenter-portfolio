@@ -1,376 +1,465 @@
--- ============================================================================
--- Master Idempotent Database Schema & Migration Script for Portfolio CMS
--- Safe to run multiple times on any new or existing Supabase project.
--- ============================================================================
+-- =============================================================================
+-- UNIFIED MASTER SUPABASE DATABASE SCHEMA & CONFIGURATION
+-- All-in-One Idempotent Script for Tables, RLS Policies, Triggers & Storage
+-- Safe to execute repeatedly on new or existing Supabase instances.
+-- Zero hardcoded credentials or private keys.
+-- =============================================================================
 
--- 1. Required Extensions ---------------------------------------------------
-create extension if not exists "pgcrypto";
+-- ─── 1. REQUIRED EXTENSIONS ───────────────────────────────────────────────────
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
--- 2. Custom Enums ----------------------------------------------------------
-do $$ begin
-  create type user_role as enum ('admin', 'editor');
-exception when duplicate_object then null; end $$;
+-- ─── 2. HELPER FUNCTIONS ──────────────────────────────────────────────────────
 
-do $$ begin
-  create type experience_type as enum ('work', 'education', 'certification');
-exception when duplicate_object then null; end $$;
-
-do $$ begin
-  create type social_platform as enum (
-    'github', 'linkedin', 'twitter', 'instagram', 'youtube',
-    'dribbble', 'behance', 'website', 'email'
-  );
-exception when duplicate_object then null; end $$;
-
--- 3. Core Tables -----------------------------------------------------------
-
--- Profiles
-create table if not exists public.profiles (
-  id          uuid primary key references auth.users (id) on delete cascade,
-  email       text not null,
-  name        text,
-  avatar_url  text,
-  role        user_role not null default 'editor',
-  created_at  timestamptz not null default now(),
-  updated_at  timestamptz not null default now()
-);
-
--- Site Settings (Singleton)
-create table if not exists public.site_settings (
-  id                integer primary key default 1 check (id = 1),
-  site_title        text not null default 'Portfolio',
-  site_description  text not null default '',
-  contact_email     text,
-  resume_url        text,
-  resume_filename   text,
-  resume_updated_at timestamptz,
-  default_theme     text not null default 'system',
-  animation_style   text not null default 'new',
-  ui_design         text not null default 'minimalist',
-  created_at        timestamptz not null default now(),
-  updated_at        timestamptz not null default now()
-);
-
--- Ensure all columns exist if table was created in earlier schema versions
-alter table public.site_settings add column if not exists animation_style text not null default 'new';
-alter table public.site_settings add column if not exists ui_design text not null default 'minimalist';
-alter table public.site_settings add column if not exists contact_email text;
-alter table public.site_settings add column if not exists resume_url text;
-alter table public.site_settings add column if not exists resume_filename text;
-alter table public.site_settings add column if not exists resume_updated_at timestamptz;
-
--- Home Content (Singleton)
-create table if not exists public.home_content (
-  id                  integer primary key default 1 check (id = 1),
-  hero_name           text not null default '',
-  hero_role           text not null default '',
-  hero_intro          text not null default '',
-  hero_image_url      text,
-  primary_cta_label   text not null default 'View Projects',
-  primary_cta_href    text not null default '/projects',
-  secondary_cta_label text not null default 'Contact',
-  secondary_cta_href  text not null default '/contact',
-  about_preview       text not null default '',
-  contact_cta         text not null default '',
-  created_at          timestamptz not null default now(),
-  updated_at          timestamptz not null default now()
-);
-
--- About Content (Singleton)
-create table if not exists public.about_content (
-  id          integer primary key default 1 check (id = 1),
-  headline    text not null default '',
-  bio         text not null default '',
-  overview    text not null default '',
-  photo_url   text,
-  created_at  timestamptz not null default now(),
-  updated_at  timestamptz not null default now()
-);
-
--- Skills
-create table if not exists public.skills (
-  id          uuid primary key default gen_random_uuid(),
-  name        text not null,
-  category    text not null default 'General',
-  proficiency integer check (proficiency between 0 and 100),
-  "order"     integer not null default 0,
-  created_at  timestamptz not null default now(),
-  updated_at  timestamptz not null default now()
-);
-create index if not exists skills_order_idx on public.skills ("order");
-
--- Experience
-create table if not exists public.experience (
-  id           uuid primary key default gen_random_uuid(),
-  type         experience_type not null default 'work',
-  role         text not null,
-  organization text not null,
-  location     text,
-  start_date   date not null,
-  end_date     date,
-  current      boolean not null default false,
-  description  text not null default '',
-  url          text,
-  "order"      integer not null default 0,
-  published    boolean not null default true,
-  created_at   timestamptz not null default now(),
-  updated_at   timestamptz not null default now()
-);
-create index if not exists experience_published_order_idx on public.experience (published, "order");
-
--- Certifications
-create table if not exists public.certifications (
-  id               uuid primary key default gen_random_uuid(),
-  title            text not null,
-  issuer           text not null,
-  issue_date       date,
-  credential_link  text,
-  certificate_path text,
-  published        boolean not null default true,
-  "order"          integer not null default 0,
-  created_at       timestamptz not null default now(),
-  updated_at       timestamptz not null default now()
-);
-create index if not exists certifications_published_order_idx on public.certifications (published, "order");
-
--- Projects
-create table if not exists public.projects (
-  id          uuid primary key default gen_random_uuid(),
-  slug        text not null unique,
-  title       text not null,
-  summary     text not null default '',
-  description text not null default '',
-  cover_url   text,
-  gallery     jsonb not null default '[]'::jsonb,
-  tags        text[] not null default '{}',
-  live_url    text,
-  source_url  text,
-  featured    boolean not null default false,
-  published   boolean not null default true,
-  "order"     integer not null default 0,
-  created_at  timestamptz not null default now(),
-  updated_at  timestamptz not null default now()
-);
-create index if not exists projects_published_order_idx on public.projects (published, "order");
-create index if not exists projects_featured_idx on public.projects (featured) where featured = true;
-
--- Social Links
-create table if not exists public.social_links (
-  id          uuid primary key default gen_random_uuid(),
-  platform    social_platform not null,
-  label       text not null default '',
-  url         text not null,
-  "order"     integer not null default 0,
-  created_at  timestamptz not null default now(),
-  updated_at  timestamptz not null default now()
-);
-create index if not exists social_links_order_idx on public.social_links ("order");
-
--- SEO Metadata
-create table if not exists public.seo_metadata (
-  page_key       text primary key,
-  title          text not null default '',
-  description    text not null default '',
-  keywords       text[] not null default '{}',
-  og_image_url   text,
-  canonical_url  text,
-  updated_at     timestamptz not null default now()
-);
-
--- Contact Submissions
-create table if not exists public.contact_submissions (
-  id         uuid primary key default gen_random_uuid(),
-  name       text not null,
-  email      text not null,
-  subject    text not null default '',
-  message    text not null,
-  is_read    boolean not null default false,
-  created_at timestamptz not null default now()
-);
-create index if not exists contact_submissions_created_idx on public.contact_submissions (created_at desc);
-
--- 4. Automatic Timestamp Function & Triggers -------------------------------
-create or replace function public.touch_updated_at()
-returns trigger
-language plpgsql
-as $$
-begin
-  new.updated_at := now();
-  return new;
-end;
+-- Universal timestamp update trigger function
+CREATE OR REPLACE FUNCTION public.touch_updated_at()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+AS $$
+BEGIN
+  NEW.updated_at = NOW();
+  RETURN NEW;
+END;
 $$;
 
-drop trigger if exists set_updated_at on public.profiles;
-create trigger set_updated_at before update on public.profiles for each row execute function public.touch_updated_at();
+-- ─── 3. CORE CONTENT & CONFIGURATION TABLES ──────────────────────────────────
 
-drop trigger if exists set_updated_at on public.site_settings;
-create trigger set_updated_at before update on public.site_settings for each row execute function public.touch_updated_at();
+-- 1. Profiles (linked with Supabase Auth)
+CREATE TABLE IF NOT EXISTS public.profiles (
+  id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+  email TEXT NOT NULL,
+  name TEXT,
+  avatar_url TEXT,
+  role TEXT NOT NULL DEFAULT 'editor' CHECK (role IN ('super_admin', 'admin', 'editor')),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
 
-drop trigger if exists set_updated_at on public.home_content;
-create trigger set_updated_at before update on public.home_content for each row execute function public.touch_updated_at();
+-- 2. Site Settings (Singleton row: id = 1)
+CREATE TABLE IF NOT EXISTS public.site_settings (
+  id INT PRIMARY KEY DEFAULT 1 CHECK (id = 1),
+  site_title TEXT NOT NULL DEFAULT 'Dheeraj Carpenter',
+  site_description TEXT NOT NULL DEFAULT 'Portfolio of Dheeraj Carpenter',
+  contact_email TEXT,
+  resume_url TEXT,
+  resume_filename TEXT,
+  resume_updated_at TIMESTAMPTZ,
+  default_theme TEXT NOT NULL DEFAULT 'system',
+  animation_style TEXT NOT NULL DEFAULT 'new',
+  ui_design TEXT NOT NULL DEFAULT 'minimalist',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
 
-drop trigger if exists set_updated_at on public.about_content;
-create trigger set_updated_at before update on public.about_content for each row execute function public.touch_updated_at();
+-- 3. Home Content (Singleton row: id = 1)
+CREATE TABLE IF NOT EXISTS public.home_content (
+  id INT PRIMARY KEY DEFAULT 1 CHECK (id = 1),
+  hero_name TEXT NOT NULL DEFAULT 'Dheeraj Carpenter',
+  hero_role TEXT NOT NULL DEFAULT 'Engineering Student & Developer',
+  hero_intro TEXT NOT NULL DEFAULT 'Passionate about coding, web development, video editing, and creative design.',
+  hero_image_url TEXT,
+  primary_cta_label TEXT NOT NULL DEFAULT 'View Projects',
+  primary_cta_href TEXT NOT NULL DEFAULT '/projects',
+  secondary_cta_label TEXT NOT NULL DEFAULT 'Contact',
+  secondary_cta_href TEXT NOT NULL DEFAULT '/contact',
+  about_preview TEXT NOT NULL DEFAULT 'Focused on clean code, modern web technologies, and functional design.',
+  contact_cta TEXT NOT NULL DEFAULT 'Let us connect on your next project.',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
 
-drop trigger if exists set_updated_at on public.skills;
-create trigger set_updated_at before update on public.skills for each row execute function public.touch_updated_at();
+-- 4. About Content (Singleton row: id = 1)
+CREATE TABLE IF NOT EXISTS public.about_content (
+  id INT PRIMARY KEY DEFAULT 1 CHECK (id = 1),
+  headline TEXT NOT NULL DEFAULT 'About Me',
+  bio TEXT NOT NULL DEFAULT 'I am an engineering student with a deep passion for technology, coding, video editing, and creative design.',
+  overview TEXT NOT NULL DEFAULT 'Focused on clean architecture, modern web development, and continuous improvement.',
+  photo_url TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
 
-drop trigger if exists set_updated_at on public.experience;
-create trigger set_updated_at before update on public.experience for each row execute function public.touch_updated_at();
+-- 5. Skills
+CREATE TABLE IF NOT EXISTS public.skills (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL,
+  category TEXT NOT NULL DEFAULT 'General',
+  proficiency INT CHECK (proficiency BETWEEN 0 AND 100),
+  "order" INT NOT NULL DEFAULT 0,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
 
-drop trigger if exists set_updated_at on public.certifications;
-create trigger set_updated_at before update on public.certifications for each row execute function public.touch_updated_at();
+-- 6. Experience (Work & Education Timeline)
+CREATE TABLE IF NOT EXISTS public.experience (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  type TEXT NOT NULL CHECK (type IN ('work', 'education', 'certification')),
+  role TEXT NOT NULL,
+  organization TEXT NOT NULL,
+  location TEXT,
+  start_date DATE NOT NULL,
+  end_date DATE,
+  current BOOLEAN NOT NULL DEFAULT FALSE,
+  description TEXT NOT NULL DEFAULT '',
+  url TEXT,
+  "order" INT NOT NULL DEFAULT 0,
+  published BOOLEAN NOT NULL DEFAULT TRUE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
 
-drop trigger if exists set_updated_at on public.projects;
-create trigger set_updated_at before update on public.projects for each row execute function public.touch_updated_at();
+-- 7. Projects
+CREATE TABLE IF NOT EXISTS public.projects (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  slug TEXT UNIQUE NOT NULL,
+  title TEXT NOT NULL,
+  summary TEXT NOT NULL DEFAULT '',
+  description TEXT NOT NULL DEFAULT '',
+  cover_url TEXT,
+  gallery TEXT[] NOT NULL DEFAULT '{}',
+  tags TEXT[] NOT NULL DEFAULT '{}',
+  live_url TEXT,
+  source_url TEXT,
+  featured BOOLEAN NOT NULL DEFAULT FALSE,
+  published BOOLEAN NOT NULL DEFAULT TRUE,
+  "order" INT NOT NULL DEFAULT 0,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
 
-drop trigger if exists set_updated_at on public.social_links;
-create trigger set_updated_at before update on public.social_links for each row execute function public.touch_updated_at();
+-- 8. Social Links
+CREATE TABLE IF NOT EXISTS public.social_links (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  platform TEXT NOT NULL,
+  label TEXT NOT NULL DEFAULT '',
+  url TEXT NOT NULL,
+  "order" INT NOT NULL DEFAULT 0,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
 
-drop trigger if exists set_updated_at on public.seo_metadata;
-create trigger set_updated_at before update on public.seo_metadata for each row execute function public.touch_updated_at();
+-- 9. SEO Metadata Stubs
+CREATE TABLE IF NOT EXISTS public.seo_metadata (
+  page_key TEXT PRIMARY KEY,
+  title TEXT NOT NULL DEFAULT '',
+  description TEXT NOT NULL DEFAULT '',
+  keywords TEXT[] NOT NULL DEFAULT '{}',
+  og_image_url TEXT,
+  canonical_url TEXT,
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
 
--- 5. User Signup Profile Trigger & Admin Helper ----------------------------
-create or replace function public.handle_new_user()
-returns trigger
-language plpgsql
-security definer
-set search_path = public
-as $$
-begin
-  insert into public.profiles (id, email, name, role)
-  values (
-    new.id, 
-    new.email, 
-    coalesce(new.raw_user_meta_data->>'name', ''),
-    case when not exists (select 1 from public.profiles) then 'admin'::user_role else 'editor'::user_role end
+-- 10. Contact Inquiries & Submissions
+CREATE TABLE IF NOT EXISTS public.contact_submissions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  subject TEXT NOT NULL DEFAULT '',
+  message TEXT NOT NULL,
+  is_read BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- 11. Certifications
+CREATE TABLE IF NOT EXISTS public.certifications (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  title TEXT NOT NULL,
+  issuer TEXT NOT NULL,
+  issue_date DATE,
+  credential_link TEXT,
+  certificate_path TEXT,
+  published BOOLEAN NOT NULL DEFAULT TRUE,
+  "order" INT NOT NULL DEFAULT 0,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- 12. Testimonials
+CREATE TABLE IF NOT EXISTS public.testimonials (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  quote TEXT NOT NULL,
+  author_name TEXT NOT NULL,
+  author_role TEXT NOT NULL,
+  company TEXT,
+  avatar_url TEXT,
+  featured BOOLEAN NOT NULL DEFAULT TRUE,
+  "order" INT NOT NULL DEFAULT 0,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- 13. Service Offerings
+CREATE TABLE IF NOT EXISTS public.service_offerings (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  title TEXT NOT NULL,
+  tagline TEXT NOT NULL DEFAULT '',
+  description TEXT NOT NULL DEFAULT '',
+  deliverables TEXT[] NOT NULL DEFAULT '{}',
+  price_range TEXT,
+  icon TEXT,
+  active BOOLEAN NOT NULL DEFAULT TRUE,
+  "order" INT NOT NULL DEFAULT 0,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- 14. Blog Posts
+CREATE TABLE IF NOT EXISTS public.blog_posts (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  slug TEXT UNIQUE NOT NULL,
+  title TEXT NOT NULL,
+  excerpt TEXT NOT NULL DEFAULT '',
+  content TEXT NOT NULL,
+  cover_url TEXT,
+  tags TEXT[] NOT NULL DEFAULT '{}',
+  reading_time_minutes INT NOT NULL DEFAULT 5,
+  published BOOLEAN NOT NULL DEFAULT FALSE,
+  featured BOOLEAN NOT NULL DEFAULT FALSE,
+  published_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- 15. Audit Logs
+CREATE TABLE IF NOT EXISTS public.audit_logs (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  action TEXT NOT NULL,
+  module TEXT NOT NULL,
+  details TEXT NOT NULL,
+  user_email TEXT NOT NULL DEFAULT 'admin',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- 16. Admin Notes
+CREATE TABLE IF NOT EXISTS public.admin_notes (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  title TEXT NOT NULL,
+  content TEXT NOT NULL,
+  pinned BOOLEAN NOT NULL DEFAULT FALSE,
+  completed BOOLEAN NOT NULL DEFAULT FALSE,
+  color TEXT,
+  image_url TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- 17. Public Broadcast Announcements & Notifications
+CREATE TABLE IF NOT EXISTS public.public_notifications (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  title TEXT NOT NULL,
+  message TEXT NOT NULL,
+  type TEXT NOT NULL DEFAULT 'info' CHECK (type IN ('info', 'announcement', 'alert', 'success')),
+  active BOOLEAN NOT NULL DEFAULT TRUE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- ─── 4. UPDATED_AT TRIGGERS ──────────────────────────────────────────────────
+DO $$
+DECLARE
+  tbl text;
+BEGIN
+  FOR tbl IN
+    SELECT tablename FROM pg_tables
+    WHERE schemaname = 'public'
+      AND tablename IN (
+        'profiles', 'site_settings', 'home_content', 'about_content',
+        'skills', 'experience', 'projects', 'social_links', 'seo_metadata',
+        'certifications', 'testimonials', 'service_offerings', 'blog_posts',
+        'admin_notes', 'public_notifications'
+      )
+  LOOP
+    EXECUTE format('DROP TRIGGER IF EXISTS set_updated_at ON public.%I;', tbl);
+    EXECUTE format('CREATE TRIGGER set_updated_at BEFORE UPDATE ON public.%I FOR EACH ROW EXECUTE FUNCTION public.touch_updated_at();', tbl);
+  END LOOP;
+END $$;
+
+-- ─── 5. SECURITY & ROLE VERIFICATION HELPERS ─────────────────────────────────
+
+-- Checks whether the active session belongs to an authorized administrator
+CREATE OR REPLACE FUNCTION public.is_admin()
+RETURNS BOOLEAN
+LANGUAGE sql
+STABLE
+SECURITY DEFINER
+SET search_path = public
+AS $$
+  SELECT EXISTS (
+    SELECT 1 FROM public.profiles
+    WHERE id = auth.uid() AND role IN ('super_admin', 'admin')
+  );
+$$;
+
+-- Secure auth hook: creates profile upon user signup.
+-- The first user to register automatically becomes admin. Subsequent signups default to editor.
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+BEGIN
+  INSERT INTO public.profiles (id, email, name, role)
+  VALUES (
+    NEW.id,
+    NEW.email,
+    COALESCE(NEW.raw_user_meta_data->>'name', ''),
+    CASE
+      WHEN NOT EXISTS (SELECT 1 FROM public.profiles WHERE role IN ('super_admin', 'admin'))
+      THEN 'admin'
+      ELSE 'editor'
+    END
   )
-  on conflict (id) do nothing;
-  return new;
-end;
+  ON CONFLICT (id) DO UPDATE SET
+    email = EXCLUDED.email,
+    updated_at = NOW();
+  RETURN NEW;
+END;
 $$;
 
-drop trigger if exists on_auth_user_created on auth.users;
-create trigger on_auth_user_created
-  after insert on auth.users
-  for each row execute function public.handle_new_user();
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+CREATE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
 
-create or replace function public.is_admin()
-returns boolean
-language sql
-stable
-security definer
-set search_path = public
-as $$
-  select exists (
-    select 1 from public.profiles
-    where id = auth.uid() and role::text in ('super_admin', 'admin')
-  );
-$$;
+-- ─── 6. ROW LEVEL SECURITY (RLS) POLICIES ─────────────────────────────────────
+ALTER TABLE public.profiles             ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.site_settings        ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.home_content         ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.about_content        ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.skills               ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.experience           ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.certifications       ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.projects             ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.social_links         ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.seo_metadata         ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.contact_submissions  ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.testimonials         ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.service_offerings    ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.blog_posts           ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.audit_logs           ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.admin_notes          ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.public_notifications ENABLE ROW LEVEL SECURITY;
 
--- 6. Row Level Security & Explicit Policy Recreation -----------------------
-alter table public.profiles             enable row level security;
-alter table public.site_settings        enable row level security;
-alter table public.home_content         enable row level security;
-alter table public.about_content        enable row level security;
-alter table public.skills               enable row level security;
-alter table public.experience           enable row level security;
-alter table public.certifications       enable row level security;
-alter table public.projects             enable row level security;
-alter table public.social_links         enable row level security;
-alter table public.seo_metadata         enable row level security;
-alter table public.contact_submissions  enable row level security;
+-- 1. Profiles
+DROP POLICY IF EXISTS "Profiles: read own or admin" ON public.profiles;
+DROP POLICY IF EXISTS "Profiles: update own or admin" ON public.profiles;
+DROP POLICY IF EXISTS "Profiles: admin insert" ON public.profiles;
+DROP POLICY IF EXISTS "Profiles: admin delete" ON public.profiles;
+DROP POLICY IF EXISTS "Profiles full access" ON public.profiles;
 
--- Drop and recreate all policies
-drop policy if exists "Profiles: read own or admin" on public.profiles;
-drop policy if exists "Profiles: admin write" on public.profiles;
-create policy "Profiles: read own or admin" on public.profiles for select using (id = auth.uid() or public.is_admin());
-create policy "Profiles: admin write"       on public.profiles for all    using (public.is_admin()) with check (public.is_admin());
+CREATE POLICY "Profiles: read own or admin"   ON public.profiles FOR SELECT USING (id = auth.uid() OR public.is_admin());
+CREATE POLICY "Profiles: update own or admin" ON public.profiles FOR UPDATE USING (id = auth.uid() OR public.is_admin()) WITH CHECK (id = auth.uid() OR public.is_admin());
+CREATE POLICY "Profiles: admin insert"         ON public.profiles FOR INSERT WITH CHECK (public.is_admin() OR auth.uid() = id);
+CREATE POLICY "Profiles: admin delete"         ON public.profiles FOR DELETE USING (public.is_admin());
 
-drop policy if exists "Settings: public read" on public.site_settings;
-drop policy if exists "Settings: admin write" on public.site_settings;
-create policy "Settings: public read" on public.site_settings for select using (true);
-create policy "Settings: admin write" on public.site_settings for all using (public.is_admin()) with check (public.is_admin());
+-- 2. Public Content Tables (Public SELECT, Admin-only write)
+DO $$
+DECLARE
+  tbl text;
+BEGIN
+  FOR tbl IN
+    SELECT unnest(ARRAY[
+      'site_settings', 'home_content', 'about_content', 'skills',
+      'social_links', 'seo_metadata', 'testimonials', 'service_offerings',
+      'public_notifications'
+    ])
+  LOOP
+    EXECUTE format('DROP POLICY IF EXISTS "%s: public read" ON public.%I;', tbl, tbl);
+    EXECUTE format('DROP POLICY IF EXISTS "%s: admin write" ON public.%I;', tbl, tbl);
+    EXECUTE format('DROP POLICY IF EXISTS "%s full access" ON public.%I;', tbl, tbl);
 
-drop policy if exists "Home: public read" on public.home_content;
-drop policy if exists "Home: admin write" on public.home_content;
-create policy "Home: public read" on public.home_content for select using (true);
-create policy "Home: admin write" on public.home_content for all using (public.is_admin()) with check (public.is_admin());
+    EXECUTE format('CREATE POLICY "%s: public read" ON public.%I FOR SELECT USING (true);', tbl, tbl);
+    EXECUTE format('CREATE POLICY "%s: admin write" ON public.%I FOR ALL USING (public.is_admin()) WITH CHECK (public.is_admin());', tbl, tbl);
+  END LOOP;
+END $$;
 
-drop policy if exists "About: public read" on public.about_content;
-drop policy if exists "About: admin write" on public.about_content;
-create policy "About: public read" on public.about_content for select using (true);
-create policy "About: admin write" on public.about_content for all using (public.is_admin()) with check (public.is_admin());
+-- 3. Publishable Tables (Public SELECT only if published = true, Admin full access)
+DO $$
+DECLARE
+  tbl text;
+BEGIN
+  FOR tbl IN
+    SELECT unnest(ARRAY['projects', 'blog_posts', 'experience', 'certifications'])
+  LOOP
+    EXECUTE format('DROP POLICY IF EXISTS "%s: public read" ON public.%I;', tbl, tbl);
+    EXECUTE format('DROP POLICY IF EXISTS "%s: admin write" ON public.%I;', tbl, tbl);
+    EXECUTE format('DROP POLICY IF EXISTS "%s full access" ON public.%I;', tbl, tbl);
 
-drop policy if exists "Skills: public read" on public.skills;
-drop policy if exists "Skills: admin write" on public.skills;
-create policy "Skills: public read" on public.skills for select using (true);
-create policy "Skills: admin write" on public.skills for all using (public.is_admin()) with check (public.is_admin());
+    EXECUTE format('CREATE POLICY "%s: public read" ON public.%I FOR SELECT USING (published = true OR public.is_admin());', tbl, tbl);
+    EXECUTE format('CREATE POLICY "%s: admin write" ON public.%I FOR ALL USING (public.is_admin()) WITH CHECK (public.is_admin());', tbl, tbl);
+  END LOOP;
+END $$;
 
-drop policy if exists "Experience: public read" on public.experience;
-drop policy if exists "Experience: admin write" on public.experience;
-create policy "Experience: public read" on public.experience for select using (true);
-create policy "Experience: admin write" on public.experience for all using (public.is_admin()) with check (public.is_admin());
+-- 4. Contact Submissions (Public INSERT, Admin-only SELECT/UPDATE/DELETE)
+DROP POLICY IF EXISTS "Submissions: public insert" ON public.contact_submissions;
+DROP POLICY IF EXISTS "Submissions: admin select" ON public.contact_submissions;
+DROP POLICY IF EXISTS "Submissions: admin update" ON public.contact_submissions;
+DROP POLICY IF EXISTS "Submissions: admin delete" ON public.contact_submissions;
+DROP POLICY IF EXISTS "Contact submissions full access" ON public.contact_submissions;
 
-drop policy if exists "Certifications: public read" on public.certifications;
-drop policy if exists "Certifications: admin write" on public.certifications;
-create policy "Certifications: public read" on public.certifications for select using (true);
-create policy "Certifications: admin write" on public.certifications for all using (public.is_admin()) with check (public.is_admin());
+CREATE POLICY "Submissions: public insert" ON public.contact_submissions FOR INSERT WITH CHECK (true);
+CREATE POLICY "Submissions: admin select" ON public.contact_submissions FOR SELECT USING (public.is_admin());
+CREATE POLICY "Submissions: admin update" ON public.contact_submissions FOR UPDATE USING (public.is_admin()) WITH CHECK (public.is_admin());
+CREATE POLICY "Submissions: admin delete" ON public.contact_submissions FOR DELETE USING (public.is_admin());
 
-drop policy if exists "Projects: public read" on public.projects;
-drop policy if exists "Projects: admin write" on public.projects;
-create policy "Projects: public read" on public.projects for select using (true);
-create policy "Projects: admin write" on public.projects for all using (public.is_admin()) with check (public.is_admin());
+-- 5. Audit Logs & Admin Notes (Admin-only private)
+DROP POLICY IF EXISTS "Audit logs: admin access" ON public.audit_logs;
+DROP POLICY IF EXISTS "Audit logs full access" ON public.audit_logs;
+CREATE POLICY "Audit logs: admin access" ON public.audit_logs FOR ALL USING (public.is_admin()) WITH CHECK (public.is_admin());
 
-drop policy if exists "Social: public read" on public.social_links;
-drop policy if exists "Social: admin write" on public.social_links;
-create policy "Social: public read" on public.social_links for select using (true);
-create policy "Social: admin write" on public.social_links for all using (public.is_admin()) with check (public.is_admin());
+DROP POLICY IF EXISTS "Admin notes: admin access" ON public.admin_notes;
+DROP POLICY IF EXISTS "Admin notes full access" ON public.admin_notes;
+CREATE POLICY "Admin notes: admin access" ON public.admin_notes FOR ALL USING (public.is_admin()) WITH CHECK (public.is_admin());
 
-drop policy if exists "SEO: public read" on public.seo_metadata;
-drop policy if exists "SEO: admin write" on public.seo_metadata;
-create policy "SEO: public read" on public.seo_metadata for select using (true);
-create policy "SEO: admin write" on public.seo_metadata for all using (public.is_admin()) with check (public.is_admin());
+-- ─── 7. STORAGE BUCKETS & POLICIES ───────────────────────────────────────────
+INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+VALUES
+  ('resume', 'resume', true, 5242880, ARRAY['application/pdf']),
+  ('images', 'images', true, 10485760, ARRAY['image/png', 'image/jpeg', 'image/gif', 'image/webp'])
+ON CONFLICT (id) DO NOTHING;
 
-drop policy if exists "Submissions: public insert" on public.contact_submissions;
-drop policy if exists "Submissions: admin read"    on public.contact_submissions;
-drop policy if exists "Submissions: admin update"  on public.contact_submissions;
-drop policy if exists "Submissions: admin delete"  on public.contact_submissions;
-create policy "Submissions: public insert" on public.contact_submissions for insert with check (true);
-create policy "Submissions: admin read"    on public.contact_submissions for select using (public.is_admin());
-create policy "Submissions: admin update"  on public.contact_submissions for update using (public.is_admin()) with check (public.is_admin());
-create policy "Submissions: admin delete"  on public.contact_submissions for delete using (public.is_admin());
+DROP POLICY IF EXISTS "Resume: public read" ON storage.objects;
+DROP POLICY IF EXISTS "Resume: admin write" ON storage.objects;
+DROP POLICY IF EXISTS "Images: public read" ON storage.objects;
+DROP POLICY IF EXISTS "Images: admin write" ON storage.objects;
 
--- 7. Singleton & Initial Seed Rows ----------------------------------------
-insert into public.site_settings (id, site_title, animation_style, ui_design)
-values (1, 'Portfolio', 'new', 'minimalist')
-on conflict (id) do nothing;
+CREATE POLICY "Resume: public read" ON storage.objects FOR SELECT USING (bucket_id = 'resume');
+CREATE POLICY "Resume: admin write" ON storage.objects FOR ALL USING (bucket_id = 'resume' AND public.is_admin()) WITH CHECK (bucket_id = 'resume' AND public.is_admin());
 
-insert into public.home_content (id) values (1) on conflict (id) do nothing;
-insert into public.about_content (id) values (1) on conflict (id) do nothing;
+CREATE POLICY "Images: public read" ON storage.objects FOR SELECT USING (bucket_id = 'images');
+CREATE POLICY "Images: admin write" ON storage.objects FOR ALL USING (bucket_id = 'images' AND public.is_admin()) WITH CHECK (bucket_id = 'images' AND public.is_admin());
 
-insert into public.seo_metadata (page_key, title) values
-  ('home',       'Home'),
-  ('about',      'About'),
-  ('projects',   'Projects'),
-  ('experience', 'Experience'),
-  ('contact',    'Contact')
-on conflict (page_key) do nothing;
+-- ─── 8. PERFORMANCE INDEXES ──────────────────────────────────────────────────
+CREATE INDEX IF NOT EXISTS idx_projects_slug ON public.projects(slug);
+CREATE INDEX IF NOT EXISTS idx_projects_published_order ON public.projects(published, "order");
+CREATE INDEX IF NOT EXISTS idx_projects_featured ON public.projects(featured) WHERE featured = true;
+CREATE INDEX IF NOT EXISTS idx_blog_posts_slug ON public.blog_posts(slug);
+CREATE INDEX IF NOT EXISTS idx_blog_posts_published_order ON public.blog_posts(published, "order");
+CREATE INDEX IF NOT EXISTS idx_experience_published_order ON public.experience(published, "order");
+CREATE INDEX IF NOT EXISTS idx_certifications_published_order ON public.certifications(published, "order");
+CREATE INDEX IF NOT EXISTS idx_skills_order ON public.skills("order");
+CREATE INDEX IF NOT EXISTS idx_social_links_order ON public.social_links("order");
+CREATE INDEX IF NOT EXISTS idx_testimonials_featured_order ON public.testimonials(featured, "order");
+CREATE INDEX IF NOT EXISTS idx_service_offerings_active_order ON public.service_offerings(active, "order");
+CREATE INDEX IF NOT EXISTS idx_contact_submissions_created ON public.contact_submissions(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_audit_logs_created ON public.audit_logs(created_at DESC);
 
--- 8. Storage Buckets & Policies --------------------------------------------
-insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
-values
-  ('resume', 'resume', true, 5242880, array['application/pdf']),
-  ('images', 'images', true, 10485760, array['image/png', 'image/jpeg', 'image/gif', 'image/webp'])
-on conflict (id) do nothing;
+-- ─── 9. INITIAL SINGLETON SEEDS ──────────────────────────────────────────────
+INSERT INTO public.site_settings (id, site_title, site_description, default_theme, animation_style, ui_design)
+VALUES (1, 'Dheeraj Carpenter', 'Portfolio of Dheeraj Carpenter', 'system', 'new', 'minimalist')
+ON CONFLICT (id) DO NOTHING;
 
-drop policy if exists "Resume: public read" on storage.objects;
-drop policy if exists "Resume: admin write" on storage.objects;
-drop policy if exists "Images: public read" on storage.objects;
-drop policy if exists "Images: admin write" on storage.objects;
+INSERT INTO public.home_content (id) VALUES (1) ON CONFLICT (id) DO NOTHING;
+INSERT INTO public.about_content (id) VALUES (1) ON CONFLICT (id) DO NOTHING;
 
-create policy "Resume: public read" on storage.objects for select using (bucket_id = 'resume');
-create policy "Resume: admin write" on storage.objects for all using (bucket_id = 'resume' and public.is_admin()) with check (bucket_id = 'resume' and public.is_admin());
-
-create policy "Images: public read" on storage.objects for select using (bucket_id = 'images');
-create policy "Images: admin write" on storage.objects for all using (bucket_id = 'images' and public.is_admin()) with check (bucket_id = 'images' and public.is_admin());
+INSERT INTO public.seo_metadata (page_key, title, description) VALUES
+  ('home',           'Home',           'Dheeraj Carpenter portfolio and engineering projects'),
+  ('about',          'About',          'Background, skills, and experience of Dheeraj Carpenter'),
+  ('projects',       'Projects',       'Software applications, tools, and builds by Dheeraj Carpenter'),
+  ('experience',     'Experience',     'Career timeline, education, and credentials'),
+  ('contact',        'Contact',        'Get in touch with Dheeraj Carpenter'),
+  ('blog',           'Blog',           'Articles and engineering write-ups'),
+  ('skills',         'Skills',         'Technical skills and software stack'),
+  ('services',       'Services',       'Capabilities and technical offerings')
+ON CONFLICT (page_key) DO NOTHING;

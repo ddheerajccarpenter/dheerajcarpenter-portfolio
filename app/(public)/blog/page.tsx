@@ -42,24 +42,26 @@ export default async function BlogPage() {
           <p className="mono-eyebrow text-muted mb-2">
             Writing
           </p>
-          <h1 className="text-h1 font-bold tracking-tight sm:text-[3rem] text-foreground">
-            Articles
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground">
+            Articles &amp; Writing
           </h1>
         </AnimateIn>
         <AnimateIn from="up" distance={12} delay={0.1} viewport={false}>
-          <p className="prose-readable text-body-lg text-muted">
-            Notes, tutorials, and thoughts on coding, web engineering, and creative design.
+          <p className="prose-readable text-body sm:text-body-lg text-muted max-w-[640px] leading-relaxed">
+            Notes, tutorials, and engineering write-ups on software development, TypeScript, and design.
           </p>
         </AnimateIn>
       </Container>
 
       <Container>
         {posts.length === 0 ? (
-          <AnimateIn from="up" distance={12}>
-            <div className="border border-dashed border-border p-16 text-center text-muted rounded-2xl bg-surface/30 space-y-3">
-              <Newspaper className="mx-auto h-8 w-8 opacity-40 text-foreground" />
-              <p className="text-body font-medium">No articles published yet.</p>
-              <p className="text-small text-muted">Check back soon for new technical posts and articles.</p>
+          <AnimateIn variant="fade-rise" distance={14}>
+            <div className="border border-border p-12 sm:p-16 text-center text-muted rounded-2xl bg-surface/40 space-y-3">
+              <Newspaper className="mx-auto h-10 w-10 text-foreground/50" />
+              <h3 className="text-lg font-bold text-foreground">Writing in Progress</h3>
+              <p className="text-small text-muted max-w-md mx-auto leading-relaxed">
+                New articles on Next.js, TypeScript patterns, and digital design are currently being written. Check back soon for updates.
+              </p>
             </div>
           </AnimateIn>
         ) : (

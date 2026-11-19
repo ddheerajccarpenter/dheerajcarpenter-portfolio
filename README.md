@@ -82,9 +82,7 @@ lib/
 └── constants.ts       Shared application configuration
 
 supabase/
-├── schema.sql         Database structure
-├── seed.sql           Initial data
-└── storage.sql        Storage configuration
+└── schema.sql         Unified database schema, RLS policies, triggers & storage
 
 types/                 Database and application types
 proxy.ts               Authentication and route protection

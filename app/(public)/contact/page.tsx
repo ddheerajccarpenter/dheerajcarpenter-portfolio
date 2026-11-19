@@ -54,7 +54,7 @@ export default async function ContactPage() {
     getSocialLinks(),
   ]);
 
-  const contactEmail = settings?.contact_email;
+  const contactEmail = settings?.contact_email || "dheerajcarpenter@gmail.com";
   const resumeUrl = settings?.resume_url;
   const resumeFilename = settings?.resume_filename || "Resume.pdf";
 
@@ -75,12 +75,12 @@ export default async function ContactPage() {
                 <p className="mono-eyebrow text-muted mb-2">
                   Get In Touch
                 </p>
-                <h1 className="text-h1 font-bold tracking-tight sm:text-[3rem] text-foreground">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground">
                   Contact
                 </h1>
               </AnimateIn>
               <AnimateIn from="up" distance={12} delay={0.1} viewport={false}>
-                <p className="prose-readable text-body-lg text-muted">
+                <p className="prose-readable text-body sm:text-body-lg text-muted max-w-[640px] leading-relaxed">
                   Feel free to reach out for project inquiries, collaborations, or just to say hello.
                 </p>
               </AnimateIn>

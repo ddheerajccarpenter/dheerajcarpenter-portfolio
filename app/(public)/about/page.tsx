@@ -42,7 +42,9 @@ export default async function AboutPage() {
   ]);
 
   const headline = aboutContent?.headline || "About Me";
-  const bio = aboutContent?.bio || "No biography available. Please configure it in the admin CMS.";
+  const bio =
+    aboutContent?.bio ||
+    `I am an engineering student with a deep passion for technology, coding, video editing, and creative design. I specialize in building fast, accessible web applications using TypeScript, Next.js, and modern CSS architectures.\n\nMy focus is on creating clean, intuitive interfaces that balance aesthetic restraint with high performance. Outside of writing code, I explore creative video editing, user experience design, and open-source software.`;
   const overview = aboutContent?.overview || "";
   const photoUrl = aboutContent?.photo_url;
 
@@ -72,12 +74,12 @@ export default async function AboutPage() {
                   <p className="mono-eyebrow text-muted mb-2">
                     About
                   </p>
-                  <h1 id="about-headline" className="text-h1 font-bold tracking-tight sm:text-[3rem] text-foreground">
+                  <h1 id="about-headline" className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground">
                     {headline}
                   </h1>
                 </AnimateIn>
                 <AnimateIn from="up" distance={12} delay={0.1} viewport={false}>
-                  <div className="pt-4">
+                  <div className="pt-4 prose-readable leading-relaxed">
                     <Markdown content={bio} />
                   </div>
                 </AnimateIn>
@@ -98,9 +100,20 @@ export default async function AboutPage() {
                   </div>
                 </AnimateIn>
               ) : (
-                <div className="border border-dashed border-border aspect-[4/5] w-full max-w-[320px] mx-auto md:mx-0 flex items-center justify-center text-muted text-caption rounded-2xl bg-surface/30">
-                  No photo uploaded
-                </div>
+                <AnimateIn from="right" distance={16} delay={0.15} viewport={false}>
+                  <div className="relative border border-border p-6 bg-surface/60 rounded-2xl aspect-[4/5] w-full max-w-[320px] mx-auto md:mx-0 flex flex-col justify-between overflow-hidden shadow-xs">
+                    <div className="w-16 h-16 rounded-2xl bg-foreground text-background flex items-center justify-center font-bold text-2xl tracking-tight shadow-md">
+                      DC
+                    </div>
+                    <div className="space-y-1">
+                      <p className="font-anak-manja text-xl font-normal text-foreground">Dheeraj Carpenter</p>
+                      <p className="text-caption font-mono text-muted">Engineering Student &amp; Developer</p>
+                      <p className="text-[11px] text-muted/70 flex items-center gap-1 pt-1">
+                        <MapPin className="h-3 w-3" /> India
+                      </p>
+                    </div>
+                  </div>
+                </AnimateIn>
               )}
             </div>
           </Container>
@@ -231,8 +244,33 @@ export default async function AboutPage() {
             </AnimateIn>
             <div className="md:col-span-2 space-y-8">
               {education.length === 0 ? (
-                <div className="border border-dashed border-border p-8 text-center text-muted rounded-2xl bg-surface/30">
-                  No education history listed.
+                <div className="space-y-8 border-l border-border/80 pl-6 relative">
+                  <AnimateIn from="up" distance={14}>
+                    <div className="relative">
+                      <span className="absolute -left-[33px] top-1 bg-surface p-1.5 border border-border rounded-full shadow-xs timeline-dot">
+                        <GraduationCap className="h-3.5 w-3.5 text-foreground opacity-80" />
+                      </span>
+                      <div className="space-y-1.5">
+                        <span className="text-caption font-semibold uppercase tracking-wider text-muted flex items-center gap-1.5 font-mono">
+                          <Calendar className="h-3 w-3" />
+                          Undergraduate Degree — Present
+                        </span>
+                        <h3 className="text-h3 font-bold tracking-tight">
+                          Bachelor of Technology (B.Tech)
+                        </h3>
+                        <p className="text-body font-medium text-foreground">
+                          Engineering College
+                        </p>
+                        <p className="text-caption text-muted flex items-center gap-1">
+                          <MapPin className="h-3 w-3" />
+                          India
+                        </p>
+                        <p className="text-small text-muted prose-readable pt-1 leading-relaxed">
+                          Pursuing undergraduate studies with an emphasis on computer engineering, full-stack software development, data structures, and modern web application architecture.
+                        </p>
+                      </div>
+                    </div>
+                  </AnimateIn>
                 </div>
               ) : (
                 <div className="space-y-8 border-l border-border/80 pl-6 relative">

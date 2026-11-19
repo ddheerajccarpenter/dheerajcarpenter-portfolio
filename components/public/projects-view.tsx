@@ -46,9 +46,13 @@ export function ProjectsView({ projects }: ProjectsViewProps) {
 
   if (projects.length === 0) {
     return (
-      <AnimateIn from="up" distance={12}>
-        <div className="border border-dashed border-border p-16 text-center text-muted rounded-2xl bg-surface/30">
-          No projects published yet. Please add them in the admin dashboard.
+      <AnimateIn variant="fade-rise" distance={14}>
+        <div className="border border-border p-12 sm:p-16 text-center text-muted rounded-2xl bg-surface/40 space-y-3">
+          <LayoutGrid className="h-10 w-10 mx-auto text-foreground/50" />
+          <h3 className="text-lg font-bold text-foreground">Projects in Development</h3>
+          <p className="text-small text-muted max-w-md mx-auto leading-relaxed">
+            New web applications, tools, and creative projects are currently being documented. Check back soon or explore GitHub.
+          </p>
         </div>
       </AnimateIn>
     );
@@ -209,9 +213,9 @@ export function ProjectsView({ projects }: ProjectsViewProps) {
           {projects.map((project, index) => (
             <AnimateIn
               key={project.id}
-              variant={index % 2 === 0 ? "slide-right" : "slide-left"}
-              distance={20}
-              duration={0.4}
+              variant="fade-rise"
+              distance={14}
+              duration={0.32}
               staggerIndex={index}
               delay={0.02}
               viewportAmount={0.05}

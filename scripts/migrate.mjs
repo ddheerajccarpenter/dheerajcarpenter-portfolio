@@ -17,7 +17,7 @@ if (!connectionString) {
 
 const cleanUrl = connectionString.replace(/\?sslmode=[^&]*/, "").replace(/&sslmode=[^&]*/, "");
 
-const sqlFilePath = process.argv[2] || path.join(process.cwd(), "supabase_migration_complete.sql");
+const sqlFilePath = process.argv[2] || path.join(process.cwd(), "supabase", "schema.sql");
 
 if (!fs.existsSync(sqlFilePath)) {
   console.error(`❌ Error: SQL file not found at ${sqlFilePath}`);

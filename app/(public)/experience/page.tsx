@@ -40,6 +40,46 @@ const TYPE_LABELS = {
 export default async function ExperiencePage() {
   const experiences = await getPublishedExperience();
 
+  const displayExperiences =
+    experiences.length > 0
+      ? experiences
+      : [
+          {
+            id: "edu-1",
+            type: "education" as const,
+            role: "Bachelor of Technology (B.Tech)",
+            organization: "Engineering College",
+            location: "India",
+            start_date: "2023-08-01",
+            end_date: null,
+            current: true,
+            description:
+              "Undergraduate coursework in computer systems, full-stack software development, object-oriented design, algorithms, and web architectures.",
+            url: null,
+            order: 1,
+            published: true,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          },
+          {
+            id: "work-1",
+            type: "work" as const,
+            role: "Web Application Developer & Creator",
+            organization: "Open Source & Freelance Projects",
+            location: "India",
+            start_date: "2024-01-01",
+            end_date: null,
+            current: true,
+            description:
+              "Building modern web apps using Next.js, React, TypeScript, and Supabase. Designing responsive user interfaces and creative digital media.",
+            url: null,
+            order: 2,
+            published: true,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          },
+        ];
+
   return (
     <SkeletonWrapper pageType="experience">
       <BreadcrumbJsonLd
@@ -54,100 +94,89 @@ export default async function ExperiencePage() {
             <p className="mono-eyebrow text-muted mb-2">
               Journey &amp; Education
             </p>
-            <h1 className="text-h1 font-bold tracking-tight sm:text-[3rem] text-foreground">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground">
               Experience
             </h1>
           </AnimateIn>
           <AnimateIn from="up" distance={12} delay={0.1} viewport={false}>
-            <p className="prose-readable text-body-lg text-muted">
+            <p className="prose-readable text-body sm:text-body-lg text-muted max-w-[640px] leading-relaxed">
               Education, technical roles, projects, and milestones in my development journey.
             </p>
           </AnimateIn>
         </Container>
 
         <Container>
-          {experiences.length === 0 ? (
-            <AnimateIn from="up" distance={12}>
-              <div className="border border-dashed border-border p-16 text-center text-muted rounded-2xl bg-surface/30">
-                No experience history published yet.
-              </div>
-            </AnimateIn>
-          ) : (
-            <div className="relative border-l border-border/80 pl-8 ml-4 space-y-10 py-2">
-              {experiences.map((exp, index) => {
-                const IconComponent = TYPE_ICONS[exp.type] || Briefcase;
-                const typeLabel = TYPE_LABELS[exp.type] || "Experience";
+          <div className="max-w-3xl space-y-8 border-l border-border/80 pl-6 sm:pl-8 relative ml-2 sm:ml-4">
+            {displayExperiences.map((exp, index) => {
+              const Icon = TYPE_ICONS[exp.type as keyof typeof TYPE_ICONS] || Briefcase;
+              const typeLabel = TYPE_LABELS[exp.type as keyof typeof TYPE_LABELS] || "Role";
 
-                return (
-                  <AnimateIn key={exp.id} variant="fade-rise" distance={24} duration={0.42} staggerIndex={index} delay={0.02} viewport viewportAmount={0.05}>
-                    <div className="relative group tactile-card rounded-2xl p-6 md:p-7 border border-border">
-                      {/* Timeline Dot Indicator */}
-                      <span className="absolute -left-[49px] top-6 bg-surface p-2 border border-border rounded-full shadow-xs timeline-dot">
-                        <IconComponent className="h-4 w-4 text-foreground opacity-80" />
-                      </span>
+              return (
+                <AnimateIn key={exp.id} variant="fade-rise" distance={16} duration={0.35} staggerIndex={index} viewport viewportAmount={0.05}>
+                  <div className="relative group">
+                    {/* Timeline Node */}
+                    <span className="absolute -left-[37px] sm:-left-[45px] top-1.5 bg-background p-1.5 sm:p-2 border border-border rounded-full shadow-xs transition-colors duration-200 group-hover:border-foreground/40">
+                      <Icon className="h-3.5 w-3.5 text-foreground/80" />
+                    </span>
 
-                      <div className="space-y-3">
-                        {/* Date and Type Badge */}
-                        <div className="flex flex-wrap items-center gap-3">
-                          <span className="text-caption font-semibold uppercase tracking-wider text-muted flex items-center gap-1.5 font-mono">
-                            <Calendar className="h-3.5 w-3.5 text-muted" />
-                            {exp.start_date ? new Date(exp.start_date).toLocaleDateString("en-US", { year: "numeric", month: "short" }) : ""}
-                            {" – "}
-                            {exp.current
-                              ? "Present"
-                              : exp.end_date
-                              ? new Date(exp.end_date).toLocaleDateString("en-US", { year: "numeric", month: "short" })
-                              : ""}
-                          </span>
-                          <Badge variant="pill" className="uppercase tracking-wider text-[10px] py-0.5 px-2 badge-breathe">
-                            {typeLabel}
-                          </Badge>
-                        </div>
-
-                        {/* Role / Organization */}
-                        <div className="space-y-1">
-                          <h2 className="text-h3 font-bold tracking-tight">
-                            {exp.role}
-                          </h2>
-                          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-body font-medium text-foreground">
-                            <span>{exp.organization}</span>
-                            {exp.location && (
-                              <span className="text-caption text-muted flex items-center gap-1">
-                                <MapPin className="h-3 w-3" />
-                                {exp.location}
-                              </span>
-                            )}
-                          </div>
-                        </div>
-
-                        {/* Description */}
-                        {exp.description && (
-                          <p className="text-small text-muted prose-readable whitespace-pre-line leading-relaxed pt-1">
-                            {exp.description}
-                          </p>
-                        )}
-
-                        {/* URL Link */}
-                        {exp.url && (
-                          <div className="pt-2">
-                            <a
-                              href={exp.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center text-caption font-semibold text-foreground hover:underline gap-1.5"
-                            >
-                              <span>Visit Website</span>
-                              <ExternalLink className="h-3 w-3" />
-                            </a>
-                          </div>
-                        )}
+                    <div className="space-y-2 p-5 sm:p-6 rounded-2xl border border-border bg-surface/40 hover:bg-surface/70 transition-colors">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <span className="text-caption font-semibold uppercase tracking-wider text-muted font-mono flex items-center gap-1.5">
+                          <Calendar className="h-3 w-3" />
+                          {exp.start_date ? new Date(exp.start_date).toLocaleDateString("en-US", { year: "numeric", month: "short" }) : ""}
+                          {" — "}
+                          {exp.current
+                            ? "Present"
+                            : exp.end_date
+                            ? new Date(exp.end_date).toLocaleDateString("en-US", { year: "numeric", month: "short" })
+                            : ""}
+                        </span>
+                        <Badge variant="pill" className="text-caption font-mono uppercase">
+                          {typeLabel}
+                        </Badge>
                       </div>
+
+                      <div>
+                        <h2 className="text-lg sm:text-xl font-bold tracking-tight text-foreground">
+                          {exp.role}
+                        </h2>
+                        <p className="text-small font-medium text-foreground/80">
+                          {exp.organization}
+                        </p>
+                      </div>
+
+                      {exp.location && (
+                        <p className="text-caption text-muted flex items-center gap-1 font-mono">
+                          <MapPin className="h-3 w-3" />
+                          {exp.location}
+                        </p>
+                      )}
+
+                      {exp.description && (
+                        <p className="text-small text-muted prose-readable leading-relaxed pt-1">
+                          {exp.description}
+                        </p>
+                      )}
+
+                      {exp.url && (
+                        <div className="pt-2">
+                          <a
+                            href={exp.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs font-semibold text-foreground inline-flex items-center gap-1 hover:underline underline-offset-4"
+                          >
+                            <span>Learn more</span>
+                            <ExternalLink className="h-3 w-3" />
+                          </a>
+                        </div>
+                      )}
                     </div>
-                  </AnimateIn>
-                );
-              })}
-            </div>
-          )}
+                  </div>
+                </AnimateIn>
+              );
+            })}
+          </div>
         </Container>
       </div>
     </SkeletonWrapper>

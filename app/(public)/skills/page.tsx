@@ -25,10 +25,31 @@ export const metadata: Metadata = {
 };
 
 export default async function PublicSkillsPage() {
-  const skills = await getSkills();
+  const skillsData = await getSkills();
+
+  const displaySkills =
+    skillsData.length > 0
+      ? skillsData
+      : [
+          { id: "s1", name: "TypeScript", category: "Languages", proficiency: 90, order: 1, created_at: "", updated_at: "" },
+          { id: "s2", name: "JavaScript (ES6+)", category: "Languages", proficiency: 95, order: 2, created_at: "", updated_at: "" },
+          { id: "s3", name: "HTML5 & CSS3", category: "Languages", proficiency: 95, order: 3, created_at: "", updated_at: "" },
+          { id: "s4", name: "SQL", category: "Languages", proficiency: 82, order: 4, created_at: "", updated_at: "" },
+          { id: "s5", name: "Next.js 15", category: "Frameworks & Web", proficiency: 92, order: 5, created_at: "", updated_at: "" },
+          { id: "s6", name: "React 19", category: "Frameworks & Web", proficiency: 92, order: 6, created_at: "", updated_at: "" },
+          { id: "s7", name: "Tailwind CSS", category: "Frameworks & Web", proficiency: 95, order: 7, created_at: "", updated_at: "" },
+          { id: "s8", name: "Node.js", category: "Frameworks & Web", proficiency: 85, order: 8, created_at: "", updated_at: "" },
+          { id: "s9", name: "PostgreSQL", category: "Databases & Cloud", proficiency: 84, order: 9, created_at: "", updated_at: "" },
+          { id: "s10", name: "Supabase", category: "Databases & Cloud", proficiency: 88, order: 10, created_at: "", updated_at: "" },
+          { id: "s11", name: "Git & GitHub", category: "Databases & Cloud", proficiency: 90, order: 11, created_at: "", updated_at: "" },
+          { id: "s12", name: "Vercel", category: "Databases & Cloud", proficiency: 90, order: 12, created_at: "", updated_at: "" },
+          { id: "s13", name: "Figma", category: "Design & Creative", proficiency: 88, order: 13, created_at: "", updated_at: "" },
+          { id: "s14", name: "Video Editing", category: "Design & Creative", proficiency: 92, order: 14, created_at: "", updated_at: "" },
+          { id: "s15", name: "UI/UX Architecture", category: "Design & Creative", proficiency: 86, order: 15, created_at: "", updated_at: "" },
+        ];
 
   // Group skills by category
-  const skillsByCategory = skills.reduce<Record<string, typeof skills>>((acc, skill) => {
+  const skillsByCategory = displaySkills.reduce<Record<string, typeof displaySkills>>((acc, skill) => {
     const cat = skill.category || "General";
     if (!acc[cat]) acc[cat] = [];
     acc[cat].push(skill);
@@ -49,12 +70,12 @@ export default async function PublicSkillsPage() {
             <p className="mono-eyebrow text-muted mb-2">
               Tech Stack
             </p>
-            <h1 className="text-h1 font-bold tracking-tight sm:text-[3rem] text-foreground">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground">
               Skills &amp; Tools
             </h1>
           </AnimateIn>
           <AnimateIn from="up" distance={12} delay={0.1} viewport={false}>
-            <p className="prose-readable text-body-lg text-muted">
+            <p className="prose-readable text-body sm:text-body-lg text-muted max-w-[640px] leading-relaxed">
               Languages, frameworks, libraries, and design tools I use regularly in my work.
             </p>
           </AnimateIn>

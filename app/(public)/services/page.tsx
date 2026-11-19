@@ -27,7 +27,89 @@ export const metadata: Metadata = {
 };
 
 export default async function PublicServicesPage() {
-  const services = await getActiveServices();
+  const servicesData = await getActiveServices();
+
+  const displayServices =
+    servicesData.length > 0
+      ? servicesData
+      : [
+          {
+            id: "serv-1",
+            title: "Full-Stack Web Development",
+            tagline: "Next.js, TypeScript, React, and Supabase",
+            description:
+              "End-to-end web applications built with type-safety, modular architecture, and high performance. From database design to responsive frontend interfaces.",
+            deliverables: [
+              "Custom Next.js & React Web Apps",
+              "PostgreSQL & Supabase Database Setup",
+              "REST & Server Action Integration",
+              "SEO & Performance Optimization",
+            ],
+            price_range: null,
+            icon: null,
+            active: true,
+            order: 1,
+            created_at: "",
+            updated_at: "",
+          },
+          {
+            id: "serv-2",
+            title: "UI & Frontend Engineering",
+            tagline: "Accessible, responsive, and tactile interfaces",
+            description:
+              "Translating complex ideas into clean, fast, and accessible user interfaces using Tailwind CSS and modern CSS token systems with fluid micro-interactions.",
+            deliverables: [
+              "Design-to-Code Implementation",
+              "Responsive Layout Architecture",
+              "Dark & Light Mode Systems",
+              "Smooth Motion & Micro-interactions",
+            ],
+            price_range: null,
+            icon: null,
+            active: true,
+            order: 2,
+            created_at: "",
+            updated_at: "",
+          },
+          {
+            id: "serv-3",
+            title: "Video Editing & Multimedia",
+            tagline: "Engaging visual pacing and storytelling",
+            description:
+              "Creative video editing for tech demonstrations, product walkthroughs, social channels, and brand content with attention to timing, rhythm, and color.",
+            deliverables: [
+              "Video Pacing & Sequencing",
+              "Visual Storytelling & Cuts",
+              "Audio Cleanup & Sound Design",
+              "Multi-format Social Video Renders",
+            ],
+            price_range: null,
+            icon: null,
+            active: true,
+            order: 3,
+            created_at: "",
+            updated_at: "",
+          },
+          {
+            id: "serv-4",
+            title: "Interface Prototyping & UX",
+            tagline: "Figma wireframing and user experience design",
+            description:
+              "Designing thoughtful software interfaces in Figma with a focus on simplicity, clear typographic hierarchy, and intuitive user flows.",
+            deliverables: [
+              "High-Fidelity UI Mockups",
+              "Interactive Figma Prototypes",
+              "Design System Guidelines",
+              "Clean Developer Handoff",
+            ],
+            price_range: null,
+            icon: null,
+            active: true,
+            order: 4,
+            created_at: "",
+            updated_at: "",
+          },
+        ];
 
   return (
     <SkeletonWrapper pageType="about">
@@ -43,36 +125,68 @@ export default async function PublicServicesPage() {
             <p className="mono-eyebrow text-muted mb-2">
               Capabilities
             </p>
-            <h1 className="text-h1 font-bold tracking-tight sm:text-[3rem] text-foreground">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground">
               Services &amp; Focus
             </h1>
           </AnimateIn>
           <AnimateIn from="up" distance={12} delay={0.1} viewport={false}>
-            <p className="prose-readable text-body-lg text-muted">
+            <p className="prose-readable text-body sm:text-body-lg text-muted max-w-[640px] leading-relaxed">
               Web application development, UI design, video editing, and technical project builds.
             </p>
           </AnimateIn>
         </Container>
 
         <Container>
-          {services.length === 0 ? (
-            <div className="p-16 text-center border border-dashed border-border rounded-2xl text-muted bg-surface/30">
-              <p className="text-body font-medium">No service offerings listed yet.</p>
-              <p className="text-small text-muted mt-1">Check back soon for updated consulting & engineering services.</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
-              {services.map((service, index) => (
-                <AnimateIn key={service.id} variant="fade-rise" distance={16} duration={0.3} staggerIndex={index} viewport viewportAmount={0.05}>
-                  <Card className="p-6 md:p-8 flex flex-col justify-between h-full space-y-6 card-accent-bar hover-lift-sm">
-                    <div className="space-y-5">
-                      <div className="flex justify-between items-start gap-4">
-                        <div>
-                          <h2 className="text-h3 font-bold text-foreground">{service.title}</h2>
-                          {service.tagline && (
-                            <p className="text-small font-medium text-muted mt-1">{service.tagline}</p>
-                          )}
-                        </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
+            {displayServices.map((service, index) => (
+              <AnimateIn key={service.id} variant="fade-rise" distance={16} duration={0.3} staggerIndex={index} viewport viewportAmount={0.05}>
+                <Card className="p-6 md:p-8 flex flex-col justify-between h-full space-y-6 card-accent-bar hover-lift-sm">
+                  <div className="space-y-5">
+                    <div className="flex justify-between items-start gap-4">
+                      <div>
+                        <h2 className="text-xl font-bold text-foreground">{service.title}</h2>
+                        {service.tagline && (
+                          <p className="text-small font-medium text-muted mt-1">{service.tagline}</p>
+                        )}
+                      </div>
+                    </div>
+
+                    <p className="text-small text-muted leading-relaxed prose-readable">
+                      {service.description}
+                    </p>
+
+                    {service.deliverables && service.deliverables.length > 0 && (
+                      <div className="space-y-2 pt-2 border-t border-border/60">
+                        <p className="mono-eyebrow text-[11px] text-muted">Core Focus &amp; Deliverables</p>
+                        <ul className="space-y-1.5 pt-1">
+                          {service.deliverables.map((item, i) => (
+                            <li key={i} className="flex items-center gap-2 text-small text-foreground/90">
+                              <CheckCircle2 className="h-4 w-4 text-foreground/60 shrink-0" />
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="pt-4 border-t border-border flex items-center justify-between">
+                    <Button asChild variant="secondary" size="sm" className="w-full justify-center">
+                      <Link href="/contact" className="gap-2">
+                        <span>Discuss a Project</span>
+                        <ArrowRight className="h-4 w-4" />
+                      </Link>
+                    </Button>
+                  </div>
+                </Card>
+              </AnimateIn>
+            ))}
+          </div>
+        </Container>
+      </div>
+    </SkeletonWrapper>
+  );
+}
                         {service.price_range && (
                           <Badge variant="pill" className="shrink-0 font-mono text-xs px-3 py-1 badge-breathe">
                             {service.price_range}
