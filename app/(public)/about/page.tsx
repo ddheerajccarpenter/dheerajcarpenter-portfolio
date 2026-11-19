@@ -11,8 +11,26 @@ import { Markdown } from "@/components/ui/markdown";
 import { GraduationCap, Calendar, MapPin } from "lucide-react";
 import { SkeletonWrapper } from "@/components/ui/skeleton-wrapper";
 import { AnimateIn } from "@/components/ui/animate-in";
+import { BreadcrumbJsonLd } from "@/components/seo/json-ld";
+import type { Metadata } from "next";
 
 export const revalidate = 3600;
+
+export const metadata: Metadata = {
+  title: "About Me — Dheeraj Carpenter | Engineering Student & Full-Stack Developer",
+  description:
+    "Learn about Dheeraj Carpenter, an engineering student passionate about software development, web engineering, video editing, and creative design based in India.",
+  alternates: {
+    canonical: "/about",
+  },
+  openGraph: {
+    title: "About Dheeraj Carpenter — Engineering Student & Full-Stack Developer",
+    description:
+      "Learn about Dheeraj Carpenter, an engineering student passionate about software development, web engineering, video editing, and creative design.",
+    url: "/about",
+    type: "profile",
+  },
+};
 
 export default async function AboutPage() {
   const [aboutContent, skills, experience, testimonials] = await Promise.all([
@@ -39,6 +57,12 @@ export default async function AboutPage() {
 
   return (
     <SkeletonWrapper pageType="about">
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: "/" },
+          { name: "About", url: "/about" },
+        ]}
+      />
       <div className="py-16 md:py-24 space-y-20">
         <section aria-labelledby="about-headline">
           <Container>
@@ -46,7 +70,7 @@ export default async function AboutPage() {
               <div className="space-y-4 md:col-span-2">
                 <AnimateIn from="up" distance={16} duration={0.4} viewport={false}>
                   <p className="mono-eyebrow text-muted mb-2">
-                    Background & Philosophy
+                    About
                   </p>
                   <h1 id="about-headline" className="text-h1 font-bold tracking-tight sm:text-[3rem] text-foreground">
                     {headline}
@@ -91,7 +115,7 @@ export default async function AboutPage() {
                     Overview
                   </p>
                   <h2 id="personal-overview-title" className="text-h2 font-bold tracking-tight">
-                    Personal Overview
+                    Overview
                   </h2>
                 </div>
               </AnimateIn>
@@ -110,10 +134,10 @@ export default async function AboutPage() {
               <AnimateIn variant="slide-right" distance={24} duration={0.4} className="md:col-span-4" viewport>
                 <div className="space-y-1 md:sticky md:top-28">
                   <p className="mono-eyebrow text-muted">
-                    Stack & Competencies
+                    Skills &amp; Tools
                   </p>
                   <h2 id="skills-title" className="text-h2 font-bold tracking-tight">
-                    Expertise
+                    Technologies
                   </h2>
                 </div>
               </AnimateIn>
@@ -154,10 +178,10 @@ export default async function AboutPage() {
               <AnimateIn from="up" distance={12}>
                 <div className="space-y-1">
                   <p className="mono-eyebrow text-muted">
-                    Feedback
+                    Testimonials
                   </p>
                   <h2 id="about-testimonials-title" className="text-h2 font-bold tracking-tight">
-                    Recommendations
+                    What People Say
                   </h2>
                 </div>
               </AnimateIn>

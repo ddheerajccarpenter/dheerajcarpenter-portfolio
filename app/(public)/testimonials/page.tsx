@@ -3,27 +3,51 @@ import { Container } from "@/components/layout/container";
 import { Card } from "@/components/ui";
 import { SkeletonWrapper } from "@/components/ui/skeleton-wrapper";
 import { AnimateIn } from "@/components/ui/animate-in";
+import { BreadcrumbJsonLd } from "@/components/seo/json-ld";
+import type { Metadata } from "next";
 
 export const revalidate = 3600;
+
+export const metadata: Metadata = {
+  title: "Testimonials & Feedback — Dheeraj Carpenter",
+  description:
+    "Reviews, recommendations, and feedback from peers, project collaborators, and clients who have worked with Dheeraj Carpenter.",
+  alternates: {
+    canonical: "/testimonials",
+  },
+  openGraph: {
+    title: "Testimonials & Feedback — Dheeraj Carpenter",
+    description:
+      "Reviews, recommendations, and feedback from peers, project collaborators, and clients.",
+    url: "/testimonials",
+    type: "website",
+  },
+};
 
 export default async function PublicTestimonialsPage() {
   const testimonials = await getAllTestimonials();
 
   return (
     <SkeletonWrapper pageType="projects">
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: "/" },
+          { name: "Testimonials", url: "/testimonials" },
+        ]}
+      />
       <div className="py-16 md:py-24 space-y-12">
         <Container className="space-y-4">
           <AnimateIn from="up" distance={16} duration={0.4} viewport={false}>
             <p className="mono-eyebrow text-muted mb-2">
-              Client & Teammate Endorsements
+              Feedback
             </p>
             <h1 className="text-h1 font-bold tracking-tight sm:text-[3rem] text-foreground">
-              Testimonials & Endorsements
+              Testimonials
             </h1>
           </AnimateIn>
           <AnimateIn from="up" distance={12} delay={0.1} viewport={false}>
             <p className="prose-readable text-body-lg text-muted">
-              Recommendations and feedback from clients, managers, and engineering collaborators.
+              Kind words, feedback, and recommendations from peers, collaborators, and clients.
             </p>
           </AnimateIn>
         </Container>

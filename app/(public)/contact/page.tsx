@@ -4,6 +4,8 @@ import { ContactForm } from "@/components/public/contact-form";
 import { Button, CopyEmailBadge } from "@/components/ui";
 import { SkeletonWrapper } from "@/components/ui/skeleton-wrapper";
 import { AnimateIn } from "@/components/ui/animate-in";
+import { BreadcrumbJsonLd } from "@/components/seo/json-ld";
+import type { Metadata } from "next";
 import {
   Mail,
   FileText,
@@ -19,6 +21,22 @@ import {
 } from "lucide-react";
 
 export const revalidate = 3600;
+
+export const metadata: Metadata = {
+  title: "Contact & Connect — Dheeraj Carpenter",
+  description:
+    "Get in touch with Dheeraj Carpenter for software development, project inquiries, engineering collaborations, or freelance opportunities.",
+  alternates: {
+    canonical: "/contact",
+  },
+  openGraph: {
+    title: "Contact & Connect — Dheeraj Carpenter",
+    description:
+      "Get in touch with Dheeraj Carpenter for software development, project inquiries, engineering collaborations, or freelance opportunities.",
+    url: "/contact",
+    type: "website",
+  },
+};
 
 const PLATFORM_ICONS: Record<string, LucideIcon> = {
   github: Github,
@@ -42,6 +60,12 @@ export default async function ContactPage() {
 
   return (
     <SkeletonWrapper pageType="contact">
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: "/" },
+          { name: "Contact", url: "/contact" },
+        ]}
+      />
       <div className="py-16 md:py-24">
         <Container className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 items-start">
           {/* Left Side: Header, Info & Channels */}

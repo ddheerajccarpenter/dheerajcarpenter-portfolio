@@ -3,28 +3,52 @@ import { Container } from "@/components/layout/container";
 import { Card, Button } from "@/components/ui";
 import { SkeletonWrapper } from "@/components/ui/skeleton-wrapper";
 import { AnimateIn } from "@/components/ui/animate-in";
+import { BreadcrumbJsonLd } from "@/components/seo/json-ld";
 import { Award, ExternalLink, Calendar, Download } from "lucide-react";
+import type { Metadata } from "next";
 
 export const revalidate = 3600;
+
+export const metadata: Metadata = {
+  title: "Certifications & Credentials — Dheeraj Carpenter",
+  description:
+    "Technical certifications, verified course completions, and software credentials earned by Dheeraj Carpenter.",
+  alternates: {
+    canonical: "/certifications",
+  },
+  openGraph: {
+    title: "Certifications & Credentials — Dheeraj Carpenter",
+    description:
+      "Technical certifications, verified course completions, and software credentials earned by Dheeraj Carpenter.",
+    url: "/certifications",
+    type: "profile",
+  },
+};
 
 export default async function PublicCertificationsPage() {
   const certifications = await getPublishedCertifications();
 
   return (
     <SkeletonWrapper pageType="about">
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: "/" },
+          { name: "Certifications", url: "/certifications" },
+        ]}
+      />
       <div className="py-16 md:py-24 space-y-12">
         <Container className="space-y-4">
           <AnimateIn from="up" distance={16} duration={0.4} viewport={false}>
             <p className="mono-eyebrow text-muted mb-2">
-              Accreditations & Certificates
+              Learning &amp; Milestones
             </p>
             <h1 className="text-h1 font-bold tracking-tight sm:text-[3rem] text-foreground">
-              Certifications & Diplomas
+              Certifications
             </h1>
           </AnimateIn>
           <AnimateIn from="up" distance={12} delay={0.1} viewport={false}>
             <p className="prose-readable text-body-lg text-muted">
-              Professional credentials, industry certifications, and completions earned across software architecture and engineering.
+              Courses, certifications, and technical milestones earned along the way.
             </p>
           </AnimateIn>
         </Container>

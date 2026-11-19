@@ -3,8 +3,26 @@ import { Container } from "@/components/layout/container";
 import { Card, Badge } from "@/components/ui";
 import { SkeletonWrapper } from "@/components/ui/skeleton-wrapper";
 import { AnimateIn } from "@/components/ui/animate-in";
+import { BreadcrumbJsonLd } from "@/components/seo/json-ld";
+import type { Metadata } from "next";
 
 export const revalidate = 3600;
+
+export const metadata: Metadata = {
+  title: "Skills & Technical Stack — Dheeraj Carpenter",
+  description:
+    "Comprehensive overview of Dheeraj Carpenter's technical skills, programming languages, web frameworks, and creative software proficiencies.",
+  alternates: {
+    canonical: "/skills",
+  },
+  openGraph: {
+    title: "Skills & Technical Stack — Dheeraj Carpenter",
+    description:
+      "Comprehensive overview of Dheeraj Carpenter's technical skills, programming languages, web frameworks, and creative software proficiencies.",
+    url: "/skills",
+    type: "website",
+  },
+};
 
 export default async function PublicSkillsPage() {
   const skills = await getSkills();
@@ -19,19 +37,25 @@ export default async function PublicSkillsPage() {
 
   return (
     <SkeletonWrapper pageType="about">
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: "/" },
+          { name: "Skills", url: "/skills" },
+        ]}
+      />
       <div className="py-16 md:py-24 space-y-12">
         <Container className="space-y-4">
           <AnimateIn from="up" distance={16} duration={0.4} viewport={false}>
             <p className="mono-eyebrow text-muted mb-2">
-              Technical Proficiencies
+              Tech Stack
             </p>
             <h1 className="text-h1 font-bold tracking-tight sm:text-[3rem] text-foreground">
-              Skills & Expertise
+              Skills &amp; Tools
             </h1>
           </AnimateIn>
           <AnimateIn from="up" distance={12} delay={0.1} viewport={false}>
             <p className="prose-readable text-body-lg text-muted">
-              Technical proficiencies, frameworks, tools, and domain specialisations mastered over years of hands-on software development.
+              Languages, frameworks, libraries, and design tools I use regularly in my work.
             </p>
           </AnimateIn>
         </Container>

@@ -1,6 +1,7 @@
 import { Container } from "@/components/layout/container";
 import { Card } from "@/components/ui";
 import { AnimateIn } from "@/components/ui/animate-in";
+import { BreadcrumbJsonLd } from "@/components/seo/json-ld";
 import { FileText, ShieldCheck, Scale, AlertCircle, Mail } from "lucide-react";
 import Link from "next/link";
 import type { Metadata } from "next";
@@ -9,14 +10,32 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Terms & Conditions — Dheeraj Carpenter",
-  description: "Terms and conditions governing the use of Dheeraj Carpenter's website, software demonstrations, and freelance engineering services.",
+  description:
+    "Terms and conditions governing the use of Dheeraj Carpenter's website, software demonstrations, and development services.",
+  alternates: {
+    canonical: "/terms",
+  },
+  openGraph: {
+    title: "Terms & Conditions — Dheeraj Carpenter",
+    description:
+      "Terms and conditions governing the use of Dheeraj Carpenter's website and software services.",
+    url: "/terms",
+    type: "website",
+  },
 };
 
 export default function TermsPage() {
   const lastUpdated = "September 18, 2026";
 
   return (
-    <div className="py-12 md:py-20 space-y-12">
+    <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: "/" },
+          { name: "Terms & Conditions", url: "/terms" },
+        ]}
+      />
+      <div className="py-12 md:py-20 space-y-12">
       <Container className="space-y-4">
         <AnimateIn from="up" distance={16} duration={0.4} viewport={false}>
           <div className="flex items-center gap-2 text-muted mono-eyebrow mb-2">
@@ -167,5 +186,6 @@ export default function TermsPage() {
         </div>
       </Container>
     </div>
+    </>
   );
 }

@@ -4,26 +4,51 @@ import { Container } from "@/components/layout/container";
 import { Card, Badge } from "@/components/ui";
 import { Calendar, Clock, ArrowRight, Newspaper } from "lucide-react";
 import { AnimateIn } from "@/components/ui/animate-in";
+import { BreadcrumbJsonLd } from "@/components/seo/json-ld";
+import type { Metadata } from "next";
 
 export const revalidate = 3600;
+
+export const metadata: Metadata = {
+  title: "Articles & Engineering Insights — Dheeraj Carpenter",
+  description:
+    "Technical articles, tutorials, engineering write-ups, and guides on full-stack web development, TypeScript, and design by Dheeraj Carpenter.",
+  alternates: {
+    canonical: "/blog",
+  },
+  openGraph: {
+    title: "Articles & Engineering Insights — Dheeraj Carpenter",
+    description:
+      "Technical articles, tutorials, engineering write-ups, and guides on full-stack web development, TypeScript, and design.",
+    url: "/blog",
+    type: "website",
+  },
+};
 
 export default async function BlogPage() {
   const posts = await getPublishedPosts();
 
   return (
-    <div className="py-16 md:py-24 space-y-12">
+    <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: "/" },
+          { name: "Articles", url: "/blog" },
+        ]}
+      />
+      <div className="py-16 md:py-24 space-y-12">
       <Container className="space-y-4">
         <AnimateIn from="up" distance={16} duration={0.4} viewport={false}>
           <p className="mono-eyebrow text-muted mb-2">
-            Writing & Engineering Notes
+            Writing
           </p>
           <h1 className="text-h1 font-bold tracking-tight sm:text-[3rem] text-foreground">
-            Articles & Insights
+            Articles
           </h1>
         </AnimateIn>
         <AnimateIn from="up" distance={12} delay={0.1} viewport={false}>
           <p className="prose-readable text-body-lg text-muted">
-            Essays, technical deep dives, and architectural patterns in modern software development and design.
+            Notes, tutorials, and thoughts on coding, web engineering, and creative design.
           </p>
         </AnimateIn>
       </Container>
@@ -114,5 +139,6 @@ export default async function BlogPage() {
         )}
       </Container>
     </div>
+    </>
   );
 }

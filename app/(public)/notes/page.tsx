@@ -3,28 +3,52 @@ import { Container } from "@/components/layout/container";
 import { Card, Badge } from "@/components/ui";
 import { SkeletonWrapper } from "@/components/ui/skeleton-wrapper";
 import { AnimateIn } from "@/components/ui/animate-in";
+import { BreadcrumbJsonLd } from "@/components/seo/json-ld";
 import { CheckCircle2, Pin } from "lucide-react";
+import type { Metadata } from "next";
 
 export const revalidate = 3600;
+
+export const metadata: Metadata = {
+  title: "Engineering Notes & Scratchpad — Dheeraj Carpenter",
+  description:
+    "Quick technical notes, development logs, project ideas, and snippets by Dheeraj Carpenter.",
+  alternates: {
+    canonical: "/notes",
+  },
+  openGraph: {
+    title: "Engineering Notes & Scratchpad — Dheeraj Carpenter",
+    description:
+      "Quick technical notes, development logs, project ideas, and snippets by Dheeraj Carpenter.",
+    url: "/notes",
+    type: "website",
+  },
+};
 
 export default async function PublicNotesPage() {
   const notes = await getAdminNotes();
 
   return (
     <SkeletonWrapper pageType="projects">
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: "/" },
+          { name: "Notes", url: "/notes" },
+        ]}
+      />
       <div className="py-16 md:py-24 space-y-12">
         <Container className="space-y-4">
           <AnimateIn from="up" distance={16} duration={0.4} viewport={false}>
             <p className="mono-eyebrow text-muted mb-2">
-              Engineering Logs & Scratchpad
+              Scratchpad
             </p>
             <h1 className="text-h1 font-bold tracking-tight sm:text-[3rem] text-foreground">
-              Notes & Thoughts
+              Notes
             </h1>
           </AnimateIn>
           <AnimateIn from="up" distance={12} delay={0.1} viewport={false}>
             <p className="prose-readable text-body-lg text-muted">
-              Engineering scratchpad, task logs, project ideas, and technical development notes.
+              Quick thoughts, project ideas, learning notes, and snippets.
             </p>
           </AnimateIn>
         </Container>

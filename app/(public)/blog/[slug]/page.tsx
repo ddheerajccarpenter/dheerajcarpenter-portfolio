@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import { getPostBySlug } from "@/lib/data/public";
 import { Container } from "@/components/layout/container";
 import { Badge } from "@/components/ui";
 import { Markdown } from "@/components/ui/markdown";
 import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import { AnimateIn } from "@/components/ui/animate-in";
+import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/seo/json-ld";
 
 export const revalidate = 3600;
 
@@ -13,6 +15,48 @@ interface BlogPostPageProps {
   params: Promise<{
     slug: string;
   }>;
+}
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://dheerajcarpenter.vercel.app";
+
+export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const post = await getPostBySlug(slug);
+
+  if (!post || !post.published) {
+    return {
+      title: "Article Not Found",
+    };
+  }
+
+  const url = `${SITE_URL}/blog/${post.slug}`;
+
+  return {
+    title: post.title,
+    description: post.excerpt || `Read ${post.title} by Dheeraj Carpenter.`,
+    keywords: post.tags || ["Software Development", "Web Engineering", "Tutorial", "Next.js"],
+    alternates: {
+      canonical: url,
+    },
+    openGraph: {
+      title: `${post.title} — Dheeraj Carpenter`,
+      description: post.excerpt || `Read ${post.title} by Dheeraj Carpenter.`,
+      url,
+      type: "article",
+      publishedTime: post.published_at || post.created_at,
+      modifiedTime: post.updated_at,
+      authors: ["Dheeraj Carpenter"],
+      images: post.cover_url
+        ? [{ url: post.cover_url, width: 1200, height: 630, alt: post.title }]
+        : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${post.title} — Dheeraj Carpenter`,
+      description: post.excerpt || `Read ${post.title} by Dheeraj Carpenter.`,
+      images: post.cover_url ? [post.cover_url] : undefined,
+    },
+  };
 }
 
 export default async function BlogPostDetailPage({ params }: BlogPostPageProps) {
@@ -25,6 +69,16 @@ export default async function BlogPostDetailPage({ params }: BlogPostPageProps) 
 
   return (
     <div className="py-12 md:py-20 space-y-12">
+      {/* Schema.org Structured Data for AEO / SEO */}
+      <ArticleJsonLd post={post} />
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: "/" },
+          { name: "Blog", url: "/blog" },
+          { name: post.title, url: `/blog/${post.slug}` },
+        ]}
+      />
+
       {/* Back Button */}
       <Container className="max-w-[800px]">
         <AnimateIn from="left" distance={10} duration={0.3} viewport={false}>
@@ -63,7 +117,7 @@ export default async function BlogPostDetailPage({ params }: BlogPostPageProps) 
           </div>
 
           <AnimateIn from="up" distance={16} duration={0.4} viewport={false}>
-            <h1 className="text-h1 font-bold tracking-tight sm:text-[3.25rem] leading-tight text-editorial-gradient">
+            <h1 className="text-h1 font-bold tracking-tight sm:text-[3.25rem] leading-tight text-foreground">
               {post.title}
             </h1>
           </AnimateIn>
@@ -104,12 +158,10 @@ export default async function BlogPostDetailPage({ params }: BlogPostPageProps) 
       )}
 
       {/* Article Body */}
-      <Container className="max-w-[800px] pt-4">
-        <AnimateIn from="up" distance={16} className="space-y-6">
-          <div className="pt-2">
-            <Markdown content={post.content || "No article content written."} />
-          </div>
-        </AnimateIn>
+      <Container className="max-w-[800px]">
+        <article className="prose-readable">
+          <Markdown content={post.content} />
+        </article>
       </Container>
     </div>
   );

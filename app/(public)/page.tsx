@@ -15,8 +15,18 @@ import {
   ArrowUpRight,
   Mail,
 } from "lucide-react";
+import type { Metadata } from "next";
 
 export const revalidate = 3600;
+
+export const metadata: Metadata = {
+  title: "Dheeraj Carpenter | Engineering Student & Full-Stack Developer",
+  description:
+    "Official portfolio of Dheeraj Carpenter — engineering student passionate about software engineering, modern web applications, video editing, and creative design based in India.",
+  alternates: {
+    canonical: "/",
+  },
+};
 
 export default async function HomePage() {
   const [

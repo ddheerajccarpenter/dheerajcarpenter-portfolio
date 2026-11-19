@@ -3,9 +3,27 @@ import { Container } from "@/components/layout/container";
 import { Badge } from "@/components/ui";
 import { SkeletonWrapper } from "@/components/ui/skeleton-wrapper";
 import { AnimateIn } from "@/components/ui/animate-in";
+import { BreadcrumbJsonLd } from "@/components/seo/json-ld";
 import { Briefcase, GraduationCap, Award, Calendar, MapPin, ExternalLink } from "lucide-react";
+import type { Metadata } from "next";
 
 export const revalidate = 3600;
+
+export const metadata: Metadata = {
+  title: "Experience & Education — Dheeraj Carpenter",
+  description:
+    "Engineering education, developer roles, milestones, and technical background of Dheeraj Carpenter.",
+  alternates: {
+    canonical: "/experience",
+  },
+  openGraph: {
+    title: "Experience & Education — Dheeraj Carpenter",
+    description:
+      "Engineering education, developer roles, milestones, and technical background of Dheeraj Carpenter.",
+    url: "/experience",
+    type: "profile",
+  },
+};
 
 const TYPE_ICONS = {
   work: Briefcase,
@@ -24,11 +42,17 @@ export default async function ExperiencePage() {
 
   return (
     <SkeletonWrapper pageType="experience">
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: "/" },
+          { name: "Experience", url: "/experience" },
+        ]}
+      />
       <div className="py-16 md:py-24 space-y-12">
         <Container className="space-y-4">
           <AnimateIn from="up" distance={16} duration={0.4} viewport={false}>
             <p className="mono-eyebrow text-muted mb-2">
-              Career & Credentials
+              Journey &amp; Education
             </p>
             <h1 className="text-h1 font-bold tracking-tight sm:text-[3rem] text-foreground">
               Experience
@@ -36,7 +60,7 @@ export default async function ExperiencePage() {
           </AnimateIn>
           <AnimateIn from="up" distance={12} delay={0.1} viewport={false}>
             <p className="prose-readable text-body-lg text-muted">
-              A comprehensive chronicle of my professional engineering career, leadership roles, and academic foundations.
+              Education, technical roles, projects, and milestones in my development journey.
             </p>
           </AnimateIn>
         </Container>

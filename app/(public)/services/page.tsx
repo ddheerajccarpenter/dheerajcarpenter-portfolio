@@ -3,29 +3,53 @@ import { Container } from "@/components/layout/container";
 import { Card, Badge, Button } from "@/components/ui";
 import { SkeletonWrapper } from "@/components/ui/skeleton-wrapper";
 import { AnimateIn } from "@/components/ui/animate-in";
+import { BreadcrumbJsonLd } from "@/components/seo/json-ld";
 import Link from "next/link";
 import { CheckCircle2, ArrowRight } from "lucide-react";
+import type { Metadata } from "next";
 
 export const revalidate = 3600;
+
+export const metadata: Metadata = {
+  title: "Services & Capabilities — Dheeraj Carpenter",
+  description:
+    "Full-stack web development, user interface design, performance optimization, and video editing services by Dheeraj Carpenter.",
+  alternates: {
+    canonical: "/services",
+  },
+  openGraph: {
+    title: "Services & Capabilities — Dheeraj Carpenter",
+    description:
+      "Full-stack web development, user interface design, performance optimization, and video editing services.",
+    url: "/services",
+    type: "website",
+  },
+};
 
 export default async function PublicServicesPage() {
   const services = await getActiveServices();
 
   return (
     <SkeletonWrapper pageType="about">
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: "/" },
+          { name: "Services", url: "/services" },
+        ]}
+      />
       <div className="py-16 md:py-24 space-y-12">
         <Container className="space-y-4">
           <AnimateIn from="up" distance={16} duration={0.4} viewport={false}>
             <p className="mono-eyebrow text-muted mb-2">
-              Capabilities & Offerings
+              Capabilities
             </p>
             <h1 className="text-h1 font-bold tracking-tight sm:text-[3rem] text-foreground">
-              Services & Solutions
+              Services &amp; Focus
             </h1>
           </AnimateIn>
           <AnimateIn from="up" distance={12} delay={0.1} viewport={false}>
             <p className="prose-readable text-body-lg text-muted">
-              Specialized engineering, full-stack architecture, and technical consulting solutions available for contracts.
+              Web application development, UI design, video editing, and technical project builds.
             </p>
           </AnimateIn>
         </Container>
