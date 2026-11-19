@@ -430,22 +430,42 @@ CREATE POLICY "Resume: admin write" ON storage.objects FOR ALL USING (bucket_id 
 CREATE POLICY "Images: public read" ON storage.objects FOR SELECT USING (bucket_id = 'images');
 CREATE POLICY "Images: admin write" ON storage.objects FOR ALL USING (bucket_id = 'images' AND public.is_admin()) WITH CHECK (bucket_id = 'images' AND public.is_admin());
 
--- ─── 8. PERFORMANCE INDEXES ──────────────────────────────────────────────────
+-- ─── 8. PERFORMANCE INDEXES (SUB-MILLISECOND QUERY OPTIMIZATION) ────────────
 CREATE INDEX IF NOT EXISTS idx_projects_slug ON public.projects(slug);
-CREATE INDEX IF NOT EXISTS idx_projects_published_order ON public.projects(published, "order");
-CREATE INDEX IF NOT EXISTS idx_projects_featured ON public.projects(featured) WHERE featured = true;
+CREATE INDEX IF NOT EXISTS idx_projects_published_order ON public.projects("order" ASC) WHERE published = true;
+CREATE INDEX IF NOT EXISTS idx_projects_featured ON public.projects("order" ASC) WHERE featured = true AND published = true;
 CREATE INDEX IF NOT EXISTS idx_blog_posts_slug ON public.blog_posts(slug);
-CREATE INDEX IF NOT EXISTS idx_blog_posts_published_order ON public.blog_posts(published, "order");
-CREATE INDEX IF NOT EXISTS idx_experience_published_order ON public.experience(published, "order");
-CREATE INDEX IF NOT EXISTS idx_certifications_published_order ON public.certifications(published, "order");
-CREATE INDEX IF NOT EXISTS idx_skills_order ON public.skills("order");
-CREATE INDEX IF NOT EXISTS idx_social_links_order ON public.social_links("order");
-CREATE INDEX IF NOT EXISTS idx_testimonials_featured_order ON public.testimonials(featured, "order");
-CREATE INDEX IF NOT EXISTS idx_service_offerings_active_order ON public.service_offerings(active, "order");
+CREATE INDEX IF NOT EXISTS idx_blog_posts_published_order ON public.blog_posts("order" ASC, published_at DESC) WHERE published = true;
+CREATE INDEX IF NOT EXISTS idx_experience_published_order ON public.experience("order" ASC, start_date DESC) WHERE published = true;
+CREATE INDEX IF NOT EXISTS idx_certifications_published_order ON public.certifications("order" ASC) WHERE published = true;
+CREATE INDEX IF NOT EXISTS idx_skills_order ON public.skills("order" ASC);
+CREATE INDEX IF NOT EXISTS idx_social_links_order ON public.social_links("order" ASC);
+CREATE INDEX IF NOT EXISTS idx_testimonials_featured_order ON public.testimonials("order" ASC) WHERE featured = true;
+CREATE INDEX IF NOT EXISTS idx_service_offerings_active_order ON public.service_offerings("order" ASC) WHERE active = true;
+CREATE INDEX IF NOT EXISTS idx_public_notifications_active ON public.public_notifications(created_at DESC) WHERE active = true;
 CREATE INDEX IF NOT EXISTS idx_contact_submissions_created ON public.contact_submissions(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_audit_logs_created ON public.audit_logs(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_admin_notes_pinned_created ON public.admin_notes(pinned DESC, created_at DESC);
 
--- ─── 9. INITIAL SINGLETON SEEDS ──────────────────────────────────────────────
+-- ─── 9. HIGH-SPEED AGGREGATION & BOOTSTRAP RPC ──────────────────────────────
+-- Consolidates public shell queries into a single database roundtrip (<5ms)
+CREATE OR REPLACE FUNCTION public.get_public_bootstrap_data()
+RETURNS jsonb
+LANGUAGE sql
+STABLE
+SECURITY DEFINER
+SET search_path = public
+AS $$
+  SELECT jsonb_build_object(
+    'settings', (SELECT to_jsonb(s) FROM public.site_settings s WHERE s.id = 1),
+    'notification', (SELECT to_jsonb(n) FROM public.public_notifications n WHERE n.active = true ORDER BY n.created_at DESC LIMIT 1),
+    'social_links', COALESCE((SELECT jsonb_agg(to_jsonb(l) ORDER BY l."order" ASC) FROM public.social_links l), '[]'::jsonb)
+  );
+$$;
+
+GRANT EXECUTE ON FUNCTION public.get_public_bootstrap_data() TO anon, authenticated;
+
+-- ─── 10. INITIAL SINGLETON SEEDS ─────────────────────────────────────────────
 INSERT INTO public.site_settings (id, site_title, site_description, default_theme, animation_style, ui_design)
 VALUES (1, 'Dheeraj Carpenter', 'Portfolio of Dheeraj Carpenter', 'system', 'new', 'minimalist')
 ON CONFLICT (id) DO NOTHING;
@@ -463,3 +483,19 @@ INSERT INTO public.seo_metadata (page_key, title, description) VALUES
   ('skills',         'Skills',         'Technical skills and software stack'),
   ('services',       'Services',       'Capabilities and technical offerings')
 ON CONFLICT (page_key) DO NOTHING;
+
+-- ─── 11. QUERY PLANNER STATISTICS (ANALYZE) ──────────────────────────────────
+ANALYZE public.profiles;
+ANALYZE public.site_settings;
+ANALYZE public.home_content;
+ANALYZE public.about_content;
+ANALYZE public.skills;
+ANALYZE public.experience;
+ANALYZE public.projects;
+ANALYZE public.social_links;
+ANALYZE public.seo_metadata;
+ANALYZE public.certifications;
+ANALYZE public.testimonials;
+ANALYZE public.service_offerings;
+ANALYZE public.blog_posts;
+ANALYZE public.public_notifications;

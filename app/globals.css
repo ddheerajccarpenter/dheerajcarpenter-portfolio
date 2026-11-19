@@ -80,8 +80,7 @@
 
   --font-sans: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  --font-inter: var(--font-inter), sans-serif;
-  --font-hero: var(--font-hero-name, var(--font-geist-sans)), sans-serif;
+  --font-hero: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, sans-serif;
   --font-anak-manja: "Anak Manja", var(--font-sans);
 
   /* Typographic hierarchy — editorial & balanced */
@@ -749,7 +748,7 @@
 
 /* Name font */
 @utility font-hero-name {
-  font-family: var(--font-hero-name, var(--font-geist-sans)), -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-sans);
   letter-spacing: -0.02em;
 }
 

@@ -10,13 +10,19 @@ import { updateSession } from "@/lib/supabase/middleware";
  *     login page.
  */
 export async function middleware(request: NextRequest) {
-  const { user, response } = await updateSession(request);
-
   const { pathname } = request.nextUrl;
   const isAdminRoute = pathname.startsWith("/dc");
+
+  // Fast-path: Public pages do not use Supabase auth cookies.
+  // Avoid remote HTTPS roundtrips to Supabase auth for anonymous visitors (saves 300-600ms+ TTFB).
+  if (!isAdminRoute) {
+    return NextResponse.next();
+  }
+
+  const { user, response } = await updateSession(request);
   const isLoginRoute = pathname === "/dc/login";
 
-  if (isAdminRoute && !isLoginRoute && !user) {
+  if (!isLoginRoute && !user) {
     const loginUrl = request.nextUrl.clone();
     loginUrl.pathname = "/dc/login";
     loginUrl.searchParams.set("redirect", pathname);

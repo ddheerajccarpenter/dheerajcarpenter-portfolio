@@ -1,35 +1,26 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Geist, Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { MotionProvider } from "@/components/providers/motion-provider";
 import { ContentGuard } from "@/components/layout/content-guard";
-import { getSettings } from "@/lib/data/public";
+import { getPublicBootstrapData } from "@/lib/data/public";
 import { PersonJsonLd, WebSiteJsonLd } from "@/components/seo/json-ld";
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  display: "swap",
-});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
-});
-
-const plusJakartaSans = Plus_Jakarta_Sans({
-  variable: "--font-hero-name",
-  subsets: ["latin"],
-  weight: ["700", "800"],
   display: "swap",
 });
+
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -115,41 +106,36 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const settings = await getSettings();
+  const { settings } = await getPublicBootstrapData();
   const defaultTheme = (settings?.default_theme as "system" | "light" | "dark") || "system";
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  let supabaseOrigin: string | null = null;
+  if (supabaseUrl) {
+    try {
+      supabaseOrigin = new URL(supabaseUrl).origin;
+    } catch {
+      supabaseOrigin = null;
+    }
+  }
 
   return (
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${inter.variable} ${geistSans.variable} ${geistMono.variable} ${plusJakartaSans.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <head>
         {/* Entity Schemas for Google Knowledge Graph, Perplexity, Gemini, ChatGPT Search */}
         <PersonJsonLd />
         <WebSiteJsonLd />
 
-        {/* DNS prefetch so the CDN connection is warmed before scripts fire */}
-        <link rel="preconnect" href="https://cdn-uicons.flaticon.com" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://cdn-uicons.flaticon.com" />
-
-        {/* Flaticon Icons */}
-        <link
-          rel="stylesheet"
-          href="https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-rounded/css/uicons-bold-rounded.css"
-        />
-        <link
-          rel="stylesheet"
-          href="https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-straight/css/uicons-bold-straight.css"
-        />
-        <link
-          rel="stylesheet"
-          href="https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css"
-        />
-        <link
-          rel="stylesheet"
-          href="https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-rounded/css/uicons-solid-rounded.css"
-        />
+        {/* DNS prefetch & Preconnect for high-speed Supabase data & assets */}
+        {supabaseOrigin && (
+          <>
+            <link rel="preconnect" href={supabaseOrigin} crossOrigin="anonymous" />
+            <link rel="dns-prefetch" href={supabaseOrigin} />
+          </>
+        )}
       </head>
       <body className="min-h-full bg-background text-foreground flex flex-col">
         <ThemeProvider defaultTheme={defaultTheme}>

@@ -195,29 +195,31 @@ export const getFeaturedProjects = unstable_cache(
   { tags: [CACHE_TAGS.PROJECTS], revalidate: 3600 }
 );
 
-export async function getProjectBySlug(slug: string): Promise<Project | null> {
-  return unstable_cache(
-    async (): Promise<Project | null> => {
-      try {
-        const { data, error } = await publicClient
-          .from("projects")
-          .select("*")
-          .eq("slug", slug)
-          .eq("published", true)
-          .maybeSingle();
-        if (error) {
-          console.error("Error fetching project by slug:", error.message);
-          return null;
-        }
-        return data;
-      } catch (err) {
-        console.error("Error in getProjectBySlug:", err);
+const fetchProjectBySlug = unstable_cache(
+  async (slug: string): Promise<Project | null> => {
+    try {
+      const { data, error } = await publicClient
+        .from("projects")
+        .select("*")
+        .eq("slug", slug)
+        .eq("published", true)
+        .maybeSingle();
+      if (error) {
+        console.error("Error fetching project by slug:", error.message);
         return null;
       }
-    },
-    [`public-project-slug-${slug}`],
-    { tags: [CACHE_TAGS.PROJECTS], revalidate: 3600 }
-  )();
+      return data;
+    } catch (err) {
+      console.error("Error in getProjectBySlug:", err);
+      return null;
+    }
+  },
+  ["public-project-slug"],
+  { tags: [CACHE_TAGS.PROJECTS], revalidate: 3600 }
+);
+
+export async function getProjectBySlug(slug: string): Promise<Project | null> {
+  return fetchProjectBySlug(slug);
 }
 
 export const getSocialLinks = unstable_cache(
@@ -374,29 +376,31 @@ export const getPublishedPosts = unstable_cache(
   { tags: [CACHE_TAGS.POSTS], revalidate: 3600 }
 );
 
-export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
-  return unstable_cache(
-    async (): Promise<BlogPost | null> => {
-      try {
-        const { data, error } = await publicClient
-          .from("blog_posts")
-          .select("*")
-          .eq("slug", slug)
-          .eq("published", true)
-          .maybeSingle();
-        if (error) {
-          console.error("Error fetching blog post by slug:", error);
-          return null;
-        }
-        return data;
-      } catch (err) {
-        console.error("Error in getPostBySlug:", err);
+const fetchPostBySlug = unstable_cache(
+  async (slug: string): Promise<BlogPost | null> => {
+    try {
+      const { data, error } = await publicClient
+        .from("blog_posts")
+        .select("*")
+        .eq("slug", slug)
+        .eq("published", true)
+        .maybeSingle();
+      if (error) {
+        console.error("Error fetching blog post by slug:", error);
         return null;
       }
-    },
-    [`public-post-slug-${slug}`],
-    { tags: [CACHE_TAGS.POSTS], revalidate: 3600 }
-  )();
+      return data;
+    } catch (err) {
+      console.error("Error in getPostBySlug:", err);
+      return null;
+    }
+  },
+  ["public-post-slug"],
+  { tags: [CACHE_TAGS.POSTS], revalidate: 3600 }
+);
+
+export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
+  return fetchPostBySlug(slug);
 }
 
 export const getActivePublicNotification = unstable_cache(
@@ -422,6 +426,49 @@ export const getActivePublicNotification = unstable_cache(
   },
   ["public-notification-active"],
   { tags: [CACHE_TAGS.NOTIFICATIONS], revalidate: 3600 }
+);
+
+export interface PublicBootstrapData {
+  settings: SiteSettings | null;
+  notification: PublicNotification | null;
+  social_links: SocialLink[];
+}
+
+/**
+ * High-speed Public Bootstrap fetcher.
+ * Consolidates settings, active announcement, and social links.
+ * Leverages PostgreSQL RPC get_public_bootstrap_data() when available for a single DB roundtrip.
+ */
+export const getPublicBootstrapData = unstable_cache(
+  async (): Promise<PublicBootstrapData> => {
+    try {
+      const { data, error } = await publicClient.rpc("get_public_bootstrap_data");
+      if (!error && data && typeof data === "object") {
+        const payload = data as {
+          settings?: SiteSettings | null;
+          notification?: PublicNotification | null;
+          social_links?: SocialLink[];
+        };
+        return {
+          settings: payload.settings ?? null,
+          notification: payload.notification ?? null,
+          social_links: Array.isArray(payload.social_links) ? payload.social_links : [],
+        };
+      }
+    } catch {
+      // Graceful fallback to parallel queries if RPC not deployed yet
+    }
+
+    const [settings, notification, social_links] = await Promise.all([
+      getSettings(),
+      getActivePublicNotification(),
+      getSocialLinks(),
+    ]);
+
+    return { settings, notification, social_links };
+  },
+  ["public-bootstrap-data"],
+  { tags: [CACHE_TAGS.SETTINGS, CACHE_TAGS.NOTIFICATIONS, CACHE_TAGS.SOCIAL], revalidate: 3600 }
 );
 
 /* ─── Uncached Admin Data Operations (Direct Server Client) ────────────────── */

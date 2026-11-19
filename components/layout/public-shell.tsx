@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getSettings, getActivePublicNotification, getSocialLinks } from "@/lib/data/public";
+import { getPublicBootstrapData } from "@/lib/data/public";
 import { ThemeToggle } from "./theme-toggle";
 import { DesktopNav, MobileNav } from "./public-nav";
 import { Container } from "./container";
@@ -12,11 +12,7 @@ import { CopyEmailBadge } from "@/components/ui/copy-email-badge";
 import { Github } from "lucide-react";
 
 export async function PublicShell({ children }: { children: React.ReactNode }) {
-  const [settings, activeNotif, socialLinks] = await Promise.all([
-    getSettings(),
-    getActivePublicNotification(),
-    getSocialLinks(),
-  ]);
+  const { settings, notification: activeNotif, social_links: socialLinks } = await getPublicBootstrapData();
   const siteTitle = settings?.site_title || "Dheeraj Carpenter";
   const contactEmail = settings?.contact_email;
   const githubLink = socialLinks.find((s) => s.platform === "github")?.url || "https://github.com/ddheerajccarpenter";

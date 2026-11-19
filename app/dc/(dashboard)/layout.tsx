@@ -18,6 +18,24 @@ export default async function AdminLayout({
 
   return (
     <AdminToastProvider>
+      {/* Flaticon Icons — scoped exclusively to admin routes so public visitors never download them */}
+      <link rel="preconnect" href="https://cdn-uicons.flaticon.com" crossOrigin="anonymous" />
+      <link
+        rel="stylesheet"
+        href="https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-rounded/css/uicons-bold-rounded.css"
+      />
+      <link
+        rel="stylesheet"
+        href="https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-straight/css/uicons-bold-straight.css"
+      />
+      <link
+        rel="stylesheet"
+        href="https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css"
+      />
+      <link
+        rel="stylesheet"
+        href="https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-rounded/css/uicons-solid-rounded.css"
+      />
       <div data-admin-root="true" className="flex min-h-screen bg-background text-foreground transition-colors duration-200">
         {/* Desktop Sidebar */}
         <AdminSidebar />

@@ -68,13 +68,19 @@ const nextConfig: NextConfig = {
             key: "X-XSS-Protection",
             value: "1; mode=block",
           },
-          // Allow Vercel edge to cache page responses and revalidate in background
+        ],
+      },
+      // Admin dashboard routes — private, strict zero-cache
+      {
+        source: "/dc/:path*",
+        headers: [
           {
             key: "Cache-Control",
-            value: "public, s-maxage=60, stale-while-revalidate=300",
+            value: "private, no-cache, no-store, max-age=0, must-revalidate",
           },
         ],
       },
+      // Static fonts — immutable cache
       {
         source: "/fonts/:path*",
         headers: [
@@ -84,7 +90,7 @@ const nextConfig: NextConfig = {
           },
         ],
       },
-      // Static assets served by Next.js — immutable forever
+      // Next.js static bundles and chunks — immutable cache
       {
         source: "/_next/static/:path*",
         headers: [
@@ -94,13 +100,13 @@ const nextConfig: NextConfig = {
           },
         ],
       },
-      // Public folder assets (images, favicons, etc.)
+      // Public assets (images, icons, favicons, manifests)
       {
-        source: "/public/:path*",
+        source: "/:file(.*\\.(?:ico|png|jpg|jpeg|gif|webp|avif|svg|woff2?|txt|xml))",
         headers: [
           {
             key: "Cache-Control",
-            value: "public, max-age=86400, stale-while-revalidate=604800",
+            value: "public, max-age=31536000, immutable",
           },
         ],
       },
