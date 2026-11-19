@@ -31,7 +31,7 @@ export function AnakManjaHighlighter() {
             if (!parent) return NodeFilter.FILTER_REJECT;
             const tag = parent.tagName.toLowerCase();
             if (
-              ["script", "style", "code", "pre", "textarea", "input"].includes(tag) ||
+              ["script", "style", "code", "pre", "textarea", "input", "p", "a", "li", "label", "button", "blockquote"].includes(tag) ||
               parent.classList.contains("font-anak-manja") ||
               parent.closest(".font-anak-manja")
             ) {

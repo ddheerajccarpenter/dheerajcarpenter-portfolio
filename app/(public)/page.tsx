@@ -81,7 +81,7 @@ export default async function HomePage() {
               </AnimateIn>
 
               {/* Display Headline — Anak Manja brand typography */}
-              <AnimateIn variant="mask" duration={0.38} delay={0.08} viewport={false}>
+              <AnimateIn variant="fade-rise" distance={16} duration={0.35} delay={0.08} viewport={false}>
                 <h1 className="text-4xl sm:text-6xl md:text-8xl font-normal tracking-normal font-anak-manja text-foreground leading-[1.08] md:leading-[1.05]">
                   {name}
                 </h1>
@@ -120,48 +120,32 @@ export default async function HomePage() {
               </AnimateIn>
 
               {/* Metric Row */}
-              {(yearsExp > 0 || allProjects.length > 0 || allSkills.length > 0) && (
-                <div className="pt-5 sm:pt-8 border-t border-border mt-4 sm:mt-6 max-w-[440px]">
-                  <div className="grid grid-cols-3 gap-3 sm:gap-6">
-                    {yearsExp > 0 && (
-                      <AnimateIn variant="fade-rise" distance={16} duration={0.3} delay={0.32} viewport={false}>
-                        <div className="space-y-0.5">
-                          <p className="text-xl sm:text-3xl font-bold tracking-tight text-foreground tabular-nums">
-                            {yearsExp}+
-                          </p>
-                          <p className="font-mono text-[10px] sm:text-[11px] text-muted uppercase tracking-wider">
-                            Years Exp.
-                          </p>
-                        </div>
-                      </AnimateIn>
-                    )}
-                    {allProjects.length > 0 && (
-                      <AnimateIn variant="fade-rise" distance={16} duration={0.3} delay={0.36} viewport={false}>
-                        <div className="space-y-0.5">
-                          <p className="text-xl sm:text-3xl font-bold tracking-tight text-foreground tabular-nums">
-                            {allProjects.length}+
-                          </p>
-                          <p className="font-mono text-[10px] sm:text-[11px] text-muted uppercase tracking-wider">
-                            Projects
-                          </p>
-                        </div>
-                      </AnimateIn>
-                    )}
-                    {allSkills.length > 0 && (
-                      <AnimateIn variant="fade-rise" distance={16} duration={0.3} delay={0.4} viewport={false}>
-                        <div className="space-y-0.5">
-                          <p className="text-xl sm:text-3xl font-bold tracking-tight text-foreground tabular-nums">
-                            {allSkills.length}
-                          </p>
-                          <p className="font-mono text-[10px] sm:text-[11px] text-muted uppercase tracking-wider">
-                            Skills
-                          </p>
-                        </div>
-                      </AnimateIn>
-                    )}
+              {(() => {
+                const metrics = [
+                  ...(yearsExp > 0 ? [{ value: `${yearsExp}+`, label: "Years Exp." }] : []),
+                  ...(allProjects.length > 0 ? [{ value: `${allProjects.length}+`, label: "Projects" }] : []),
+                  ...(allSkills.length > 0 ? [{ value: `${allSkills.length}`, label: "Skills" }] : []),
+                ];
+                if (metrics.length === 0) return null;
+                return (
+                  <div className="pt-5 sm:pt-8 border-t border-border mt-4 sm:mt-6">
+                    <div className="flex flex-wrap items-center gap-6 sm:gap-12">
+                      {metrics.map((m, idx) => (
+                        <AnimateIn key={m.label} variant="fade-rise" distance={14} duration={0.3} delay={0.3 + idx * 0.04} viewport={false}>
+                          <div className="space-y-0.5">
+                            <p className="text-xl sm:text-3xl font-bold tracking-tight text-foreground tabular-nums">
+                              {m.value}
+                            </p>
+                            <p className="font-mono text-[10px] sm:text-[11px] text-muted uppercase tracking-wider">
+                              {m.label}
+                            </p>
+                          </div>
+                        </AnimateIn>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
+                );
+              })()}
             </div>
           </Container>
         </section>

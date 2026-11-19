@@ -42,23 +42,28 @@ export default async function PublicNotesPage() {
             <p className="mono-eyebrow text-muted mb-2">
               Scratchpad
             </p>
-            <h1 className="text-h1 font-bold tracking-tight sm:text-[3rem] text-foreground">
-              Notes
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground">
+              Notes &amp; Scratchpad
             </h1>
           </AnimateIn>
           <AnimateIn from="up" distance={12} delay={0.1} viewport={false}>
-            <p className="prose-readable text-body-lg text-muted">
-              Quick thoughts, project ideas, learning notes, and snippets.
+            <p className="prose-readable text-body sm:text-body-lg text-muted max-w-[640px] leading-relaxed">
+              Quick thoughts, project ideas, learning logs, and technical snippets.
             </p>
           </AnimateIn>
         </Container>
 
         <Container>
           {notes.length === 0 ? (
-            <div className="p-16 text-center border border-dashed border-border rounded-2xl text-muted bg-surface/30">
-              <p className="text-body font-medium">No notes published yet.</p>
-              <p className="text-small text-muted mt-1">Check back soon for new task updates and technical logs.</p>
-            </div>
+            <AnimateIn variant="fade-rise" distance={14}>
+              <div className="border border-border p-12 sm:p-16 text-center text-muted rounded-2xl bg-surface/40 space-y-3">
+                <Pin className="mx-auto h-10 w-10 text-foreground/50" />
+                <h3 className="text-lg font-bold text-foreground">Scratchpad in Progress</h3>
+                <p className="text-small text-muted max-w-md mx-auto leading-relaxed">
+                  Development snippets, technical logs, and ideas will be shared here. Check back soon.
+                </p>
+              </div>
+            </AnimateIn>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {notes.map((note, index) => (
